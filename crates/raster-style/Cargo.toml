@@ -2,9 +2,12 @@
 name = "raster-style"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
+repository.workspace = true
 rust-version.workspace = true
 description = "Raster Style Spec v2 JSON and Q2 query codec"
-publish = false
+publish = ["crates-io"]
+readme = "README.md"
 
 [dependencies]
 jsonschema = { version = "0.37", default-features = false }

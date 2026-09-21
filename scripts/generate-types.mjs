@@ -7,7 +7,8 @@ const schema = JSON.parse(
 );
 schema.title = 'RasterStyle';
 const output = await compile(schema, 'RasterStyle', {
-  bannerComment: '/** Generated from the draft.2 JSON Schema. Run pnpm generate; do not edit. */',
+  bannerComment:
+    '/** Generated from the Raster Style Spec v2 JSON Schema. Run pnpm generate; do not edit. */',
   maxItems: -1,
   additionalProperties: false,
   style: { singleQuote: true, printWidth: 100 },

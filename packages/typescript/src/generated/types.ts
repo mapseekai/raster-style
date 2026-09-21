@@ -1,4 +1,4 @@
-/** Generated from the draft.2 JSON Schema. Run pnpm generate; do not edit. */
+/** Generated from the Raster Style Spec v2 JSON Schema. Run pnpm generate; do not edit. */
 
 export type Channels =
   | {

@@ -40,7 +40,7 @@ impl Style {
         if !validator()?.is_valid(&value) {
             return Err(Error::new(
                 "E_SCHEMA",
-                "Raster style does not match draft.2 schema",
+                "Raster style does not match the schema",
             ));
         }
         validate_semantics(&value)?;

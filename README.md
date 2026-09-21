@@ -2,7 +2,7 @@
 
 Raster Style Spec v2 的规范与多语言 Q2 编解码工具。当前协议为 `2.0`，采用 `2.0.0-draft.3`，SDK 版本为 `0.1.0`。
 
-本项目只描述栅格像元的样式渲染，不定义图例、专题图分级向导或版面。提供 TypeScript、Go、Rust 的 JSON ↔ Q2 查询参数转换，以及独立的 Fiber v3 适配层。
+提供栅格像元渲染的样式规范，以及 TypeScript、Go、Rust 的 JSON ↔ Q2 查询参数转换、结构与语义校验、颜色规范化和 Fiber v3 适配层。
 
 ## 项目结构
 
@@ -13,11 +13,11 @@ testdata/                   三种语言共用的正例、反例与 JCS 测试�
 packages/typescript/        浏览器 / Node.js 的严格 TypeScript 实现
 packages/go/                Go 核心包
 packages/go/fiber/          Fiber v3 便捷解析与中间件
-crates/raster-style/        不依赖 Web 框架的 Rust crate
+crates/raster-style/        Rust 编解码核心库
 scripts/                    资源同步、类型生成、跨语言校验
 ```
 
-规范入口：[Raster Style Spec v2](spec/v2/Raster-Style-Spec-v2.md)。接口细节见 [SDK 使用说明](docs/SDK.md)，验证边界见 [验证与安全](docs/VALIDATION.md)。
+规范入口：[Raster Style Spec v2](spec/v2/Raster-Style-Spec-v2.md)。接口细节见 [SDK 使用说明](docs/SDK.md)，校验规则见 [验证与安全](docs/VALIDATION.md)。
 
 ## 开发
 
@@ -32,7 +32,7 @@ pnpm test:all
 
 `pnpm test:all` 检查生成资源、格式化、TypeScript 单元测试、Go vet/race、Rust fmt/clippy/test，并运行三语言交叉往返校验。首次构建会下载 Go/Rust 依赖。
 
-格式化使用 Prettier、gofmt 和 rustfmt；规范原文和共享测试向量不自动改写。
+格式化使用 Prettier、gofmt 和 rustfmt；规范文档和共享测试向量单独维护。
 
 ```sh
 pnpm format
@@ -41,6 +41,10 @@ cargo fmt --all
 ```
 
 ## TypeScript
+
+```sh
+npm install @mapseek/raster-style@0.1.0
+```
 
 ```ts
 import { encodeQuery, decodeQuery, jsonToQuery, queryToJson } from '@mapseek/raster-style';
@@ -63,9 +67,13 @@ const jsonText = queryToJson(fromText);
 bidx=4&bidx=3&bidx=2&renderer=rgb&rsv=2.0&selector=bands
 ```
 
-浏览器入口没有 `node:fs`、`Buffer` 或服务器依赖，Schema 在构建时内嵌。TypeScript 类型从规范生成，运行时仍做完整结构校验。
+支持浏览器和 Node.js，Schema 在构建时内嵌。TypeScript 类型从规范生成，运行时执行完整结构校验。
 
 ## Go
+
+```sh
+go get github.com/mapseekai/raster-style/packages/go@v0.1.0
+```
 
 ```go
 query, err := rasterstyle.JSONToQuery(styleJSON)
@@ -79,7 +87,7 @@ if err != nil {
 }
 ```
 
-导入路径：`github.com/mapseekai/raster-style/packages/go`。当前尚未推送或发布该模块，其他本地项目通过 `go work use` 或 `replace` 引用。
+导入路径：`github.com/mapseekai/raster-style/packages/go`。本地项目可通过 `go work use` 或 `replace` 引用。
 
 ## Fiber v3
 
@@ -104,7 +112,7 @@ app.Get("/raster-style", func(c fiber.Ctx) error {
 })
 ```
 
-更直接的原始 JSON 输出用 `decoder.JSON(c)`。多个处理步骤共享样式时使用 `decoder.Middleware()` 和 `stylefiber.FromContext(c)`，无需重复解析。不要先调用 `c.Queries()` 再交给本库，否则重复波段参数可能丢失。
+原始 JSON 输出使用 `decoder.JSON(c)`。多个处理步骤可通过 `decoder.Middleware()` 和 `stylefiber.FromContext(c)` 共享解析结果。Decoder 直接读取原始查询串，保留重复波段参数及其顺序。
 
 完整可运行示例：`packages/go/examples/fiber/main.go`。
 
@@ -117,23 +125,27 @@ let query = json_to_query(style_json)?;
 let restored_json = query_to_json(&query)?;
 ```
 
-本地依赖：
+依赖配置：
 
 ```toml
 [dependencies]
-raster-style = { path = "../raster-style/crates/raster-style" }
+raster-style = "0.1.0"
 ```
 
 ## 传输契约
 
-查询串不包含完整 URL 和开头的 `?`；解码时兼容一个开头的 `?`。键按字典序输出，重复键保留数组顺序。空格编码成 `%20`，加号编码成 `%2B`；裸 `+` 被拒绝，不按表单规则转换为空格。
+编码器输出查询参数串，解码器兼容一个开头的 `?`。键按字典序输出，重复键保留数组顺序。空格编码为 `%20`，加号编码为 `%2B`；裸 `+` 会触发编码错误。
 
-默认限额：查询串 8192 字节、256 个参数，JSON 2 MiB、嵌套深度 64。可调整 Query 预算，不能关闭结构或语义校验。超长配置应走外层样式引用，而不是在这个库里偷偷截断。
+默认限额：查询串 8192 字节、256 个参数，JSON 2 MiB、嵌套深度 64。Query 预算可调整，每次转换均执行结构和语义校验。超长配置通过外层服务的样式引用传输。
 
-颜色规范化为小写 `#rrggbbaa`，数值使用二进制 64 位 / RFC 8785 语义。省略的可选字段仍然省略，不补全引擎默认值；扩展配置不参与颜色改写。
+颜色字段规范化为小写 `#rrggbbaa`，数值使用 binary64 / RFC 8785 语义。转换保留可选字段的省略状态和扩展配置的原值。
 
-**Q2 不是 TiTiler 原生参数适配器。** 本库不解析数据源、不计算统计、不执行表达式、不渲染瓦片，也不承诺下游引擎支持所有合法配置。`url`、鉴权、TMS、bbox 等外层参数应在调用前按业务白名单单独处理，不能与 Q2 混入同一解析入口。
+服务集成时，由渲染后端完成数据绑定、统计计算、表达式执行和瓦片渲染，并检查配置支持情况。`url`、鉴权、TMS、bbox 等上下文参数通过独立的业务白名单入口处理。
 
-## 发布状态
+## 版本
 
-当前为本地开发项目，没有创建远程仓库、提交 Git 记录或发布 npm/Go/crates.io 包。依赖固定在锁文件中；未指定项目对外开源许可证。
+SDK 版本为 `0.1.0`。npm 包为 `@mapseek/raster-style`，Rust crate 为 `raster-style`；Go 核心包与 Fiber 适配层通过同一个 Go 模块发布。
+
+## 许可证
+
+本项目采用 [MIT 许可证](LICENSE)。

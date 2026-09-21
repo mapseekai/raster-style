@@ -46,7 +46,7 @@ func newStyle(value any) (*Style, error) {
 		return nil, err
 	}
 	if err := validator.Validate(value); err != nil {
-		return nil, failure("E_SCHEMA", "Raster style does not match draft.2 schema", "")
+		return nil, failure("E_SCHEMA", "Raster style does not match the schema", "")
 	}
 	document := value.(map[string]any)
 	if err := validateSemantics(document); err != nil {
