@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+Cargo.lock
+go.sum
+packages/go/**
+crates/**
+spec/v2/**
+examples/styles/**
+testdata/**
+packages/typescript/src/generated/**
+.build/**

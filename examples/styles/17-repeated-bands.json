@@ -1,0 +1,16 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "bands",
+      "bands": [
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "renderer": {
+    "type": "rgb"
+  }
+}

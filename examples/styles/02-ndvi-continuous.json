@@ -1,0 +1,55 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "index",
+      "name": "ndvi",
+      "bindings": {
+        "red": 4,
+        "nir": 8
+      }
+    },
+    "calibration": {
+      "mode": "metadata"
+    }
+  },
+  "renderer": {
+    "type": "pseudocolor",
+    "color_map": {
+      "mode": "continuous",
+      "domain": "data",
+      "interpolation": "srgb",
+      "stops": [
+        {
+          "value": -1,
+          "color": "#313695ff"
+        },
+        {
+          "value": 0,
+          "color": "#ffffbfff"
+        },
+        {
+          "value": 1,
+          "color": "#006837ff"
+        }
+      ],
+      "under": "clamp",
+      "over": "clamp"
+    }
+  },
+  "stretch": {
+    "method": "none"
+  },
+  "resampling": {
+    "read": "bilinear",
+    "warp": "bilinear"
+  },
+  "opacity": {
+    "value": 1,
+    "nodata_color": "#00000000"
+  },
+  "output": {
+    "format": "png",
+    "tile_size": 256
+  }
+}

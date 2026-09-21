@@ -1,0 +1,31 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    }
+  },
+  "renderer": {
+    "type": "gray",
+    "invert": false
+  },
+  "stretch": {
+    "method": "linear",
+    "ranges": [
+      [
+        0,
+        255
+      ]
+    ]
+  },
+  "output": {
+    "format": "jpeg",
+    "tile_size": 256,
+    "alpha": "flatten",
+    "background": "#ffffffff",
+    "quality": 85
+  }
+}

@@ -1,0 +1,147 @@
+[
+  {
+    "name": "duplicate-version",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&rsv=2.0",
+    "code": "E_DUPLICATE_PARAMETER"
+  },
+  {
+    "name": "duplicate-renderer",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&renderer=gray",
+    "code": "E_DUPLICATE_PARAMETER"
+  },
+  {
+    "name": "unknown-key",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&foo=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "legend-key",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&legend=%7B%7D",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "metadata-key",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&metadata=%7B%7D",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "context-url",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&url=https%3A%2F%2Fexample.test",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "malformed-percent",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&gamma=%QZ",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "bad-utf8",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&gamma=%FF",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "raw-plus",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&expression=b1+b2",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "raw-space",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&expression=b1 b2",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "raw-fragment",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&expression=b1#x",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "raw-unicode",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&expression=中文",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "unsafe-integer",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&tile_size=9007199254740992",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "fractional-integer",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&tile_size=1.5",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "non-finite",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&gamma=1e999",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "nan",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&gamma=NaN",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "leading-zero",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&gamma=01",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "boolean-numeric",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&invert=1",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "invalid-pair",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&rescale=0,1,2",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "short-rgba",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&nodata_color=AABBCC",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "json-duplicate",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&nodata=%7B%22mode%22%3A%22source%22%2C%22mode%22%3A%22ignore%22%7D",
+    "code": "E_JSON"
+  },
+  {
+    "name": "json-malformed",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&nodata=%7B%7D%7B%7D",
+    "code": "E_JSON"
+  },
+  {
+    "name": "trailing-empty",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "no-equals",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&quality",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "prototype-key",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&__proto__=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "malformed-union",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&index=ndvi",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "missing-required",
+    "query": "rsv=2.0",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "empty-query",
+    "query": "",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "full-url",
+    "query": "https://example.test/?rsv=2.0&selector=bands&bidx=1&renderer=gray",
+    "code": "E_UNKNOWN_PARAMETER"
+  }
+]

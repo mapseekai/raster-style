@@ -1,0 +1,38 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    }
+  },
+  "renderer": {
+    "type": "pseudocolor",
+    "color_map": {
+      "mode": "discrete",
+      "domain": "data",
+      "breaks": [
+        0,
+        5,
+        15,
+        30,
+        60,
+        100
+      ],
+      "colors": [
+        "#440154ff",
+        "#3b528bff",
+        "#21918cff",
+        "#5ec962ff",
+        "#fde725ff"
+      ],
+      "boundary": "left_closed",
+      "outside_color": "#00000000"
+    }
+  },
+  "stretch": {
+    "method": "none"
+  }
+}

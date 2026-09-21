@@ -1,0 +1,79 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    },
+    "calibration": {
+      "mode": "linear",
+      "coefficients": [
+        {
+          "band": 1,
+          "scale": 0.2,
+          "offset": -1
+        }
+      ]
+    },
+    "nodata": {
+      "mode": "override",
+      "values": [
+        "nan",
+        "inf",
+        "-inf",
+        -9999
+      ],
+      "use_mask": false
+    }
+  },
+  "renderer": {
+    "type": "gray",
+    "invert": true
+  },
+  "stretch": {
+    "method": "stddev",
+    "stddev": 2.5,
+    "gamma": [
+      1.2
+    ],
+    "range_policy": "transparent",
+    "sigmoid": {
+      "contrast": 5,
+      "midpoint": 0.4
+    }
+  },
+  "effects": {
+    "brightness": 0.1,
+    "contrast": 1.5,
+    "saturation": 0.8,
+    "grayscale": "luma",
+    "invert": false
+  },
+  "opacity": {
+    "value": 0.8,
+    "alpha_band": {
+      "band": 2,
+      "range": [
+        0,
+        255
+      ]
+    },
+    "nodata_color": "#FFAABB"
+  },
+  "statistics": {
+    "scope": "dataset",
+    "accuracy": "sample",
+    "sample_size": 1000
+  },
+  "resampling": {
+    "read": "cubic_spline",
+    "warp": "average"
+  },
+  "output": {
+    "format": "png",
+    "tile_size": 64,
+    "alpha": "preserve"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    }
+  },
+  "renderer": {
+    "type": "gray"
+  },
+  "stretch": {
+    "method": "curve",
+    "curves": [
+      [
+        [
+          0,
+          0
+        ],
+        [
+          50,
+          0.2
+        ],
+        [
+          100,
+          1
+        ]
+      ]
+    ],
+    "gamma": [
+      1
+    ]
+  }
+}

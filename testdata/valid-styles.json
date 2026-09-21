@@ -1,0 +1,677 @@
+{
+  "01-rgb-fixed": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          4,
+          3,
+          2
+        ]
+      }
+    },
+    "renderer": {
+      "type": "rgb"
+    },
+    "stretch": {
+      "method": "linear",
+      "ranges": [
+        [
+          0,
+          3000
+        ],
+        [
+          0,
+          3000
+        ],
+        [
+          0,
+          3000
+        ]
+      ],
+      "gamma": [
+        1.1,
+        1.1,
+        1.1
+      ]
+    },
+    "resampling": {
+      "read": "bilinear",
+      "warp": "bilinear"
+    },
+    "output": {
+      "format": "png",
+      "tile_size": 256,
+      "alpha": "preserve"
+    }
+  },
+  "02-ndvi-continuous": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "index",
+        "name": "ndvi",
+        "bindings": {
+          "red": 4,
+          "nir": 8
+        }
+      },
+      "calibration": {
+        "mode": "metadata"
+      }
+    },
+    "renderer": {
+      "type": "pseudocolor",
+      "color_map": {
+        "mode": "continuous",
+        "domain": "data",
+        "interpolation": "srgb",
+        "stops": [
+          {
+            "value": -1,
+            "color": "#313695ff"
+          },
+          {
+            "value": 0,
+            "color": "#ffffbfff"
+          },
+          {
+            "value": 1,
+            "color": "#006837ff"
+          }
+        ],
+        "under": "clamp",
+        "over": "clamp"
+      }
+    },
+    "stretch": {
+      "method": "none"
+    },
+    "resampling": {
+      "read": "bilinear",
+      "warp": "bilinear"
+    },
+    "opacity": {
+      "value": 1,
+      "nodata_color": "#00000000"
+    },
+    "output": {
+      "format": "png",
+      "tile_size": 256
+    }
+  },
+  "03-discrete-breaks": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "pseudocolor",
+      "color_map": {
+        "mode": "discrete",
+        "domain": "data",
+        "breaks": [
+          0,
+          100,
+          500,
+          1000
+        ],
+        "colors": [
+          "#2c7bb6ff",
+          "#ffffbfff",
+          "#d7191cff"
+        ],
+        "boundary": "left_closed",
+        "outside_color": "#00000000"
+      }
+    },
+    "stretch": {
+      "method": "none"
+    },
+    "resampling": {
+      "read": "nearest",
+      "warp": "nearest"
+    }
+  },
+  "04-categorized": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "categorized",
+      "color_map": {
+        "mode": "exact",
+        "entries": [
+          {
+            "value": 1,
+            "color": "#228b22ff"
+          },
+          {
+            "value": 2,
+            "color": "#4169e1ff"
+          },
+          {
+            "value": 3,
+            "color": "#d2b48cff"
+          }
+        ],
+        "fallback_color": "#00000000"
+      }
+    },
+    "stretch": {
+      "method": "none"
+    },
+    "resampling": {
+      "read": "nearest",
+      "warp": "nearest"
+    }
+  },
+  "05-hillshade": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "hillshade",
+      "terrain": {
+        "method": "single",
+        "gradient": "horn",
+        "azimuth": 315,
+        "altitude": 45,
+        "z_factor": 1,
+        "vertical_unit": "metre",
+        "edge": "nodata"
+      }
+    },
+    "stretch": {
+      "method": "none"
+    },
+    "resampling": {
+      "read": "bilinear",
+      "warp": "bilinear"
+    },
+    "output": {
+      "format": "png",
+      "tile_size": 512
+    }
+  },
+  "06-percentile-stretch": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          4,
+          3,
+          2
+        ]
+      }
+    },
+    "renderer": {
+      "type": "rgb"
+    },
+    "stretch": {
+      "method": "percentile",
+      "percentiles": [
+        2,
+        98
+      ],
+      "gamma": [
+        1.1
+      ]
+    },
+    "statistics": {
+      "scope": "dataset",
+      "accuracy": "sample",
+      "sample_size": 1000000
+    }
+  },
+  "07-expression-mosaic": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "expression",
+        "language": "raster-expr/1",
+        "expressions": [
+          "(b8-b4)/(b8+b4)"
+        ]
+      }
+    },
+    "renderer": {
+      "type": "pseudocolor",
+      "color_map": {
+        "mode": "continuous",
+        "domain": "data",
+        "interpolation": "srgb",
+        "stops": [
+          {
+            "value": -1,
+            "color": "#313695ff"
+          },
+          {
+            "value": 0,
+            "color": "#ffffbfff"
+          },
+          {
+            "value": 1,
+            "color": "#006837ff"
+          }
+        ],
+        "under": "clamp",
+        "over": "clamp"
+      }
+    },
+    "stretch": {
+      "method": "none"
+    },
+    "mosaic": {
+      "pixel_selection": "highest",
+      "stage": "after_selector",
+      "rank_channel": 1
+    },
+    "output": {
+      "format": "webp",
+      "tile_size": 256,
+      "alpha": "preserve",
+      "lossless": true
+    }
+  },
+  "08-shaded-relief": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "shaded_relief",
+      "terrain": {
+        "method": "single",
+        "gradient": "horn",
+        "azimuth": 315,
+        "altitude": 45,
+        "z_factor": 1,
+        "vertical_unit": "metre",
+        "edge": "nodata"
+      },
+      "strength": 0.65,
+      "color_map": {
+        "mode": "continuous",
+        "domain": "data",
+        "stops": [
+          {
+            "value": 0,
+            "color": "#78a86bff"
+          },
+          {
+            "value": 1000,
+            "color": "#c9b18cff"
+          },
+          {
+            "value": 3000,
+            "color": "#ffffffff"
+          }
+        ]
+      }
+    },
+    "stretch": {
+      "method": "none"
+    }
+  },
+  "09-explicit-intervals": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "pseudocolor",
+      "color_map": {
+        "mode": "discrete",
+        "domain": "data",
+        "breaks": [
+          0,
+          5,
+          15,
+          30,
+          60,
+          100
+        ],
+        "colors": [
+          "#440154ff",
+          "#3b528bff",
+          "#21918cff",
+          "#5ec962ff",
+          "#fde725ff"
+        ],
+        "boundary": "left_closed",
+        "outside_color": "#00000000"
+      }
+    },
+    "stretch": {
+      "method": "none"
+    }
+  },
+  "10-single-color": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "single_color",
+      "color": "#ff880080"
+    },
+    "stretch": {
+      "method": "none"
+    },
+    "opacity": {
+      "value": 0.8,
+      "rules": [
+        {
+          "kind": "value",
+          "channel": 1,
+          "value": 0,
+          "alpha": 0
+        }
+      ],
+      "nodata_color": "#00000000"
+    },
+    "output": {
+      "format": "png",
+      "tile_size": 256
+    }
+  },
+  "11-gray-jpeg": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "gray",
+      "invert": false
+    },
+    "stretch": {
+      "method": "linear",
+      "ranges": [
+        [
+          0,
+          255
+        ]
+      ]
+    },
+    "output": {
+      "format": "jpeg",
+      "tile_size": 256,
+      "alpha": "flatten",
+      "background": "#ffffffff",
+      "quality": 85
+    }
+  },
+  "12-all-gray-fields": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      },
+      "calibration": {
+        "mode": "linear",
+        "coefficients": [
+          {
+            "band": 1,
+            "scale": 0.2,
+            "offset": -1
+          }
+        ]
+      },
+      "nodata": {
+        "mode": "override",
+        "values": [
+          "nan",
+          "inf",
+          "-inf",
+          -9999
+        ],
+        "use_mask": false
+      }
+    },
+    "renderer": {
+      "type": "gray",
+      "invert": true
+    },
+    "stretch": {
+      "method": "stddev",
+      "stddev": 2.5,
+      "gamma": [
+        1.2
+      ],
+      "range_policy": "transparent",
+      "sigmoid": {
+        "contrast": 5,
+        "midpoint": 0.4
+      }
+    },
+    "effects": {
+      "brightness": 0.1,
+      "contrast": 1.5,
+      "saturation": 0.8,
+      "grayscale": "luma",
+      "invert": false
+    },
+    "opacity": {
+      "value": 0.8,
+      "alpha_band": {
+        "band": 2,
+        "range": [
+          0,
+          255
+        ]
+      },
+      "nodata_color": "#FFAABB"
+    },
+    "statistics": {
+      "scope": "dataset",
+      "accuracy": "sample",
+      "sample_size": 1000
+    },
+    "resampling": {
+      "read": "cubic_spline",
+      "warp": "average"
+    },
+    "output": {
+      "format": "png",
+      "tile_size": 64,
+      "alpha": "preserve"
+    }
+  },
+  "13-curve": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "gray"
+    },
+    "stretch": {
+      "method": "curve",
+      "curves": [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            50,
+            0.2
+          ],
+          [
+            100,
+            1
+          ]
+        ]
+      ],
+      "gamma": [
+        1
+      ]
+    }
+  },
+  "14-histogram": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "gray"
+    },
+    "stretch": {
+      "method": "histogram_equalization"
+    },
+    "statistics": {
+      "scope": "dataset",
+      "accuracy": "exact"
+    }
+  },
+  "15-evi": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "index",
+        "name": "evi",
+        "bindings": {
+          "red": 3,
+          "nir": 4,
+          "blue": 1
+        },
+        "parameters": {
+          "g": 2.5,
+          "c1": 6,
+          "c2": 7.5,
+          "l": 1
+        }
+      }
+    },
+    "renderer": {
+      "type": "gray"
+    },
+    "stretch": {
+      "method": "linear",
+      "ranges": [
+        [
+          -1,
+          1
+        ]
+      ]
+    }
+  },
+  "16-unicode-extension": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "gray"
+    },
+    "extensions": {
+      "mapseek.test.config": {
+        "version": "1",
+        "stage": "after_color",
+        "config": {
+          "text": "a+b & #50% 中文 / ? =",
+          "numbers": [
+            -0.0,
+            1e+21,
+            1e-07,
+            5e-324
+          ],
+          "😀": 2,
+          "": 1,
+          "__proto__": {
+            "safe": true
+          },
+          "color": "#ABCDEF"
+        }
+      }
+    }
+  },
+  "17-repeated-bands": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "rgb"
+    }
+  },
+  "18-minimal": {
+    "version": "2.0",
+    "input": {
+      "selector": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      }
+    },
+    "renderer": {
+      "type": "gray"
+    }
+  }
+}

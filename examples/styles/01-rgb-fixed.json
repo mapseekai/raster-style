@@ -1,0 +1,47 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "bands",
+      "bands": [
+        4,
+        3,
+        2
+      ]
+    }
+  },
+  "renderer": {
+    "type": "rgb"
+  },
+  "stretch": {
+    "method": "linear",
+    "ranges": [
+      [
+        0,
+        3000
+      ],
+      [
+        0,
+        3000
+      ],
+      [
+        0,
+        3000
+      ]
+    ],
+    "gamma": [
+      1.1,
+      1.1,
+      1.1
+    ]
+  },
+  "resampling": {
+    "read": "bilinear",
+    "warp": "bilinear"
+  },
+  "output": {
+    "format": "png",
+    "tile_size": 256,
+    "alpha": "preserve"
+  }
+}

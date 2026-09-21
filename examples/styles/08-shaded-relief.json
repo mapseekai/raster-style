@@ -1,0 +1,45 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    }
+  },
+  "renderer": {
+    "type": "shaded_relief",
+    "terrain": {
+      "method": "single",
+      "gradient": "horn",
+      "azimuth": 315,
+      "altitude": 45,
+      "z_factor": 1,
+      "vertical_unit": "metre",
+      "edge": "nodata"
+    },
+    "strength": 0.65,
+    "color_map": {
+      "mode": "continuous",
+      "domain": "data",
+      "stops": [
+        {
+          "value": 0,
+          "color": "#78a86bff"
+        },
+        {
+          "value": 1000,
+          "color": "#c9b18cff"
+        },
+        {
+          "value": 3000,
+          "color": "#ffffffff"
+        }
+      ]
+    }
+  },
+  "stretch": {
+    "method": "none"
+  }
+}

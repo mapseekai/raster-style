@@ -1,0 +1,34 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    }
+  },
+  "renderer": {
+    "type": "hillshade",
+    "terrain": {
+      "method": "single",
+      "gradient": "horn",
+      "azimuth": 315,
+      "altitude": 45,
+      "z_factor": 1,
+      "vertical_unit": "metre",
+      "edge": "nodata"
+    }
+  },
+  "stretch": {
+    "method": "none"
+  },
+  "resampling": {
+    "read": "bilinear",
+    "warp": "bilinear"
+  },
+  "output": {
+    "format": "png",
+    "tile_size": 512
+  }
+}

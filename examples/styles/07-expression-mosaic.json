@@ -1,0 +1,50 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "expression",
+      "language": "raster-expr/1",
+      "expressions": [
+        "(b8-b4)/(b8+b4)"
+      ]
+    }
+  },
+  "renderer": {
+    "type": "pseudocolor",
+    "color_map": {
+      "mode": "continuous",
+      "domain": "data",
+      "interpolation": "srgb",
+      "stops": [
+        {
+          "value": -1,
+          "color": "#313695ff"
+        },
+        {
+          "value": 0,
+          "color": "#ffffbfff"
+        },
+        {
+          "value": 1,
+          "color": "#006837ff"
+        }
+      ],
+      "under": "clamp",
+      "over": "clamp"
+    }
+  },
+  "stretch": {
+    "method": "none"
+  },
+  "mosaic": {
+    "pixel_selection": "highest",
+    "stage": "after_selector",
+    "rank_channel": 1
+  },
+  "output": {
+    "format": "webp",
+    "tile_size": 256,
+    "alpha": "preserve",
+    "lossless": true
+  }
+}

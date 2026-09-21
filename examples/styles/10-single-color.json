@@ -1,0 +1,34 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    }
+  },
+  "renderer": {
+    "type": "single_color",
+    "color": "#ff880080"
+  },
+  "stretch": {
+    "method": "none"
+  },
+  "opacity": {
+    "value": 0.8,
+    "rules": [
+      {
+        "kind": "value",
+        "channel": 1,
+        "value": 0,
+        "alpha": 0
+      }
+    ],
+    "nodata_color": "#00000000"
+  },
+  "output": {
+    "format": "png",
+    "tile_size": 256
+  }
+}

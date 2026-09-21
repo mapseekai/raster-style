@@ -1,0 +1,32 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "index",
+      "name": "evi",
+      "bindings": {
+        "red": 3,
+        "nir": 4,
+        "blue": 1
+      },
+      "parameters": {
+        "g": 2.5,
+        "c1": 6,
+        "c2": 7.5,
+        "l": 1
+      }
+    }
+  },
+  "renderer": {
+    "type": "gray"
+  },
+  "stretch": {
+    "method": "linear",
+    "ranges": [
+      [
+        -1,
+        1
+      ]
+    ]
+  }
+}

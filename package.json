@@ -1,0 +1,23 @@
+{
+  "name": "raster-style-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.15.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "generate": "node scripts/sync-assets.mjs && node scripts/generate-types.mjs",
+    "check:generated": "node scripts/sync-assets.mjs --check && node scripts/generate-types.mjs --check",
+    "build": "pnpm --filter @mapseek/raster-style build",
+    "test": "pnpm --filter @mapseek/raster-style test",
+    "test:all": "python3 scripts/check.py",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "3.6.2",
+    "json-schema-to-typescript": "15.0.4"
+  }
+}

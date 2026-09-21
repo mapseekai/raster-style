@@ -1,0 +1,35 @@
+{
+  "version": "2.0",
+  "input": {
+    "selector": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    }
+  },
+  "renderer": {
+    "type": "gray"
+  },
+  "extensions": {
+    "mapseek.test.config": {
+      "version": "1",
+      "stage": "after_color",
+      "config": {
+        "text": "a+b & #50% 中文 / ? =",
+        "numbers": [
+          -0.0,
+          1e+21,
+          1e-07,
+          5e-324
+        ],
+        "😀": 2,
+        "": 1,
+        "__proto__": {
+          "safe": true
+        },
+        "color": "#ABCDEF"
+      }
+    }
+  }
+}
