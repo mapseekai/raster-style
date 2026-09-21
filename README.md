@@ -1,6 +1,6 @@
 # raster-style
 
-Raster Style Spec v2 的规范与多语言 Q2 编解码工具。当前协议为 `2.0`，采用 `2.0.0-draft.2`，SDK 版本为 `0.1.0`。
+Raster Style Spec v2 的规范与多语言 Q2 编解码工具。当前协议为 `2.0`，采用 `2.0.0-draft.3`，SDK 版本为 `0.1.0`。
 
 本项目只描述栅格像元的样式渲染，不定义图例、专题图分级向导或版面。提供 TypeScript、Go、Rust 的 JSON ↔ Q2 查询参数转换，以及独立的 Fiber v3 适配层。
 
@@ -47,7 +47,7 @@ import { encodeQuery, decodeQuery, jsonToQuery, queryToJson } from '@mapseek/ras
 
 const style = {
   version: '2.0',
-  input: { selector: { kind: 'bands', bands: [4, 3, 2] } },
+  channels: { kind: 'bands', bands: [4, 3, 2] },
   renderer: { type: 'rgb' },
 };
 

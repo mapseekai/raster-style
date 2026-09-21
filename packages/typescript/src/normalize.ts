@@ -7,7 +7,7 @@ export function normalizeColor(color: string): string {
 
 /** Normalize only declared color fields. Extension configuration remains opaque. */
 export function normalizeColors(style: JsonObject): void {
-  const scalarPaths = ['renderer.color', 'opacity.nodata_color', 'output.background'];
+  const scalarPaths = ['renderer.color', 'opacity.nodata_color', 'image.background'];
   for (const path of scalarPaths) {
     const color = getPath(style, path);
     if (typeof color === 'string') setPath(style, path, normalizeColor(color));

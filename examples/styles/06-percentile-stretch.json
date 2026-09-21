@@ -1,15 +1,5 @@
 {
   "version": "2.0",
-  "input": {
-    "selector": {
-      "kind": "bands",
-      "bands": [
-        4,
-        3,
-        2
-      ]
-    }
-  },
   "renderer": {
     "type": "rgb"
   },
@@ -27,5 +17,13 @@
     "scope": "dataset",
     "accuracy": "sample",
     "sample_size": 1000000
+  },
+  "channels": {
+    "kind": "bands",
+    "bands": [
+      4,
+      3,
+      2
+    ]
   }
 }

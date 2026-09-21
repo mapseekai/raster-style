@@ -1,18 +1,5 @@
 {
   "version": "2.0",
-  "input": {
-    "selector": {
-      "kind": "index",
-      "name": "ndvi",
-      "bindings": {
-        "red": 4,
-        "nir": 8
-      }
-    },
-    "calibration": {
-      "mode": "metadata"
-    }
-  },
   "renderer": {
     "type": "pseudocolor",
     "color_map": {
@@ -48,8 +35,19 @@
     "value": 1,
     "nodata_color": "#00000000"
   },
-  "output": {
+  "channels": {
+    "kind": "index",
+    "name": "ndvi",
+    "bindings": {
+      "red": 4,
+      "nir": 8
+    }
+  },
+  "calibration": {
+    "mode": "metadata"
+  },
+  "image": {
     "format": "png",
-    "tile_size": 256
+    "size": 256
   }
 }

@@ -2,15 +2,21 @@
 export default {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:mapseek:raster-style:2.0",
-  "title": "Raster Style Spec v2 — 2.0.0-draft.2",
+  "title": "Raster Style Spec v2 — 2.0.0-draft.3",
   "description": "Raster rendering configuration only. No legend, presentation metadata, category labels or automatic classification recipes. Normative semantic and backend-capability validation is additionally required; see the specification.",
   "type": "object",
   "properties": {
     "version": {
       "const": "2.0"
     },
-    "input": {
-      "$ref": "#/$defs/input"
+    "channels": {
+      "$ref": "#/$defs/channels"
+    },
+    "calibration": {
+      "$ref": "#/$defs/calibration"
+    },
+    "nodata": {
+      "$ref": "#/$defs/nodata"
     },
     "resampling": {
       "$ref": "#/$defs/resampling"
@@ -33,8 +39,8 @@ export default {
     "mosaic": {
       "$ref": "#/$defs/mosaic"
     },
-    "output": {
-      "$ref": "#/$defs/output"
+    "image": {
+      "$ref": "#/$defs/image"
     },
     "extensions": {
       "$ref": "#/$defs/extensions"
@@ -42,7 +48,7 @@ export default {
   },
   "required": [
     "version",
-    "input",
+    "channels",
     "renderer"
   ],
   "additionalProperties": false,
@@ -58,320 +64,6 @@ export default {
       },
       "minItems": 2,
       "maxItems": 2
-    },
-    "selector": {
-      "oneOf": [
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "bands"
-            },
-            "bands": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "minimum": 1,
-                "maximum": 65535
-              },
-              "minItems": 1,
-              "maxItems": 3
-            }
-          },
-          "required": [
-            "kind",
-            "bands"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "expression"
-            },
-            "language": {
-              "const": "raster-expr/1"
-            },
-            "expressions": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 2048
-              },
-              "minItems": 1,
-              "maxItems": 3
-            }
-          },
-          "required": [
-            "kind",
-            "language",
-            "expressions"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "ndvi"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "red": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "red",
-                "nir"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "ndwi_mcfeeters"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "green": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "green",
-                "nir"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "ndmi"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "swir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "nir",
-                "swir"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "ndbi"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "swir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "nir",
-                "swir"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "evi"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "red": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "blue": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "red",
-                "nir",
-                "blue"
-              ],
-              "additionalProperties": false
-            },
-            "parameters": {
-              "type": "object",
-              "properties": {
-                "g": {
-                  "type": "number",
-                  "exclusiveMinimum": 0
-                },
-                "c1": {
-                  "type": "number"
-                },
-                "c2": {
-                  "type": "number"
-                },
-                "l": {
-                  "type": "number"
-                }
-              },
-              "required": [],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "savi"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "red": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "red",
-                "nir"
-              ],
-              "additionalProperties": false
-            },
-            "parameters": {
-              "type": "object",
-              "properties": {
-                "l": {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 1
-                }
-              },
-              "required": [],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        }
-      ]
     },
     "calibration": {
       "oneOf": [
@@ -530,24 +222,6 @@ export default {
           "additionalProperties": false
         }
       ]
-    },
-    "input": {
-      "type": "object",
-      "properties": {
-        "selector": {
-          "$ref": "#/$defs/selector"
-        },
-        "calibration": {
-          "$ref": "#/$defs/calibration"
-        },
-        "nodata": {
-          "$ref": "#/$defs/nodata"
-        }
-      },
-      "required": [
-        "selector"
-      ],
-      "additionalProperties": false
     },
     "resampling": {
       "type": "object",
@@ -1637,8 +1311,8 @@ export default {
         },
         "stage": {
           "enum": [
-            "before_selector",
-            "after_selector"
+            "before_channels",
+            "after_channels"
           ]
         },
         "rank_channel": {
@@ -1653,7 +1327,353 @@ export default {
       ],
       "additionalProperties": false
     },
-    "output": {
+    "extensions": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9_-]*){2,}$": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "stage": {
+              "enum": [
+                "before_channels",
+                "after_channels",
+                "after_color"
+              ]
+            },
+            "config": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "version",
+            "stage",
+            "config"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+    "channels": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "bands"
+            },
+            "bands": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65535
+              },
+              "minItems": 1,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "kind",
+            "bands"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "expression"
+            },
+            "language": {
+              "const": "raster-expr/1"
+            },
+            "expressions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              "minItems": 1,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "kind",
+            "language",
+            "expressions"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "index"
+            },
+            "name": {
+              "const": "ndvi"
+            },
+            "bindings": {
+              "type": "object",
+              "properties": {
+                "red": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "nir": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                }
+              },
+              "required": [
+                "red",
+                "nir"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "kind",
+            "name",
+            "bindings"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "index"
+            },
+            "name": {
+              "const": "ndwi_mcfeeters"
+            },
+            "bindings": {
+              "type": "object",
+              "properties": {
+                "green": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "nir": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                }
+              },
+              "required": [
+                "green",
+                "nir"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "kind",
+            "name",
+            "bindings"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "index"
+            },
+            "name": {
+              "const": "ndmi"
+            },
+            "bindings": {
+              "type": "object",
+              "properties": {
+                "nir": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "swir": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                }
+              },
+              "required": [
+                "nir",
+                "swir"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "kind",
+            "name",
+            "bindings"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "index"
+            },
+            "name": {
+              "const": "ndbi"
+            },
+            "bindings": {
+              "type": "object",
+              "properties": {
+                "nir": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "swir": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                }
+              },
+              "required": [
+                "nir",
+                "swir"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "kind",
+            "name",
+            "bindings"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "index"
+            },
+            "name": {
+              "const": "evi"
+            },
+            "bindings": {
+              "type": "object",
+              "properties": {
+                "red": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "nir": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "blue": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                }
+              },
+              "required": [
+                "red",
+                "nir",
+                "blue"
+              ],
+              "additionalProperties": false
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "g": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "c1": {
+                  "type": "number"
+                },
+                "c2": {
+                  "type": "number"
+                },
+                "l": {
+                  "type": "number"
+                }
+              },
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "kind",
+            "name",
+            "bindings"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "index"
+            },
+            "name": {
+              "const": "savi"
+            },
+            "bindings": {
+              "type": "object",
+              "properties": {
+                "red": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "nir": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
+                }
+              },
+              "required": [
+                "red",
+                "nir"
+              ],
+              "additionalProperties": false
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "l": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "kind",
+            "name",
+            "bindings"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "image": {
       "type": "object",
       "properties": {
         "format": {
@@ -1661,15 +1681,6 @@ export default {
             "png",
             "webp",
             "jpeg"
-          ]
-        },
-        "tile_size": {
-          "enum": [
-            64,
-            128,
-            256,
-            512,
-            1024
           ]
         },
         "alpha": {
@@ -1689,43 +1700,20 @@ export default {
         },
         "lossless": {
           "type": "boolean"
+        },
+        "size": {
+          "enum": [
+            64,
+            128,
+            256,
+            512,
+            1024
+          ]
         }
       },
       "required": [],
       "additionalProperties": false,
       "minProperties": 1
-    },
-    "extensions": {
-      "type": "object",
-      "patternProperties": {
-        "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9_-]*){2,}$": {
-          "type": "object",
-          "properties": {
-            "version": {
-              "type": "string",
-              "minLength": 1
-            },
-            "stage": {
-              "enum": [
-                "before_selector",
-                "after_selector",
-                "after_color"
-              ]
-            },
-            "config": {
-              "type": "object"
-            }
-          },
-          "required": [
-            "version",
-            "stage",
-            "config"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "minProperties": 1,
-      "additionalProperties": false
     }
   }
 } as const;

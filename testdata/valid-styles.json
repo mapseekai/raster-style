@@ -1,16 +1,6 @@
 {
   "01-rgb-fixed": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          4,
-          3,
-          2
-        ]
-      }
-    },
     "renderer": {
       "type": "rgb"
     },
@@ -40,27 +30,22 @@
       "read": "bilinear",
       "warp": "bilinear"
     },
-    "output": {
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        4,
+        3,
+        2
+      ]
+    },
+    "image": {
       "format": "png",
-      "tile_size": 256,
-      "alpha": "preserve"
+      "alpha": "preserve",
+      "size": 256
     }
   },
   "02-ndvi-continuous": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "index",
-        "name": "ndvi",
-        "bindings": {
-          "red": 4,
-          "nir": 8
-        }
-      },
-      "calibration": {
-        "mode": "metadata"
-      }
-    },
     "renderer": {
       "type": "pseudocolor",
       "color_map": {
@@ -96,21 +81,24 @@
       "value": 1,
       "nodata_color": "#00000000"
     },
-    "output": {
+    "channels": {
+      "kind": "index",
+      "name": "ndvi",
+      "bindings": {
+        "red": 4,
+        "nir": 8
+      }
+    },
+    "calibration": {
+      "mode": "metadata"
+    },
+    "image": {
       "format": "png",
-      "tile_size": 256
+      "size": 256
     }
   },
   "03-discrete-breaks": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "pseudocolor",
       "color_map": {
@@ -137,18 +125,16 @@
     "resampling": {
       "read": "nearest",
       "warp": "nearest"
+    },
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
     }
   },
   "04-categorized": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "categorized",
       "color_map": {
@@ -176,18 +162,16 @@
     "resampling": {
       "read": "nearest",
       "warp": "nearest"
+    },
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
     }
   },
   "05-hillshade": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "hillshade",
       "terrain": {
@@ -207,23 +191,19 @@
       "read": "bilinear",
       "warp": "bilinear"
     },
-    "output": {
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    },
+    "image": {
       "format": "png",
-      "tile_size": 512
+      "size": 512
     }
   },
   "06-percentile-stretch": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          4,
-          3,
-          2
-        ]
-      }
-    },
     "renderer": {
       "type": "rgb"
     },
@@ -241,19 +221,18 @@
       "scope": "dataset",
       "accuracy": "sample",
       "sample_size": 1000000
+    },
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        4,
+        3,
+        2
+      ]
     }
   },
   "07-expression-mosaic": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "expression",
-        "language": "raster-expr/1",
-        "expressions": [
-          "(b8-b4)/(b8+b4)"
-        ]
-      }
-    },
     "renderer": {
       "type": "pseudocolor",
       "color_map": {
@@ -283,26 +262,25 @@
     },
     "mosaic": {
       "pixel_selection": "highest",
-      "stage": "after_selector",
+      "stage": "after_channels",
       "rank_channel": 1
     },
-    "output": {
+    "channels": {
+      "kind": "expression",
+      "language": "raster-expr/1",
+      "expressions": [
+        "(b8-b4)/(b8+b4)"
+      ]
+    },
+    "image": {
       "format": "webp",
-      "tile_size": 256,
       "alpha": "preserve",
-      "lossless": true
+      "lossless": true,
+      "size": 256
     }
   },
   "08-shaded-relief": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "shaded_relief",
       "terrain": {
@@ -336,18 +314,16 @@
     },
     "stretch": {
       "method": "none"
+    },
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
     }
   },
   "09-explicit-intervals": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "pseudocolor",
       "color_map": {
@@ -374,18 +350,16 @@
     },
     "stretch": {
       "method": "none"
+    },
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
     }
   },
   "10-single-color": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "single_color",
       "color": "#ff880080"
@@ -405,21 +379,19 @@
       ],
       "nodata_color": "#00000000"
     },
-    "output": {
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    },
+    "image": {
       "format": "png",
-      "tile_size": 256
+      "size": 256
     }
   },
   "11-gray-jpeg": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "gray",
       "invert": false
@@ -433,44 +405,22 @@
         ]
       ]
     },
-    "output": {
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    },
+    "image": {
       "format": "jpeg",
-      "tile_size": 256,
       "alpha": "flatten",
       "background": "#ffffffff",
-      "quality": 85
+      "quality": 85,
+      "size": 256
     }
   },
   "12-all-gray-fields": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      },
-      "calibration": {
-        "mode": "linear",
-        "coefficients": [
-          {
-            "band": 1,
-            "scale": 0.2,
-            "offset": -1
-          }
-        ]
-      },
-      "nodata": {
-        "mode": "override",
-        "values": [
-          "nan",
-          "inf",
-          "-inf",
-          -9999
-        ],
-        "use_mask": false
-      }
-    },
     "renderer": {
       "type": "gray",
       "invert": true
@@ -514,22 +464,40 @@
       "read": "cubic_spline",
       "warp": "average"
     },
-    "output": {
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
+    },
+    "calibration": {
+      "mode": "linear",
+      "coefficients": [
+        {
+          "band": 1,
+          "scale": 0.2,
+          "offset": -1
+        }
+      ]
+    },
+    "nodata": {
+      "mode": "override",
+      "values": [
+        "nan",
+        "inf",
+        "-inf",
+        -9999
+      ],
+      "use_mask": false
+    },
+    "image": {
       "format": "png",
-      "tile_size": 64,
-      "alpha": "preserve"
+      "alpha": "preserve",
+      "size": 64
     }
   },
   "13-curve": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "gray"
     },
@@ -554,18 +522,16 @@
       "gamma": [
         1
       ]
+    },
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
     }
   },
   "14-histogram": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "gray"
     },
@@ -575,27 +541,16 @@
     "statistics": {
       "scope": "dataset",
       "accuracy": "exact"
+    },
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
     }
   },
   "15-evi": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "index",
-        "name": "evi",
-        "bindings": {
-          "red": 3,
-          "nir": 4,
-          "blue": 1
-        },
-        "parameters": {
-          "g": 2.5,
-          "c1": 6,
-          "c2": 7.5,
-          "l": 1
-        }
-      }
-    },
     "renderer": {
       "type": "gray"
     },
@@ -607,18 +562,25 @@
           1
         ]
       ]
+    },
+    "channels": {
+      "kind": "index",
+      "name": "evi",
+      "bindings": {
+        "red": 3,
+        "nir": 4,
+        "blue": 1
+      },
+      "parameters": {
+        "g": 2.5,
+        "c1": 6,
+        "c2": 7.5,
+        "l": 1
+      }
     }
   },
   "16-unicode-extension": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "gray"
     },
@@ -642,36 +604,38 @@
           "color": "#ABCDEF"
         }
       }
+    },
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
     }
   },
   "17-repeated-bands": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1,
-          1,
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "rgb"
+    },
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1,
+        1,
+        1
+      ]
     }
   },
   "18-minimal": {
     "version": "2.0",
-    "input": {
-      "selector": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      }
-    },
     "renderer": {
       "type": "gray"
+    },
+    "channels": {
+      "kind": "bands",
+      "bands": [
+        1
+      ]
     }
   }
 }

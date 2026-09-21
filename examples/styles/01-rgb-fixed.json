@@ -1,15 +1,5 @@
 {
   "version": "2.0",
-  "input": {
-    "selector": {
-      "kind": "bands",
-      "bands": [
-        4,
-        3,
-        2
-      ]
-    }
-  },
   "renderer": {
     "type": "rgb"
   },
@@ -39,9 +29,17 @@
     "read": "bilinear",
     "warp": "bilinear"
   },
-  "output": {
+  "channels": {
+    "kind": "bands",
+    "bands": [
+      4,
+      3,
+      2
+    ]
+  },
+  "image": {
     "format": "png",
-    "tile_size": 256,
-    "alpha": "preserve"
+    "alpha": "preserve",
+    "size": 256
   }
 }

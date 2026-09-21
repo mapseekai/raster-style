@@ -1,6 +1,6 @@
 # Raster Style Spec v2
 
-**状态：MapSeek 项目规范提案，2.0.0-draft.2**  
+**状态：MapSeek 项目规范提案，2.0.0-draft.3**  
 **日期：2026-09-21**  
 **JSON 协议版本：`2.0`；规范查询绑定：`Q2`**  
 **定位：栅格数据的样式渲染格式，描述数值像元如何生成栅格图像；不定义专题图制作、图例或版面。**
@@ -57,9 +57,9 @@ JSON Schema 和 Q2 均不得接收或静默丢弃 legend、顶层 metadata、ren
 
 | 类别 | 配置内容 | v2 承载位置 |
 |---|---|---|
-| 输入与通道 | 单波段、RGB 顺序、表达式、指数、波段角色 | `input.selector` |
-| 像元校准 | 原值、元数据 scale/offset、显式线性校准 | `input.calibration` |
-| 无效值 | 源 NoData、覆盖值、NaN/Inf、源 mask | `input.nodata` |
+| 输入与通道 | 单波段、RGB 顺序、表达式、指数、波段角色 | `channels` |
+| 像元校准 | 原值、元数据 scale/offset、显式线性校准 | `calibration` |
+| 无效值 | 源 NoData、覆盖值、NaN/Inf、源 mask | `nodata` |
 | 对比度增强 | 固定范围、Min/Max、百分位、标准差、直方图均衡、曲线、Gamma、Sigmoid | `stretch`、`statistics` |
 | 渲染类型 | 灰度、RGB、伪彩色、唯一值、单色、阴影、地形着色 | `renderer` |
 | 颜色映射 | 连续插值、离散区间、精确值；内置/自定义色带、反转、超范围色 | `renderer.color_map` |
@@ -68,7 +68,7 @@ JSON Schema 和 Q2 均不得接收或静默丢弃 legend、顶层 metadata、ren
 | 重采样 | 读取重采样、重投影重采样 | `resampling.read/warp` |
 | 地形表现 | 光照角度、垂直单位、夸张系数、单向/多向阴影、混合强度 | `renderer.terrain` |
 | 镶嵌 | 选择/统计策略、运算阶段、排序通道 | `mosaic` |
-| 输出 | PNG/WebP/JPEG、尺寸、Alpha、背景、质量、无损模式 | `output` |
+| 输出 | PNG/WebP/JPEG、尺寸、Alpha、背景、质量、无损模式 | `image` |
 | 渲染扩展 | 色相、更多颜色空间、特定像元滤镜 | 版本化 `extensions`，需独立能力定义；不承载制图展示配置 |
 
 图层混合模式、图层 Z 顺序、比例尺可见性属于 Map/Layer 合成配置，不放入单幅栅格的像元样式。Terrain-RGB/Terrarium 是高程数据编码，不当作普通着色图像输出。金字塔构建、压缩原始数据、CRS 修复等属于数据处理，不是样式。
@@ -79,7 +79,7 @@ JSON Schema 和 Q2 均不得接收或静默丢弃 legend、顶层 metadata、ren
 
 | 文件 | 已核验内容 |
 |---|---|
-| `idl/rasterstyle/rasterstyle.thrift:1–64` | v1 的 selector/stretch/colormap/nodata/resampling/format/tile_size/unscale；single/mosaic union |
+| `idl/rasterstyle/rasterstyle.thrift:1–64` | v1 的 selector/stretch/colormap/nodata/resampling/format/size/unscale；single/mosaic union |
 | `shared/go/rasterstyle/v1/style.go` | 强类型校验；波段从 1 开始；JSON `cubicspline`；瓦片尺寸允许 64/128/256/512/1024 |
 | `services/maptile/maptile-core/src/raster/style/indices.rs` | 五种现有指数公式、零分母生成 NaN |
 | `services/api-gateway/handler/tile/raster_style.go:49–100` | 当前拒绝裸栅格样式查询参数；已保存样式走 `style_version`；临时样式走 `preview_id` |
@@ -98,11 +98,11 @@ v1 并不是不能表达灰度或 RGB；它可以通过波段、拉伸和色带�
 ```json
 {
   "version": "2.0",
-  "input": {"selector": {"kind": "bands", "bands": [4, 3, 2]}},
+  "channels": {"kind": "bands", "bands": [4, 3, 2]},
   "renderer": {"type": "rgb"},
   "stretch": {"method": "percentile", "percentiles": [2, 98], "gamma": [1.1]},
   "statistics": {"scope": "dataset", "accuracy": "sample", "sample_size": 1000000},
-  "output": {"format": "png", "tile_size": 256}
+  "image": {"format": "png", "size": 256}
 }
 ```
 
@@ -149,8 +149,8 @@ JSON 字段统一 `snake_case`；枚举使用小写。`version` 固定为 `2.0`�
 | 字段 | 规范默认/约束 |
 |---|---|
 | 波段号 | 从 1 开始；是逻辑输入波段 ID，不是输出通道位置 |
-| `input.calibration` | `{"mode":"none"}` |
-| `input.nodata` | `{"mode":"source","use_mask":true}` |
+| `calibration` | `{"mode":"none"}` |
+| `nodata` | `{"mode":"source","use_mask":true}` |
 | `resampling` | `{"read":"nearest","warp":"nearest"}` |
 | `stretch` | `method=none`、`range_policy=clamp`、`gamma=[1]`，无 Sigmoid |
 | `statistics` | 需要统计而未指定时：单源 dataset / 镶嵌 mosaic，sample，sample_size=1000000；发布前必须固定快照 |
@@ -161,7 +161,7 @@ JSON 字段统一 `snake_case`；枚举使用小写。`version` 固定为 `2.0`�
 | `opacity` | value=1；没有附加规则/Alpha 波段；nodata_color=#00000000 |
 | 地形 | Horn、azimuth=315（单向）、altitude=45、z_factor=1、vertical_unit=metre、edge=nodata |
 | 地形着色 | strength=0.65 |
-| `output` | format=png、tile_size=256、alpha=preserve；WebP 的 lossless=false；有损质量默认 85 |
+| `image` | format=png、size=256、alpha=preserve；WebP 的 lossless=false；有损质量默认 85 |
 
 颜色接受 `#RRGGBB` 或 `#RRGGBBAA`，归一化为小写 8 位 RGBA；Alpha 为非预乘值，范围 0–255。JSON 数值必须有限；禁止裸 NaN/Infinity；NoData 的非有限标记使用字符串。拒绝重复 JSON 对象键、未知普通字段和非法 union 组合。
 
@@ -171,7 +171,7 @@ Schema 中的数值上界和数组长度是本草案的文档上限；服务可�
 
 ### 5.1 选择器
 
-`input.selector` 是互斥 union：
+`channels` 是互斥 union：
 
 | kind | 字段 | 语义 |
 |---|---|---|
@@ -332,7 +332,7 @@ opacity.value 范围 0–1。alpha_band 从其原始波段取值，使用显式 
 
 对源覆盖范围内的无效像元：使用 nodata_color，再乘全局 opacity；不再乘“无效=0”的 mask 把该颜色消掉。源覆盖范围外默认透明。源 NoData、分类未匹配、超色带范围是不同情形，分别使用 nodata_color/fallback_color/under-over/outside_color。
 
-`output.alpha=flatten` 时再与明确不透明 background 在**线性 RGB**中合成。JPEG 必须 flatten 且明确给 background；不能默默黑底。PNG/WebP 可 preserve；WebP lossless=true 时不能同时指定有损像元 quality，PNG 不接受该 quality 字段。浏览器层面的透明度由 Map/Layer 管理，不应在瓦片和图层重复乘同一个控制值。
+`image.alpha=flatten` 时再与明确不透明 background 在**线性 RGB**中合成。JPEG 必须 flatten 且明确给 background；不能默默黑底。PNG/WebP 可 preserve；WebP lossless=true 时不能同时指定有损像元 quality，PNG 不接受该 quality 字段。浏览器层面的透明度由 Map/Layer 管理，不应在瓦片和图层重复乘同一个控制值。
 
 ## 9. Mosaic 与固定执行顺序
 
@@ -346,7 +346,7 @@ mosaic 不出现时服务仍可通过上下文是单源；单源服务带 mosaic
 
 rank_channel 默认为 1，只允许 highest/lowest，指相应阶段的通道位置。均值和中位数不得用于 categorized 输入；若需要多数类别，另加明确的类别聚合扩展，不把 mean 改名成 mode。
 
-mosaic.stage 是强制字段：before_selector 在已校准的对应输入波段上镶嵌后计算指数；after_selector 先逐源计算指数/表达式再镶嵌。两者通常不等价，必须进入 hash。before_selector 的输入向量顺序来自固定逻辑波段目录；after_selector 来自 selector 输出顺序。必要输入有无效值的候选按完整元组排除，不能从不同源拼出假的 RGB/指数输入。
+mosaic.stage 是强制字段：before_channels 在已校准的对应输入波段上镶嵌后计算指数；after_channels 先逐源计算指数/表达式再镶嵌。两者通常不等价，必须进入 hash。before_channels 的输入向量顺序来自固定逻辑波段目录；after_channels 来自 selector 输出顺序。必要输入有无效值的候选按完整元组排除，不能从不同源拼出假的 RGB/指数输入。
 
 固定参考顺序：
 
@@ -355,11 +355,11 @@ mosaic.stage 是强制字段：before_selector 在已校准的对应输入波段
 → 源覆盖/原始 NoData/mask 判断
 → read/warp 重采样至共同网格（排除无效贡献）
 → 每源校准（与重采样交换位置只允许已证明等价的优化）
-→ before_selector 扩展
-→ [mosaic.before_selector]
+→ before_channels 扩展
+→ [mosaic.before_channels]
 → selector / index / expression
-→ after_selector 扩展
-→ [mosaic.after_selector]
+→ after_channels 扩展
+→ [mosaic.after_channels]
 → 统计快照绑定；不在每个瓦片中求全局统计
 → stretch（仅适用的路径）
 → renderer / color_map / terrain
@@ -388,12 +388,12 @@ mosaic.stage 是强制字段：before_selector 在已校准的对应输入波段
 | JSON 路径 | Q2 参数 | 编码 |
 |---|---|---|
 | version | rsv | `2.0` |
-| input.selector.kind | selector | bands/index/expression |
-| input.selector.bands | bidx | 重复：`bidx=4&bidx=3&bidx=2` |
-| input.selector.expressions | expression | 一或三个重复字符串；不是手工按逗号分割 |
-| input.selector.language | expr_lang | raster-expr/1 |
-| input.selector.name/bindings/parameters | index / index_bands / index_params | 字符串 / 局部 JSON / 局部 JSON |
-| input.calibration / input.nodata | calibration / nodata | 局部 JSON |
+| channels.kind | selector | bands/index/expression |
+| channels.bands | bidx | 重复：`bidx=4&bidx=3&bidx=2` |
+| channels.expressions | expression | 一或三个重复字符串；不是手工按逗号分割 |
+| channels.language | expr_lang | raster-expr/1 |
+| channels.name/bindings/parameters | index / index_bands / index_params | 字符串 / 局部 JSON / 局部 JSON |
+| calibration / nodata | calibration / nodata | 局部 JSON |
 | resampling.read / warp | resampling / reproject | 字符串 |
 | stretch.method | stretch | linear/percentile/... |
 | stretch.ranges | rescale | 重复：`rescale=0,3000&rescale=0,2000` |
@@ -405,7 +405,7 @@ mosaic.stage 是强制字段：before_selector 在已校准的对应输入波段
 | effects.* | brightness / contrast / saturation / grayscale / invert | 标量 |
 | opacity.value / alpha_band / rules | opacity / alpha_band / alpha_rules | 标量 / 局部 JSON / 局部 JSON |
 | mosaic.* | pixel_selection / mosaic_stage / rank_channel | 标量 |
-| output.* | format / tile_size / alpha / background / quality / lossless | 标量；颜色去掉 # |
+| image.* | format / size / alpha / background / quality / lossless | 标量；颜色去掉 # |
 
 将复杂表限定为 `cmap={...}`、`terrain={...}`，比把所有业务字段硬塞进一个 `style=base64(JSON)` 更便于调试，也比任意深层路径展开更容易做白名单和版本演进。
 
@@ -434,7 +434,7 @@ Q2 的可读展示（实际编码器会编码逗号、按 key 排序）：
 &rescale=0,3000&rescale=0,3000&rescale=0,3000
 &gamma=1.1&gamma=1.1&gamma=1.1
 &resampling=bilinear&reproject=bilinear
-&format=png&tile_size=256&alpha=preserve
+&format=png&size=256&alpha=preserve
 ```
 
 在校准/mask/像元顺序和 Gamma 等价性已验证的 TiTiler COG 2.x 适配器中，编译候选为：
@@ -448,7 +448,7 @@ Q2 的可读展示（实际编码器会编码逗号、按 key 排序）：
 &resampling=bilinear&reproject=bilinear&tilesize=256
 ```
 
-注意 `renderer/stretch/gamma/tile_size` 不是照抄过去；有些字段变成函数、有些变成路径、有些由编译器消费。此例是文档级候选，不是此次已执行的 TiTiler 集成测试。实际请求必须以部署 OpenAPI 和 adapter profile 为准。[R3–R5]
+注意 `renderer/stretch/gamma/size` 不是照抄过去；有些字段变成函数、有些变成路径、有些由编译器消费。此例是文档级候选，不是此次已执行的 TiTiler 集成测试。实际请求必须以部署 OpenAPI 和 adapter profile 为准。[R3–R5]
 
 ### 10.5 长 URL 与引用
 
@@ -523,7 +523,7 @@ render_key = SHA256("raster-tile-v2\n" + JCS({
   source_revision_set, source_order, temporal_slice,
   statistics_snapshot, input_binding_revision,
   algorithm_profile, compiler_version, backend_version, encoder_profile,
-  tms_revision, z, x, y, working_grid, format, tile_size
+  tms_revision, z, x, y, working_grid, format, size
 }))
 ```
 
@@ -555,7 +555,7 @@ URL 参数校验拒绝未知 key、重复 singleton、无效转义、非法数�
 
 | v1 | v2 | 迁移注意 |
 |---|---|---|
-| selector.bands | input.selector.bands | 明确一通道 gray/三通道 rgb；有色带时按已验证语义推导 renderer |
+| selector.bands | channels.bands | 明确一通道 gray/三通道 rgb；有色带时按已验证语义推导 renderer |
 | index NDWI | ndwi_mcfeeters | 保留现有 green/nir 公式，不改成另一种 NDWI |
 | unscale | calibration.metadata / none | 核对真正执行行为与元数据；不是逆向变换 |
 | stretch.custom | stretch.linear.ranges | 固定范围保留；按输出通道顺序映射 |
@@ -565,7 +565,7 @@ URL 参数校验拒绝未知 key、重复 singleton、无效转义、非法数�
 | nodata.none | source 或 ignore | 原语义需审计；不能机械映射 |
 | resampling | read / warp | 原字段作用在哪一阶段需要审计；不能擅自同时应用两遍 |
 | cubicspline | cubic_spline | v2 统一词汇，适配器再转目标枚举 |
-| format/tile_size | output | 保留 64/128/256/512/1024；明确 Alpha/背景 |
+| format/size | output | 保留 64/128/256/512/1024；明确 Alpha/背景 |
 | mosaic.pixel_selection | mosaic + stage | 原算法阶段、排序、mask/tie 需审计，不默认等价 |
 
 在当前仓库中建议新增 `shared/rasterstyle/v2/` 的 Schema/语义规范/fixtures，以及 Go/Rust/TS 的类型、normalizer、semantic validator 和 backend compiler。v1/v2 hash 域必须分开。持久化通过 Dataset 服务管理；Gateway 做引用解析/能力校验，Maptile 执行计划。

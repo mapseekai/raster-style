@@ -1,13 +1,5 @@
 {
   "version": "2.0",
-  "input": {
-    "selector": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
-    }
-  },
   "renderer": {
     "type": "gray"
   },
@@ -17,5 +9,11 @@
   "statistics": {
     "scope": "dataset",
     "accuracy": "exact"
+  },
+  "channels": {
+    "kind": "bands",
+    "bands": [
+      1
+    ]
   }
 }

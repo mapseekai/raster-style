@@ -19,21 +19,20 @@ func validateSemantics(style map[string]any) error {
 			firstError = failure("E_SEMANTIC", message, path)
 		}
 	}
-	input := objectAt(style, "input")
-	selector := objectAt(input, "selector")
+	channelSpec := objectAt(style, "channels")
 	channels := 1
-	switch selector["kind"] {
+	switch channelSpec["kind"] {
 	case "bands":
-		channels = len(arrayAt(selector, "bands"))
+		channels = len(arrayAt(channelSpec, "bands"))
 	case "expression":
-		channels = len(arrayAt(selector, "expressions"))
+		channels = len(arrayAt(channelSpec, "expressions"))
 	}
 	renderer := objectAt(style, "renderer")
 	expected := 1
 	if renderer["type"] == "rgb" {
 		expected = 3
 	}
-	require(channels == expected, "input.selector", "Renderer channel cardinality mismatch")
+	require(channels == expected, "channels", "Renderer channel cardinality mismatch")
 	stretch := objectAt(style, "stretch")
 	for _, key := range []string{"ranges", "curves", "gamma"} {
 		if values, exists := stretch[key]; exists {
@@ -117,40 +116,40 @@ func validateSemantics(style map[string]any) error {
 			require(channels == 3, "opacity.rules", "RGB rule requires three channels")
 		}
 	}
-	calibration := objectAt(input, "calibration")
+	calibration := objectAt(style, "calibration")
 	seenBands := make(map[float64]bool)
 	for _, item := range arrayAt(calibration, "coefficients") {
 		band := item.(map[string]any)["band"].(float64)
-		require(!seenBands[band], "input.calibration", "Duplicate calibration band")
+		require(!seenBands[band], "calibration", "Duplicate calibration band")
 		seenBands[band] = true
 	}
 	if rank, exists := mosaic["rank_channel"]; exists {
 		require(mosaic["pixel_selection"] == "highest" || mosaic["pixel_selection"] == "lowest", "mosaic.rank_channel", "Rank applies only to highest/lowest")
-		if mosaic["stage"] == "after_selector" {
+		if mosaic["stage"] == "after_channels" {
 			require(rank.(float64) <= float64(channels), "mosaic.rank_channel", "Rank channel is out of bounds")
 		}
 	}
-	output := objectAt(style, "output")
-	format := output["format"]
+	image := objectAt(style, "image")
+	format := image["format"]
 	if format == nil {
 		format = "png"
 	}
-	if format == "jpeg" || output["alpha"] == "flatten" {
-		_, background := output["background"]
-		require(output["alpha"] == "flatten" && background, "output", "Flatten requires background; JPEG requires flatten")
+	if format == "jpeg" || image["alpha"] == "flatten" {
+		_, background := image["background"]
+		require(image["alpha"] == "flatten" && background, "image", "Flatten requires background; JPEG requires flatten")
 	}
-	if color, exists := output["background"].(string); exists {
-		require(len(color) == 7 || strings.HasSuffix(strings.ToLower(color), "ff"), "output.background", "Background must be opaque")
+	if color, exists := image["background"].(string); exists {
+		require(len(color) == 7 || strings.HasSuffix(strings.ToLower(color), "ff"), "image.background", "Background must be opaque")
 	}
-	_, quality := output["quality"]
+	_, quality := image["quality"]
 	if format == "png" {
-		require(!quality, "output.quality", "PNG does not accept lossy quality")
+		require(!quality, "image.quality", "PNG does not accept lossy quality")
 	}
-	if _, lossless := output["lossless"]; lossless {
-		require(format == "webp", "output.lossless", "Lossless is a WebP option")
+	if _, lossless := image["lossless"]; lossless {
+		require(format == "webp", "image.lossless", "Lossless is a WebP option")
 	}
-	if output["lossless"] == true {
-		require(!quality, "output.quality", "Lossless output does not accept lossy quality")
+	if image["lossless"] == true {
+		require(!quality, "image.quality", "Lossless output does not accept lossy quality")
 	}
 	return firstError
 }

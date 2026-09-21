@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Raster Style Spec 更新到 2.0.0-draft.3：input.selector → channels，input.calibration → calibration，input.nodata → nodata。
+- output → image，tile_size → size；mosaic stage 改为 before_channels / after_channels。
+- TS、Go/Fiber、Rust codec、Schema、Q2 绑定和共享测试向量同步更新。
+
 ## 0.1.0 — 2026-09-21
 
 - 引入未改写的 Raster Style Spec 2.0.0-draft.2、Schema 和 46 项 Q2 绑定。

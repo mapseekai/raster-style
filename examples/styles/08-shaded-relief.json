@@ -1,13 +1,5 @@
 {
   "version": "2.0",
-  "input": {
-    "selector": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
-    }
-  },
   "renderer": {
     "type": "shaded_relief",
     "terrain": {
@@ -41,5 +33,11 @@
   },
   "stretch": {
     "method": "none"
+  },
+  "channels": {
+    "kind": "bands",
+    "bands": [
+      1
+    ]
   }
 }

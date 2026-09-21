@@ -58,7 +58,7 @@ for (const fixture of load('invalid-json')) {
 test('colors normalize without mutating the input', () => {
   const original = {
     version: '2.0',
-    input: { selector: { kind: 'bands', bands: [1] } },
+    channels: { kind: 'bands', bands: [1] },
     renderer: { type: 'single_color', color: '#ABCDEF' },
   };
   const before = JSON.stringify(original);

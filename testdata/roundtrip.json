@@ -3,16 +3,6 @@
     "name": "01-rgb-fixed",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            4,
-            3,
-            2
-          ]
-        }
-      },
       "renderer": {
         "type": "rgb"
       },
@@ -42,31 +32,26 @@
         "read": "bilinear",
         "warp": "bilinear"
       },
-      "output": {
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          4,
+          3,
+          2
+        ]
+      },
+      "image": {
         "format": "png",
-        "tile_size": 256,
-        "alpha": "preserve"
+        "alpha": "preserve",
+        "size": 256
       }
     },
-    "query": "alpha=preserve&bidx=4&bidx=3&bidx=2&format=png&gamma=1.1&gamma=1.1&gamma=1.1&renderer=rgb&reproject=bilinear&resampling=bilinear&rescale=0%2C3000&rescale=0%2C3000&rescale=0%2C3000&rsv=2.0&selector=bands&stretch=linear&tile_size=256"
+    "query": "alpha=preserve&bidx=4&bidx=3&bidx=2&format=png&gamma=1.1&gamma=1.1&gamma=1.1&renderer=rgb&reproject=bilinear&resampling=bilinear&rescale=0%2C3000&rescale=0%2C3000&rescale=0%2C3000&rsv=2.0&selector=bands&size=256&stretch=linear"
   },
   {
     "name": "02-ndvi-continuous",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "index",
-          "name": "ndvi",
-          "bindings": {
-            "red": 4,
-            "nir": 8
-          }
-        },
-        "calibration": {
-          "mode": "metadata"
-        }
-      },
       "renderer": {
         "type": "pseudocolor",
         "color_map": {
@@ -102,25 +87,28 @@
         "value": 1,
         "nodata_color": "#00000000"
       },
-      "output": {
+      "channels": {
+        "kind": "index",
+        "name": "ndvi",
+        "bindings": {
+          "red": 4,
+          "nir": 8
+        }
+      },
+      "calibration": {
+        "mode": "metadata"
+      },
+      "image": {
         "format": "png",
-        "tile_size": 256
+        "size": 256
       }
     },
-    "query": "calibration=%7B%22mode%22%3A%22metadata%22%7D&cmap=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&format=png&index=ndvi&index_bands=%7B%22nir%22%3A8%2C%22red%22%3A4%7D&nodata_color=00000000&opacity=1&renderer=pseudocolor&reproject=bilinear&resampling=bilinear&rsv=2.0&selector=index&stretch=none&tile_size=256"
+    "query": "calibration=%7B%22mode%22%3A%22metadata%22%7D&cmap=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&format=png&index=ndvi&index_bands=%7B%22nir%22%3A8%2C%22red%22%3A4%7D&nodata_color=00000000&opacity=1&renderer=pseudocolor&reproject=bilinear&resampling=bilinear&rsv=2.0&selector=index&size=256&stretch=none"
   },
   {
     "name": "03-discrete-breaks",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "pseudocolor",
         "color_map": {
@@ -147,6 +135,12 @@
       "resampling": {
         "read": "nearest",
         "warp": "nearest"
+      },
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
       }
     },
     "query": "bidx=1&cmap=%7B%22boundary%22%3A%22left_closed%22%2C%22breaks%22%3A%5B0%2C100%2C500%2C1000%5D%2C%22colors%22%3A%5B%22%232c7bb6ff%22%2C%22%23ffffbfff%22%2C%22%23d7191cff%22%5D%2C%22domain%22%3A%22data%22%2C%22mode%22%3A%22discrete%22%2C%22outside_color%22%3A%22%2300000000%22%7D&renderer=pseudocolor&reproject=nearest&resampling=nearest&rsv=2.0&selector=bands&stretch=none"
@@ -155,14 +149,6 @@
     "name": "04-categorized",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "categorized",
         "color_map": {
@@ -190,6 +176,12 @@
       "resampling": {
         "read": "nearest",
         "warp": "nearest"
+      },
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
       }
     },
     "query": "bidx=1&cmap=%7B%22entries%22%3A%5B%7B%22color%22%3A%22%23228b22ff%22%2C%22value%22%3A1%7D%2C%7B%22color%22%3A%22%234169e1ff%22%2C%22value%22%3A2%7D%2C%7B%22color%22%3A%22%23d2b48cff%22%2C%22value%22%3A3%7D%5D%2C%22fallback_color%22%3A%22%2300000000%22%2C%22mode%22%3A%22exact%22%7D&renderer=categorized&reproject=nearest&resampling=nearest&rsv=2.0&selector=bands&stretch=none"
@@ -198,14 +190,6 @@
     "name": "05-hillshade",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "hillshade",
         "terrain": {
@@ -225,27 +209,23 @@
         "read": "bilinear",
         "warp": "bilinear"
       },
-      "output": {
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      },
+      "image": {
         "format": "png",
-        "tile_size": 512
+        "size": 512
       }
     },
-    "query": "bidx=1&format=png&renderer=hillshade&reproject=bilinear&resampling=bilinear&rsv=2.0&selector=bands&stretch=none&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D&tile_size=512"
+    "query": "bidx=1&format=png&renderer=hillshade&reproject=bilinear&resampling=bilinear&rsv=2.0&selector=bands&size=512&stretch=none&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D"
   },
   {
     "name": "06-percentile-stretch",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            4,
-            3,
-            2
-          ]
-        }
-      },
       "renderer": {
         "type": "rgb"
       },
@@ -263,6 +243,14 @@
         "scope": "dataset",
         "accuracy": "sample",
         "sample_size": 1000000
+      },
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          4,
+          3,
+          2
+        ]
       }
     },
     "query": "bidx=4&bidx=3&bidx=2&gamma=1.1&percentile=2%2C98&renderer=rgb&rsv=2.0&selector=bands&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000000%2C%22scope%22%3A%22dataset%22%7D&stretch=percentile"
@@ -271,15 +259,6 @@
     "name": "07-expression-mosaic",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "expression",
-          "language": "raster-expr/1",
-          "expressions": [
-            "(b8-b4)/(b8+b4)"
-          ]
-        }
-      },
       "renderer": {
         "type": "pseudocolor",
         "color_map": {
@@ -309,30 +288,29 @@
       },
       "mosaic": {
         "pixel_selection": "highest",
-        "stage": "after_selector",
+        "stage": "after_channels",
         "rank_channel": 1
       },
-      "output": {
+      "channels": {
+        "kind": "expression",
+        "language": "raster-expr/1",
+        "expressions": [
+          "(b8-b4)/(b8+b4)"
+        ]
+      },
+      "image": {
         "format": "webp",
-        "tile_size": 256,
         "alpha": "preserve",
-        "lossless": true
+        "lossless": true,
+        "size": 256
       }
     },
-    "query": "alpha=preserve&cmap=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&expr_lang=raster-expr%2F1&expression=%28b8-b4%29%2F%28b8%2Bb4%29&format=webp&lossless=true&mosaic_stage=after_selector&pixel_selection=highest&rank_channel=1&renderer=pseudocolor&rsv=2.0&selector=expression&stretch=none&tile_size=256"
+    "query": "alpha=preserve&cmap=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&expr_lang=raster-expr%2F1&expression=%28b8-b4%29%2F%28b8%2Bb4%29&format=webp&lossless=true&mosaic_stage=after_channels&pixel_selection=highest&rank_channel=1&renderer=pseudocolor&rsv=2.0&selector=expression&size=256&stretch=none"
   },
   {
     "name": "08-shaded-relief",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "shaded_relief",
         "terrain": {
@@ -366,6 +344,12 @@
       },
       "stretch": {
         "method": "none"
+      },
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
       }
     },
     "query": "bidx=1&cmap=%7B%22domain%22%3A%22data%22%2C%22mode%22%3A%22continuous%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%2378a86bff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23c9b18cff%22%2C%22value%22%3A1000%7D%2C%7B%22color%22%3A%22%23ffffffff%22%2C%22value%22%3A3000%7D%5D%7D&renderer=shaded_relief&rsv=2.0&selector=bands&shade_strength=0.65&stretch=none&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D"
@@ -374,14 +358,6 @@
     "name": "09-explicit-intervals",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "pseudocolor",
         "color_map": {
@@ -408,6 +384,12 @@
       },
       "stretch": {
         "method": "none"
+      },
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
       }
     },
     "query": "bidx=1&cmap=%7B%22boundary%22%3A%22left_closed%22%2C%22breaks%22%3A%5B0%2C5%2C15%2C30%2C60%2C100%5D%2C%22colors%22%3A%5B%22%23440154ff%22%2C%22%233b528bff%22%2C%22%2321918cff%22%2C%22%235ec962ff%22%2C%22%23fde725ff%22%5D%2C%22domain%22%3A%22data%22%2C%22mode%22%3A%22discrete%22%2C%22outside_color%22%3A%22%2300000000%22%7D&renderer=pseudocolor&rsv=2.0&selector=bands&stretch=none"
@@ -416,14 +398,6 @@
     "name": "10-single-color",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "single_color",
         "color": "#ff880080"
@@ -443,25 +417,23 @@
         ],
         "nodata_color": "#00000000"
       },
-      "output": {
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      },
+      "image": {
         "format": "png",
-        "tile_size": 256
+        "size": 256
       }
     },
-    "query": "alpha_rules=%5B%7B%22alpha%22%3A0%2C%22channel%22%3A1%2C%22kind%22%3A%22value%22%2C%22value%22%3A0%7D%5D&bidx=1&fill=ff880080&format=png&nodata_color=00000000&opacity=0.8&renderer=single_color&rsv=2.0&selector=bands&stretch=none&tile_size=256"
+    "query": "alpha_rules=%5B%7B%22alpha%22%3A0%2C%22channel%22%3A1%2C%22kind%22%3A%22value%22%2C%22value%22%3A0%7D%5D&bidx=1&fill=ff880080&format=png&nodata_color=00000000&opacity=0.8&renderer=single_color&rsv=2.0&selector=bands&size=256&stretch=none"
   },
   {
     "name": "11-gray-jpeg",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "gray",
         "invert": false
@@ -475,48 +447,26 @@
           ]
         ]
       },
-      "output": {
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      },
+      "image": {
         "format": "jpeg",
-        "tile_size": 256,
         "alpha": "flatten",
         "background": "#ffffffff",
-        "quality": 85
+        "quality": 85,
+        "size": 256
       }
     },
-    "query": "alpha=flatten&background=ffffffff&bidx=1&format=jpeg&gray_invert=false&quality=85&renderer=gray&rescale=0%2C255&rsv=2.0&selector=bands&stretch=linear&tile_size=256"
+    "query": "alpha=flatten&background=ffffffff&bidx=1&format=jpeg&gray_invert=false&quality=85&renderer=gray&rescale=0%2C255&rsv=2.0&selector=bands&size=256&stretch=linear"
   },
   {
     "name": "12-all-gray-fields",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        },
-        "calibration": {
-          "mode": "linear",
-          "coefficients": [
-            {
-              "band": 1,
-              "scale": 0.2,
-              "offset": -1
-            }
-          ]
-        },
-        "nodata": {
-          "mode": "override",
-          "values": [
-            "nan",
-            "inf",
-            "-inf",
-            -9999
-          ],
-          "use_mask": false
-        }
-      },
       "renderer": {
         "type": "gray",
         "invert": true
@@ -560,26 +510,44 @@
         "read": "cubic_spline",
         "warp": "average"
       },
-      "output": {
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
+      },
+      "calibration": {
+        "mode": "linear",
+        "coefficients": [
+          {
+            "band": 1,
+            "scale": 0.2,
+            "offset": -1
+          }
+        ]
+      },
+      "nodata": {
+        "mode": "override",
+        "values": [
+          "nan",
+          "inf",
+          "-inf",
+          -9999
+        ],
+        "use_mask": false
+      },
+      "image": {
         "format": "png",
-        "tile_size": 64,
-        "alpha": "preserve"
+        "alpha": "preserve",
+        "size": 64
       }
     },
-    "query": "alpha=preserve&alpha_band=%7B%22band%22%3A2%2C%22range%22%3A%5B0%2C255%5D%7D&bidx=1&brightness=0.1&calibration=%7B%22coefficients%22%3A%5B%7B%22band%22%3A1%2C%22offset%22%3A-1%2C%22scale%22%3A0.2%7D%5D%2C%22mode%22%3A%22linear%22%7D&contrast=1.5&format=png&gamma=1.2&gray_invert=true&grayscale=luma&invert=false&nodata=%7B%22mode%22%3A%22override%22%2C%22use_mask%22%3Afalse%2C%22values%22%3A%5B%22nan%22%2C%22inf%22%2C%22-inf%22%2C-9999%5D%7D&nodata_color=ffaabbff&opacity=0.8&range_policy=transparent&renderer=gray&reproject=average&resampling=cubic_spline&rsv=2.0&saturation=0.8&selector=bands&sigmoid=%7B%22contrast%22%3A5%2C%22midpoint%22%3A0.4%7D&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000%2C%22scope%22%3A%22dataset%22%7D&stddev=2.5&stretch=stddev&tile_size=64"
+    "query": "alpha=preserve&alpha_band=%7B%22band%22%3A2%2C%22range%22%3A%5B0%2C255%5D%7D&bidx=1&brightness=0.1&calibration=%7B%22coefficients%22%3A%5B%7B%22band%22%3A1%2C%22offset%22%3A-1%2C%22scale%22%3A0.2%7D%5D%2C%22mode%22%3A%22linear%22%7D&contrast=1.5&format=png&gamma=1.2&gray_invert=true&grayscale=luma&invert=false&nodata=%7B%22mode%22%3A%22override%22%2C%22use_mask%22%3Afalse%2C%22values%22%3A%5B%22nan%22%2C%22inf%22%2C%22-inf%22%2C-9999%5D%7D&nodata_color=ffaabbff&opacity=0.8&range_policy=transparent&renderer=gray&reproject=average&resampling=cubic_spline&rsv=2.0&saturation=0.8&selector=bands&sigmoid=%7B%22contrast%22%3A5%2C%22midpoint%22%3A0.4%7D&size=64&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000%2C%22scope%22%3A%22dataset%22%7D&stddev=2.5&stretch=stddev"
   },
   {
     "name": "13-curve",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "gray"
       },
@@ -604,6 +572,12 @@
         "gamma": [
           1
         ]
+      },
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
       }
     },
     "query": "bidx=1&curve=%5B%5B%5B0%2C0%5D%2C%5B50%2C0.2%5D%2C%5B100%2C1%5D%5D%5D&gamma=1&renderer=gray&rsv=2.0&selector=bands&stretch=curve"
@@ -612,14 +586,6 @@
     "name": "14-histogram",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "gray"
       },
@@ -629,6 +595,12 @@
       "statistics": {
         "scope": "dataset",
         "accuracy": "exact"
+      },
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
       }
     },
     "query": "bidx=1&renderer=gray&rsv=2.0&selector=bands&statistics=%7B%22accuracy%22%3A%22exact%22%2C%22scope%22%3A%22dataset%22%7D&stretch=histogram_equalization"
@@ -637,23 +609,6 @@
     "name": "15-evi",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "index",
-          "name": "evi",
-          "bindings": {
-            "red": 3,
-            "nir": 4,
-            "blue": 1
-          },
-          "parameters": {
-            "g": 2.5,
-            "c1": 6,
-            "c2": 7.5,
-            "l": 1
-          }
-        }
-      },
       "renderer": {
         "type": "gray"
       },
@@ -665,6 +620,21 @@
             1
           ]
         ]
+      },
+      "channels": {
+        "kind": "index",
+        "name": "evi",
+        "bindings": {
+          "red": 3,
+          "nir": 4,
+          "blue": 1
+        },
+        "parameters": {
+          "g": 2.5,
+          "c1": 6,
+          "c2": 7.5,
+          "l": 1
+        }
       }
     },
     "query": "index=evi&index_bands=%7B%22blue%22%3A1%2C%22nir%22%3A4%2C%22red%22%3A3%7D&index_params=%7B%22c1%22%3A6%2C%22c2%22%3A7.5%2C%22g%22%3A2.5%2C%22l%22%3A1%7D&renderer=gray&rescale=-1%2C1&rsv=2.0&selector=index&stretch=linear"
@@ -673,14 +643,6 @@
     "name": "16-unicode-extension",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "gray"
       },
@@ -691,9 +653,9 @@
           "config": {
             "text": "a+b & #50% 中文 / ? =",
             "numbers": [
-              -0.0,
+              0,
               1e+21,
-              1e-07,
+              1e-7,
               5e-324
             ],
             "😀": 2,
@@ -704,6 +666,12 @@
             "color": "#ABCDEF"
           }
         }
+      },
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
       }
     },
     "query": "bidx=1&extensions=%7B%22mapseek.test.config%22%3A%7B%22config%22%3A%7B%22__proto__%22%3A%7B%22safe%22%3Atrue%7D%2C%22color%22%3A%22%23ABCDEF%22%2C%22numbers%22%3A%5B0%2C1e%2B21%2C1e-7%2C5e-324%5D%2C%22text%22%3A%22a%2Bb%20%26%20%2350%25%20%E4%B8%AD%E6%96%87%20%2F%20%3F%20%3D%22%2C%22%F0%9F%98%80%22%3A2%2C%22%EE%80%80%22%3A1%7D%2C%22stage%22%3A%22after_color%22%2C%22version%22%3A%221%22%7D%7D&renderer=gray&rsv=2.0&selector=bands"
@@ -712,18 +680,16 @@
     "name": "17-repeated-bands",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1,
-            1,
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "rgb"
+      },
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1,
+          1,
+          1
+        ]
       }
     },
     "query": "bidx=1&bidx=1&bidx=1&renderer=rgb&rsv=2.0&selector=bands"
@@ -732,16 +698,14 @@
     "name": "18-minimal",
     "raster_style": {
       "version": "2.0",
-      "input": {
-        "selector": {
-          "kind": "bands",
-          "bands": [
-            1
-          ]
-        }
-      },
       "renderer": {
         "type": "gray"
+      },
+      "channels": {
+        "kind": "bands",
+        "bands": [
+          1
+        ]
       }
     },
     "query": "bidx=1&renderer=gray&rsv=2.0&selector=bands"

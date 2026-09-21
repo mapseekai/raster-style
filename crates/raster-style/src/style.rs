@@ -82,7 +82,7 @@ fn normalize_colors(style: &mut Value) {
     for path in [
         "/renderer/color",
         "/opacity/nodata_color",
-        "/output/background",
+        "/image/background",
     ] {
         if let Some(color) = style.pointer_mut(path) {
             normalize_color(color);

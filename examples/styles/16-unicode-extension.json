@@ -1,13 +1,5 @@
 {
   "version": "2.0",
-  "input": {
-    "selector": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
-    }
-  },
   "renderer": {
     "type": "gray"
   },
@@ -31,5 +23,11 @@
         "color": "#ABCDEF"
       }
     }
+  },
+  "channels": {
+    "kind": "bands",
+    "bands": [
+      1
+    ]
   }
 }

@@ -1,5 +1,13 @@
 # Raster Style Spec v2 — 变更记录
 
+## 2.0.0-draft.3 · 2026-09-21
+
+- 删除 input 包装层：selector 改名为 channels，calibration / nodata 提升为顶层字段。
+- output 改名为 image，tile_size 改名为 size。
+- mosaic stage 改为 before_channels / after_channels。
+- Q2 保留 selector 作为 channels.kind 的紧凑传输键，尺寸查询键改为 size。
+- draft.2 旧 JSON/Q2 名称不做隐式兼容，严格校验直接拒绝。
+
 ## 2.0.0-draft.2 · 2026-09-21
 
 定位收敛为栅格样式渲染格式，而非专题图制作、图例或版面规范。本次只更新交付文档与参考工具，未修改用户本地 MapSeek 仓库。

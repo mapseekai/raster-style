@@ -12,19 +12,18 @@ function increasing(values: number[]): boolean {
 
 /** Cross-field rules that can be checked without a raster dataset or renderer. */
 export function validateSemantics(style: JsonObject): void {
-  const input = objectAt(style, 'input');
-  const selector = objectAt(input, 'selector');
+  const channelSpec = objectAt(style, 'channels');
   const channels =
-    selector.kind === 'bands'
-      ? arrayAt(selector, 'bands').length
-      : selector.kind === 'expression'
-        ? arrayAt(selector, 'expressions').length
+    channelSpec.kind === 'bands'
+      ? arrayAt(channelSpec, 'bands').length
+      : channelSpec.kind === 'expression'
+        ? arrayAt(channelSpec, 'expressions').length
         : 1;
   const renderer = objectAt(style, 'renderer');
   const type = renderer.type;
   requireCondition(
     channels === (type === 'rgb' ? 3 : 1),
-    'input.selector',
+    'channels',
     'Renderer channel cardinality mismatch',
   );
   const stretch = objectAt(style, 'stretch');
@@ -141,12 +140,12 @@ export function validateSemantics(style: JsonObject): void {
     if (rule.kind === 'rgb')
       requireCondition(channels === 3, 'opacity.rules', 'RGB rule requires three channels');
   }
-  const calibration = objectAt(input, 'calibration');
+  const calibration = objectAt(style, 'calibration');
   if (calibration.mode === 'linear') {
     const bands = (calibration.coefficients as JsonObject[]).map((coefficient) => coefficient.band);
     requireCondition(
       new Set(bands).size === bands.length,
-      'input.calibration',
+      'calibration',
       'Duplicate calibration band',
     );
   }
@@ -156,38 +155,38 @@ export function validateSemantics(style: JsonObject): void {
       'mosaic.rank_channel',
       'Rank applies only to highest/lowest',
     );
-    if (mosaic.stage === 'after_selector')
+    if (mosaic.stage === 'after_channels')
       requireCondition(
         (mosaic.rank_channel as number) <= channels,
         'mosaic.rank_channel',
         'Rank channel is out of bounds',
       );
   }
-  const output = objectAt(style, 'output');
-  const format = output.format ?? 'png';
-  if (format === 'jpeg' || output.alpha === 'flatten') {
+  const image = objectAt(style, 'image');
+  const format = image.format ?? 'png';
+  if (format === 'jpeg' || image.alpha === 'flatten') {
     requireCondition(
-      output.alpha === 'flatten' && 'background' in output,
-      'output',
+      image.alpha === 'flatten' && 'background' in image,
+      'image',
       'Flatten requires background; JPEG requires flatten',
     );
   }
-  if ('background' in output) {
-    const color = output.background as string;
+  if ('background' in image) {
+    const color = image.background as string;
     requireCondition(
       color.length === 7 || color.slice(-2).toLowerCase() === 'ff',
-      'output.background',
+      'image.background',
       'Background must be opaque',
     );
   }
   if (format === 'png')
-    requireCondition(!('quality' in output), 'output.quality', 'PNG does not accept lossy quality');
-  if ('lossless' in output)
-    requireCondition(format === 'webp', 'output.lossless', 'Lossless is a WebP option');
-  if (output.lossless === true)
+    requireCondition(!('quality' in image), 'image.quality', 'PNG does not accept lossy quality');
+  if ('lossless' in image)
+    requireCondition(format === 'webp', 'image.lossless', 'Lossless is a WebP option');
+  if (image.lossless === true)
     requireCondition(
-      !('quality' in output),
-      'output.quality',
+      !('quality' in image),
+      'image.quality',
       'Lossless output does not accept lossy quality',
     );
 }

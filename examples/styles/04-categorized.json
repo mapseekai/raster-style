@@ -1,13 +1,5 @@
 {
   "version": "2.0",
-  "input": {
-    "selector": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
-    }
-  },
   "renderer": {
     "type": "categorized",
     "color_map": {
@@ -35,5 +27,11 @@
   "resampling": {
     "read": "nearest",
     "warp": "nearest"
+  },
+  "channels": {
+    "kind": "bands",
+    "bands": [
+      1
+    ]
   }
 }

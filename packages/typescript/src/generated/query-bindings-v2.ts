@@ -11,47 +11,47 @@ export default {
     },
     {
       "key": "selector",
-      "path": "input.selector.kind",
+      "path": "channels.kind",
       "codec": "string"
     },
     {
       "key": "bidx",
-      "path": "input.selector.bands",
+      "path": "channels.bands",
       "codec": "repeat_integer"
     },
     {
       "key": "index",
-      "path": "input.selector.name",
+      "path": "channels.name",
       "codec": "string"
     },
     {
       "key": "index_bands",
-      "path": "input.selector.bindings",
+      "path": "channels.bindings",
       "codec": "json"
     },
     {
       "key": "index_params",
-      "path": "input.selector.parameters",
+      "path": "channels.parameters",
       "codec": "json"
     },
     {
       "key": "expr_lang",
-      "path": "input.selector.language",
+      "path": "channels.language",
       "codec": "string"
     },
     {
       "key": "expression",
-      "path": "input.selector.expressions",
+      "path": "channels.expressions",
       "codec": "repeat_string"
     },
     {
       "key": "calibration",
-      "path": "input.calibration",
+      "path": "calibration",
       "codec": "json"
     },
     {
       "key": "nodata",
-      "path": "input.nodata",
+      "path": "nodata",
       "codec": "json"
     },
     {
@@ -201,32 +201,32 @@ export default {
     },
     {
       "key": "format",
-      "path": "output.format",
+      "path": "image.format",
       "codec": "string"
     },
     {
-      "key": "tile_size",
-      "path": "output.tile_size",
+      "key": "size",
+      "path": "image.size",
       "codec": "integer"
     },
     {
       "key": "alpha",
-      "path": "output.alpha",
+      "path": "image.alpha",
       "codec": "string"
     },
     {
       "key": "background",
-      "path": "output.background",
+      "path": "image.background",
       "codec": "color"
     },
     {
       "key": "quality",
-      "path": "output.quality",
+      "path": "image.quality",
       "codec": "integer"
     },
     {
       "key": "lossless",
-      "path": "output.lossless",
+      "path": "image.lossless",
       "codec": "boolean"
     },
     {

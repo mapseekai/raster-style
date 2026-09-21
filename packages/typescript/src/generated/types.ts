@@ -1,6 +1,6 @@
 /** Generated from the draft.2 JSON Schema. Run pnpm generate; do not edit. */
 
-export type Selector =
+export type Channels =
   | {
       kind: 'bands';
       /**
@@ -340,7 +340,9 @@ export type Terrain =
  */
 export interface RasterStyle {
   version: '2.0';
-  input: Input;
+  channels: Channels;
+  calibration?: Calibration;
+  nodata?: Nodata;
   resampling?: Resampling;
   stretch?: Stretch;
   statistics?: Statistics;
@@ -348,13 +350,8 @@ export interface RasterStyle {
   effects?: Effects;
   opacity?: Opacity;
   mosaic?: Mosaic;
-  output?: Output;
+  image?: Image;
   extensions?: Extensions;
-}
-export interface Input {
-  selector: Selector;
-  calibration?: Calibration;
-  nodata?: Nodata;
 }
 export interface Resampling {
   read?: 'nearest' | 'bilinear' | 'cubic' | 'cubic_spline' | 'lanczos' | 'average' | 'mode';
@@ -491,16 +488,16 @@ export interface Opacity {
 }
 export interface Mosaic {
   pixel_selection: 'first' | 'highest' | 'lowest' | 'mean' | 'median';
-  stage: 'before_selector' | 'after_selector';
+  stage: 'before_channels' | 'after_channels';
   rank_channel?: number;
 }
-export interface Output {
+export interface Image {
   format?: 'png' | 'webp' | 'jpeg';
-  tile_size?: 64 | 128 | 256 | 512 | 1024;
   alpha?: 'preserve' | 'flatten';
   background?: string;
   quality?: number;
   lossless?: boolean;
+  size?: 64 | 128 | 256 | 512 | 1024;
 }
 export interface Extensions {
   /**
@@ -509,7 +506,7 @@ export interface Extensions {
    */
   [k: string]: {
     version: string;
-    stage: 'before_selector' | 'after_selector' | 'after_color';
+    stage: 'before_channels' | 'after_channels' | 'after_color';
     config: {};
   };
 }

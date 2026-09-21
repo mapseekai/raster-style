@@ -64,7 +64,7 @@ func TestParseAndMiddleware(t *testing.T) {
 		if err := json.Unmarshal(data, &document); err != nil {
 			t.Fatal(err)
 		}
-		bands := document["input"].(map[string]any)["selector"].(map[string]any)["bands"].([]any)
+		bands := document["channels"].(map[string]any)["bands"].([]any)
 		if bands[0] != float64(4) || bands[1] != float64(3) || bands[2] != float64(2) {
 			t.Fatal("band order lost")
 		}

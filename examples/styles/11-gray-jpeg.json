@@ -1,13 +1,5 @@
 {
   "version": "2.0",
-  "input": {
-    "selector": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
-    }
-  },
   "renderer": {
     "type": "gray",
     "invert": false
@@ -21,11 +13,17 @@
       ]
     ]
   },
-  "output": {
+  "channels": {
+    "kind": "bands",
+    "bands": [
+      1
+    ]
+  },
+  "image": {
     "format": "jpeg",
-    "tile_size": 256,
     "alpha": "flatten",
     "background": "#ffffffff",
-    "quality": 85
+    "quality": 85,
+    "size": 256
   }
 }

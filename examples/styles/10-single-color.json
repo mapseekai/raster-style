@@ -1,13 +1,5 @@
 {
   "version": "2.0",
-  "input": {
-    "selector": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
-    }
-  },
   "renderer": {
     "type": "single_color",
     "color": "#ff880080"
@@ -27,8 +19,14 @@
     ],
     "nodata_color": "#00000000"
   },
-  "output": {
+  "channels": {
+    "kind": "bands",
+    "bands": [
+      1
+    ]
+  },
+  "image": {
     "format": "png",
-    "tile_size": 256
+    "size": 256
   }
 }

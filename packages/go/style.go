@@ -160,7 +160,7 @@ func normalizeColor(color string) string {
 	return color
 }
 func normalizeColors(style map[string]any) {
-	for _, path := range []string{"renderer.color", "opacity.nodata_color", "output.background"} {
+	for _, path := range []string{"renderer.color", "opacity.nodata_color", "image.background"} {
 		if color, found := getPath(style, path); found {
 			setPath(style, path, normalizeColor(color.(string)))
 		}

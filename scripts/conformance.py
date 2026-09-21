@@ -39,12 +39,12 @@ def main() -> None:
         maximum = generator.uniform(1, 100000)
         style = {
             "version": "2.0",
-            "input": {"selector": {"kind": "bands", "bands": [generator.randint(1, 65535) for _ in range(channels)]}},
+            "channels": {"kind": "bands", "bands": [generator.randint(1, 65535) for _ in range(channels)]},
             "renderer": {"type": "rgb" if channels == 3 else "gray"},
             "stretch": {"method": "linear", "ranges": [[minimum, maximum]], "gamma": [generator.uniform(.1, 4)]},
             "effects": {"brightness": generator.uniform(-1, 1), "invert": index % 3 == 0},
             "opacity": {"value": generator.random(), "nodata_color": "#AAbbCC"},
-            "output": {"format": "webp", "quality": generator.randint(1, 100), "lossless": False},
+            "image": {"format": "webp", "quality": generator.randint(1, 100), "lossless": False},
         }
         requests.append({"op": "encode", "json": json.dumps(style), "name": f"generated-{index}"})
     commands = {

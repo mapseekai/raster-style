@@ -1,13 +1,5 @@
 {
   "version": "2.0",
-  "input": {
-    "selector": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
-    }
-  },
   "renderer": {
     "type": "hillshade",
     "terrain": {
@@ -27,8 +19,14 @@
     "read": "bilinear",
     "warp": "bilinear"
   },
-  "output": {
+  "channels": {
+    "kind": "bands",
+    "bands": [
+      1
+    ]
+  },
+  "image": {
     "format": "png",
-    "tile_size": 512
+    "size": 512
   }
 }

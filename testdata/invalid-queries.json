@@ -61,12 +61,12 @@
   },
   {
     "name": "unsafe-integer",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&tile_size=9007199254740992",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&size=9007199254740992",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "fractional-integer",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&tile_size=1.5",
+    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&size=1.5",
     "code": "E_QUERY_SYNTAX"
   },
   {

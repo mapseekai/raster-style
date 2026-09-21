@@ -23,18 +23,17 @@ fn require(condition: bool, path: &str, message: &str) -> Result<()> {
 
 /// Static cross-field validation. Source bindings and expression evaluation are not performed here.
 pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
-    let input = &style["input"];
-    let selector = &input["selector"];
-    let channels = match selector["kind"].as_str() {
-        Some("bands") => array(&selector["bands"]).len(),
-        Some("expression") => array(&selector["expressions"]).len(),
+    let channel_spec = &style["channels"];
+    let channels = match channel_spec["kind"].as_str() {
+        Some("bands") => array(&channel_spec["bands"]).len(),
+        Some("expression") => array(&channel_spec["expressions"]).len(),
         _ => 1,
     };
     let renderer = &style["renderer"];
     let renderer_type = renderer["type"].as_str().unwrap_or_default();
     require(
         channels == if renderer_type == "rgb" { 3 } else { 1 },
-        "input.selector",
+        "channels",
         "Renderer channel cardinality mismatch",
     )?;
     let stretch = &style["stretch"];
@@ -188,14 +187,14 @@ pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
             )?;
         }
     }
-    let mut bands: Vec<f64> = array(&input["calibration"]["coefficients"])
+    let mut bands: Vec<f64> = array(&style["calibration"]["coefficients"])
         .iter()
         .map(|item| number(&item["band"]))
         .collect();
     bands.sort_by(f64::total_cmp);
     require(
         bands.windows(2).all(|pair| pair[0] != pair[1]),
-        "input.calibration",
+        "calibration",
         "Duplicate calibration band",
     )?;
     if let Some(rank) = mosaic.get("rank_channel") {
@@ -204,7 +203,7 @@ pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
             "mosaic.rank_channel",
             "Rank applies only to highest/lowest",
         )?;
-        if mosaic["stage"] == "after_selector" {
+        if mosaic["stage"] == "after_channels" {
             require(
                 number(rank) <= channels as f64,
                 "mosaic.rank_channel",
@@ -212,40 +211,40 @@ pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
             )?;
         }
     }
-    let output = &style["output"];
-    let format = output["format"].as_str().unwrap_or("png");
-    if format == "jpeg" || output["alpha"] == "flatten" {
+    let image = &style["image"];
+    let format = image["format"].as_str().unwrap_or("png");
+    if format == "jpeg" || image["alpha"] == "flatten" {
         require(
-            output["alpha"] == "flatten" && output.get("background").is_some(),
-            "output",
+            image["alpha"] == "flatten" && image.get("background").is_some(),
+            "image",
             "Flatten requires background; JPEG requires flatten",
         )?;
     }
-    if let Some(color) = output["background"].as_str() {
+    if let Some(color) = image["background"].as_str() {
         require(
             color.len() == 7 || color.to_ascii_lowercase().ends_with("ff"),
-            "output.background",
+            "image.background",
             "Background must be opaque",
         )?;
     }
     if format == "png" {
         require(
-            output.get("quality").is_none(),
-            "output.quality",
+            image.get("quality").is_none(),
+            "image.quality",
             "PNG does not accept lossy quality",
         )?;
     }
-    if output.get("lossless").is_some() {
+    if image.get("lossless").is_some() {
         require(
             format == "webp",
-            "output.lossless",
+            "image.lossless",
             "Lossless is a WebP option",
         )?;
     }
-    if output["lossless"] == true {
+    if image["lossless"] == true {
         require(
-            output.get("quality").is_none(),
-            "output.quality",
+            image.get("quality").is_none(),
+            "image.quality",
             "Lossless output does not accept lossy quality",
         )?;
     }
