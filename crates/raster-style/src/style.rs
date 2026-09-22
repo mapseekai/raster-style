@@ -43,6 +43,7 @@ impl Style {
                 "Raster style does not match the schema",
             ));
         }
+        crate::profile::normalize_profile(&mut value)?;
         validate_semantics(&value)?;
         normalize_colors(&mut value);
         canonical_value(&value)?;
@@ -79,16 +80,12 @@ fn normalize_color(value: &mut Value) {
 }
 
 fn normalize_colors(style: &mut Value) {
-    for path in [
-        "/renderer/color",
-        "/opacity/nodata_color",
-        "/image/background",
-    ] {
+    for path in ["/renderer/color", "/image/background"] {
         if let Some(color) = style.pointer_mut(path) {
             normalize_color(color);
         }
     }
-    let Some(color_map) = style.pointer_mut("/renderer/color_map") else {
+    let Some(color_map) = style.pointer_mut("/renderer/color_mapping") else {
         return;
     };
     for key in ["under", "over", "outside_color", "fallback_color"] {

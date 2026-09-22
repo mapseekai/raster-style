@@ -4,6 +4,7 @@
 mod codec;
 mod error;
 mod json;
+mod profile;
 mod semantics;
 mod style;
 

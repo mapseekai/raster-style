@@ -5,6 +5,7 @@ import { fail } from './errors.js';
 import { canonicalJson, parseJsonStrict } from './json.js';
 import type { JsonObject } from './json.js';
 import { normalizeColors } from './normalize.js';
+import { normalizeProfile } from './profile.js';
 import { validateSemantics } from './semantics.js';
 
 // Compile once, never fetch schemas or mutate user documents during validation.
@@ -17,6 +18,7 @@ export function normalizeStyle(value: unknown): RasterStyle {
     const error = validator.errors?.[0];
     fail('E_SCHEMA', error?.message ?? 'Schema validation failed', error?.instancePath ?? '');
   }
+  normalizeProfile(document as JsonObject);
   validateSemantics(document as JsonObject);
   normalizeColors(document as JsonObject);
   return document as unknown as RasterStyle;

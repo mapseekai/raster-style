@@ -58,8 +58,7 @@ for (const fixture of load('invalid-json')) {
 test('colors normalize without mutating the input', () => {
   const original = {
     version: '2.0',
-    channels: { kind: 'bands', bands: [1] },
-    renderer: { type: 'single_color', color: '#ABCDEF' },
+    renderer: { type: 'single_color', bidx: [1], color: '#ABCDEF' },
   };
   const before = JSON.stringify(original);
   assert.equal(decodeQuery(encodeQuery(original)).renderer.color, '#abcdefff');
@@ -68,7 +67,7 @@ test('colors normalize without mutating the input', () => {
 test('configuration is reusable and enforces budgets', () => {
   const codec = new QueryCodec({ maxQueryBytes: 8 });
   assert.throws(
-    () => codec.decode('rsv=2.0&renderer=gray'),
+    () => codec.decode('version=2.0&type=gray'),
     (error) => error.code === 'E_LIMIT',
   );
   assert.throws(
@@ -76,7 +75,7 @@ test('configuration is reusable and enforces budgets', () => {
     (error) => error.code === 'E_LIMIT',
   );
   assert.throws(
-    () => new QueryCodec({ maxParameters: 1 }).decode('rsv=2.0&renderer=gray'),
+    () => new QueryCodec({ maxParameters: 1 }).decode('version=2.0&type=gray'),
     (error) => error.code === 'E_LIMIT',
   );
   assert.throws(

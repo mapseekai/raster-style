@@ -1,6 +1,6 @@
 {
   "name": "@mapseek/raster-style",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Raster Style Spec v2 JSON and Q2 query codec",
   "type": "module",
   "sideEffects": false,

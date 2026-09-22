@@ -2,56 +2,71 @@
 export default {
   "binding_version": "Q2",
   "spec_version": "2.0",
-  "description": "Every field belongs to raster rendering and must have a Q2 binding. No presentation fields are silently removed. Unknown query keys and duplicate singleton keys are errors. Keys sort lexically; occurrences of the same repeated key retain array order. JSON codec uses RFC 8785 JCS in production.",
+  "description": "Grouped JSON maps to short query names. Color operation arrays use formula strings; repeated bidx/rescale retain order.",
   "bindings": [
     {
-      "key": "rsv",
+      "key": "version",
       "path": "version",
       "codec": "string"
     },
     {
-      "key": "selector",
-      "path": "channels.kind",
+      "key": "type",
+      "path": "renderer.type",
       "codec": "string"
+    },
+    {
+      "key": "renderer_invert",
+      "path": "renderer.renderer_invert",
+      "codec": "boolean"
+    },
+    {
+      "key": "color",
+      "path": "renderer.color",
+      "codec": "color"
+    },
+    {
+      "key": "color_mapping",
+      "path": "renderer.color_mapping",
+      "codec": "json"
+    },
+    {
+      "key": "colormap",
+      "path": "renderer.colormap",
+      "codec": "json"
+    },
+    {
+      "key": "colormap_name",
+      "path": "renderer.colormap_name",
+      "codec": "string"
+    },
+    {
+      "key": "terrain",
+      "path": "renderer.terrain",
+      "codec": "json"
+    },
+    {
+      "key": "strength",
+      "path": "renderer.strength",
+      "codec": "number"
     },
     {
       "key": "bidx",
-      "path": "channels.bands",
+      "path": "renderer.bidx",
       "codec": "repeat_integer"
     },
     {
-      "key": "index",
-      "path": "channels.name",
-      "codec": "string"
-    },
-    {
-      "key": "index_bands",
-      "path": "channels.bindings",
-      "codec": "json"
-    },
-    {
-      "key": "index_params",
-      "path": "channels.parameters",
-      "codec": "json"
-    },
-    {
-      "key": "expr_lang",
-      "path": "channels.language",
-      "codec": "string"
-    },
-    {
       "key": "expression",
-      "path": "channels.expressions",
-      "codec": "repeat_string"
+      "path": "renderer.expression",
+      "codec": "string"
     },
     {
-      "key": "calibration",
-      "path": "calibration",
-      "codec": "json"
+      "key": "language",
+      "path": "renderer.language",
+      "codec": "string"
     },
     {
-      "key": "nodata",
-      "path": "nodata",
+      "key": "index",
+      "path": "renderer.index",
       "codec": "json"
     },
     {
@@ -61,26 +76,26 @@ export default {
     },
     {
       "key": "reproject",
-      "path": "resampling.warp",
+      "path": "resampling.reproject",
       "codec": "string"
     },
     {
-      "key": "statistics",
-      "path": "statistics",
-      "codec": "json"
-    },
-    {
-      "key": "stretch",
+      "key": "method",
       "path": "stretch.method",
       "codec": "string"
     },
     {
       "key": "rescale",
-      "path": "stretch.ranges",
+      "path": "stretch.rescale",
       "codec": "repeat_pair"
     },
     {
-      "key": "percentile",
+      "key": "range_policy",
+      "path": "stretch.range_policy",
+      "codec": "string"
+    },
+    {
+      "key": "percentiles",
       "path": "stretch.percentiles",
       "codec": "pair"
     },
@@ -90,114 +105,29 @@ export default {
       "codec": "number"
     },
     {
-      "key": "curve",
+      "key": "curves",
       "path": "stretch.curves",
       "codec": "json"
     },
     {
-      "key": "range_policy",
-      "path": "stretch.range_policy",
-      "codec": "string"
-    },
-    {
-      "key": "gamma",
-      "path": "stretch.gamma",
-      "codec": "repeat_number"
-    },
-    {
-      "key": "sigmoid",
-      "path": "stretch.sigmoid",
-      "codec": "json"
-    },
-    {
-      "key": "renderer",
-      "path": "renderer.type",
-      "codec": "string"
-    },
-    {
-      "key": "gray_invert",
-      "path": "renderer.invert",
-      "codec": "boolean"
-    },
-    {
-      "key": "cmap",
-      "path": "renderer.color_map",
-      "codec": "json"
-    },
-    {
-      "key": "terrain",
-      "path": "renderer.terrain",
-      "codec": "json"
-    },
-    {
-      "key": "shade_strength",
-      "path": "renderer.strength",
-      "codec": "number"
-    },
-    {
-      "key": "fill",
-      "path": "renderer.color",
-      "codec": "color"
-    },
-    {
-      "key": "brightness",
-      "path": "effects.brightness",
-      "codec": "number"
-    },
-    {
-      "key": "contrast",
-      "path": "effects.contrast",
-      "codec": "number"
-    },
-    {
-      "key": "saturation",
-      "path": "effects.saturation",
-      "codec": "number"
-    },
-    {
-      "key": "grayscale",
-      "path": "effects.grayscale",
-      "codec": "string"
-    },
-    {
-      "key": "invert",
-      "path": "effects.invert",
-      "codec": "boolean"
+      "key": "nodata",
+      "path": "nodata",
+      "codec": "nodata"
     },
     {
       "key": "opacity",
-      "path": "opacity.value",
+      "path": "opacity",
       "codec": "number"
     },
     {
-      "key": "alpha_band",
-      "path": "opacity.alpha_band",
-      "codec": "json"
+      "key": "color_formula",
+      "path": "effects.color_formula",
+      "codec": "formula"
     },
     {
-      "key": "alpha_rules",
-      "path": "opacity.rules",
-      "codec": "json"
-    },
-    {
-      "key": "nodata_color",
-      "path": "opacity.nodata_color",
-      "codec": "color"
-    },
-    {
-      "key": "pixel_selection",
-      "path": "mosaic.pixel_selection",
-      "codec": "string"
-    },
-    {
-      "key": "mosaic_stage",
-      "path": "mosaic.stage",
-      "codec": "string"
-    },
-    {
-      "key": "rank_channel",
-      "path": "mosaic.rank_channel",
-      "codec": "integer"
+      "key": "post_color_formula",
+      "path": "effects.post_color_formula",
+      "codec": "post_formula"
     },
     {
       "key": "format",
@@ -205,19 +135,9 @@ export default {
       "codec": "string"
     },
     {
-      "key": "size",
-      "path": "image.size",
+      "key": "tilesize",
+      "path": "image.tilesize",
       "codec": "integer"
-    },
-    {
-      "key": "alpha",
-      "path": "image.alpha",
-      "codec": "string"
-    },
-    {
-      "key": "background",
-      "path": "image.background",
-      "codec": "color"
     },
     {
       "key": "quality",
@@ -230,9 +150,39 @@ export default {
       "codec": "boolean"
     },
     {
+      "key": "background",
+      "path": "image.background",
+      "codec": "color"
+    },
+    {
+      "key": "calibration",
+      "path": "calibration",
+      "codec": "json"
+    },
+    {
+      "key": "statistics",
+      "path": "statistics",
+      "codec": "json"
+    },
+    {
       "key": "extensions",
       "path": "extensions",
       "codec": "json"
+    },
+    {
+      "key": "pixel_selection",
+      "path": "mosaic.pixel_selection",
+      "codec": "string"
+    },
+    {
+      "key": "stage",
+      "path": "mosaic.stage",
+      "codec": "string"
+    },
+    {
+      "key": "rank_channel",
+      "path": "mosaic.rank_channel",
+      "codec": "integer"
     }
   ]
 } as const;

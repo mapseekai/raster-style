@@ -1,5 +1,7 @@
 # SDK 接口与工程约定
 
+三种语言共用分组 JSON 与 Q2 绑定。renderer、stretch、effects、image 等分组对应简短 Query 参数。完整字段见 [规范](../spec/v2/Raster-Style-Spec-v2.md)。
+
 ## TypeScript
 
 | 接口                           | 行为                                          |
@@ -9,7 +11,7 @@
 | `jsonToQuery(json, options?)`  | 原始 JSON 文本 → 查询串；拒绝重复 JSON 键     |
 | `queryToJson(query, options?)` | 原始查询串 → JCS JSON 文本                    |
 | `parseStyle(json)`             | 严格解析 JSON、结构与静态语义校验、颜色规范化 |
-| `normalizeStyle(value)`        | 返回校验后的副本，保留字段省略状态            |
+| `normalizeStyle(value)`        | 返回校验后的副本并补全颜色操作通道            |
 | `validateStyle(value)`         | 校验失败时抛出 `RasterStyleError`             |
 | `new QueryCodec(options)`      | 复用不可变预算配置                            |
 
@@ -40,3 +42,36 @@ Fiber v3 的 `Decoder` 复用核心 Codec，直接读取原始 `URI().QueryStrin
 `pnpm check:generated` 检查副本和类型与规范的一致性。规范版本、Query 绑定版本和 SDK 版本分开维护。新增字段时先修改 Schema 与绑定表，再同步三种语言的实现和测试。
 
 命名和格式遵循语言习惯：TypeScript camelCase，Go PascalCase/camelCase，Rust snake_case；JSON 和 Q2 字段继续使用规范名称。
+
+## 颜色操作的双向转换
+
+JSON 中 effects.color_formula 与 effects.post_color_formula 均为 1–64 项对象数组。编码时转换为同名 Query 公式；解码时还原操作对象，保留顺序及重复操作。
+
+```json
+{
+  "effects": {
+    "color_formula": [{ "op": "gamma", "channels": "rb", "value": 1.1 }],
+    "post_color_formula": [{ "op": "brightness", "channels": "rgb", "value": 0.05 }]
+  }
+}
+```
+
+对应可读查询：
+
+```text
+color_formula=gamma rb 1.1
+post_color_formula=brightness rgb 0.05
+```
+
+归一化会补全支持通道选择的操作：映射前单输出默认 r、三输出默认 rgb；映射后默认 rgb。其他可选字段保留省略状态。规范化后的样式满足 JSON → Query → JSON 往返一致。
+
+## 配置要点
+
+- renderer 在 bidx、expression、index 中选择一种输入，type 决定渲染方式。
+- stretch.rescale 一组范围广播到所有通道，RGB 可配置三组。
+- nodata 是有限数值或 nan，opacity 是 0–1 数值。
+- calibration 支持 none、metadata、linear；统计拉伸可配置 statistics，多源样式可配置 mosaic。
+- renderer 的 colormap、colormap_name、color_mapping 选择一种颜色来源。
+- expression 通过分号分隔输出，SDK 检查长度、非空与数量，服务负责 AST 编译。
+
+像元计算、后端适配与部署能力由渲染服务执行。SDK 通过 Schema、静态语义及三语言一致性检查保证配置传输。

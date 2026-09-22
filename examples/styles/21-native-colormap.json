@@ -1,0 +1,32 @@
+{
+  "version": "2.0",
+  "renderer": {
+    "bidx": [
+      1
+    ],
+    "type": "pseudocolor",
+    "colormap": {
+      "0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "255": [
+        255,
+        255,
+        255,
+        255
+      ]
+    }
+  },
+  "stretch": {
+    "method": "linear",
+    "rescale": [
+      [
+        0,
+        3000
+      ]
+    ]
+  }
+}

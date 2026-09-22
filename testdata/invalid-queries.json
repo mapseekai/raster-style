@@ -1,137 +1,137 @@
 [
   {
     "name": "duplicate-version",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&rsv=2.0",
+    "query": "version=2.0&bidx=1&type=gray&version=2.0",
     "code": "E_DUPLICATE_PARAMETER"
   },
   {
     "name": "duplicate-renderer",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&renderer=gray",
+    "query": "version=2.0&bidx=1&type=gray&type=gray",
     "code": "E_DUPLICATE_PARAMETER"
   },
   {
     "name": "unknown-key",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&foo=1",
+    "query": "version=2.0&bidx=1&type=gray&foo=1",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "legend-key",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&legend=%7B%7D",
+    "query": "version=2.0&bidx=1&type=gray&legend=%7B%7D",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "metadata-key",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&metadata=%7B%7D",
+    "query": "version=2.0&bidx=1&type=gray&metadata=%7B%7D",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "context-url",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&url=https%3A%2F%2Fexample.test",
+    "query": "version=2.0&bidx=1&type=gray&url=https%3A%2F%2Fexample.test",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "malformed-percent",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&gamma=%QZ",
+    "query": "version=2.0&bidx=1&type=gray&opacity=%QZ",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "bad-utf8",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&gamma=%FF",
+    "query": "version=2.0&bidx=1&type=gray&opacity=%FF",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "raw-plus",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&expression=b1+b2",
+    "query": "version=2.0&bidx=1&type=gray&expression=b1+b2",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "raw-space",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&expression=b1 b2",
+    "query": "version=2.0&bidx=1&type=gray&expression=b1 b2",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "raw-fragment",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&expression=b1#x",
+    "query": "version=2.0&bidx=1&type=gray&expression=b1#x",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "raw-unicode",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&expression=中文",
+    "query": "version=2.0&bidx=1&type=gray&expression=中文",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "unsafe-integer",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&size=9007199254740992",
+    "query": "version=2.0&bidx=1&type=gray&tilesize=9007199254740992",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "fractional-integer",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&size=1.5",
+    "query": "version=2.0&bidx=1&type=gray&tilesize=1.5",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "non-finite",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&gamma=1e999",
+    "query": "version=2.0&bidx=1&type=gray&opacity=1e999",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "nan",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&gamma=NaN",
+    "query": "version=2.0&bidx=1&type=gray&opacity=NaN",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "leading-zero",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&gamma=01",
+    "query": "version=2.0&bidx=1&type=gray&opacity=01",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "boolean-numeric",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&invert=1",
+    "query": "version=2.0&bidx=1&type=gray&renderer_invert=1",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "invalid-pair",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&rescale=0,1,2",
+    "query": "version=2.0&bidx=1&type=gray&rescale=0,1,2",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "short-rgba",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&nodata_color=AABBCC",
+    "query": "version=2.0&bidx=1&type=gray&background=AABBCC",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "json-duplicate",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&nodata=%7B%22mode%22%3A%22source%22%2C%22mode%22%3A%22ignore%22%7D",
+    "query": "version=2.0&bidx=1&type=gray&index=%7B%22mode%22%3A%22source%22%2C%22mode%22%3A%22ignore%22%7D",
     "code": "E_JSON"
   },
   {
     "name": "json-malformed",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&nodata=%7B%7D%7B%7D",
+    "query": "version=2.0&bidx=1&type=gray&index=%7B%7D%7B%7D",
     "code": "E_JSON"
   },
   {
     "name": "trailing-empty",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&",
+    "query": "version=2.0&bidx=1&type=gray&",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "no-equals",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&quality",
+    "query": "version=2.0&bidx=1&type=gray&quality",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "prototype-key",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&__proto__=1",
+    "query": "version=2.0&bidx=1&type=gray&__proto__=1",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "malformed-union",
-    "query": "rsv=2.0&selector=bands&bidx=1&renderer=gray&index=ndvi",
+    "query": "version=2.0&bidx=1&type=gray&expression=b1",
     "code": "E_SCHEMA"
   },
   {
     "name": "missing-required",
-    "query": "rsv=2.0",
+    "query": "version=2.0",
     "code": "E_SCHEMA"
   },
   {
@@ -141,7 +141,172 @@
   },
   {
     "name": "full-url",
-    "query": "https://example.test/?rsv=2.0&selector=bands&bidx=1&renderer=gray",
+    "query": "https://example.test/?rsv=2.0&bidx=1&type=gray",
     "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "duplicate-channels",
+    "query": "version=2.0&bidx=1&type=gray&type=gray",
+    "code": "E_DUPLICATE_PARAMETER"
+  },
+  {
+    "name": "unregistered-selector",
+    "query": "version=2.0&selector=bands&bidx=1&type=gray",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "unregistered-bands-key",
+    "query": "version=2.0&bands=1&type=gray",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "unregistered-nested-path",
+    "query": "version=2.0&bidx=1&type=gray&renderer.unknown=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "unregistered-prototype-path",
+    "query": "version=2.0&bidx=1&type=gray&channels.__proto__.polluted=true",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "unregistered-size",
+    "query": "version=2.0&bidx=1&type=gray&size=256",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "operations-duplicate",
+    "query": "version=2.0&bidx=1&type=gray&post_color_formula=invert%20rgb&post_color_formula=invert%20rgb",
+    "code": "E_DUPLICATE_PARAMETER"
+  },
+  {
+    "name": "operations-not-array",
+    "query": "bidx=1&type=gray&version=2.0&post_color_formula=%7B%22op%22%3A%22invert%22%7D",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "query-color_formula-37",
+    "query": "version=2.0&bidx=1&type=gray&color_formula=gamma%20b%201",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "query-nodata-38",
+    "query": "version=2.0&bidx=1&type=gray&nodata=NaN",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "query-nodata-39",
+    "query": "version=2.0&bidx=1&type=gray&nodata=%22nan%22",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "duplicate-formula",
+    "query": "version=2.0&bidx=1&type=gray&color_formula=gamma%20r%201&color_formula=gamma%20r%202",
+    "code": "E_DUPLICATE_PARAMETER"
+  },
+  {
+    "name": "formula-empty-step",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201%2C",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-unknown",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=brightness%20rgb%201",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-missing-argument",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=sigmoidal%20rgb%206",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-extra-argument",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201%202",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-zero-gamma",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%200",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "formula-negative-gamma",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20-1",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "formula-bad-midpoint",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=sigmoidal%20rgb%206%201",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "formula-zero-contrast",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=sigmoidal%20rgb%200%200.5",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "formula-saturation-range",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=saturation%204.1",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "formula-invalid-channel",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rr%201",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "formula-invalid-number",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%2001",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-plus-number",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20%2B1",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-nonfinite",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201e999",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-nan",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20NaN",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-unicode-whitespace",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%C2%A0rgb%201",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-uppercase",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=Gamma%20rgb%201",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-too-many",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-blank",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=%20%20%20",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-fraction-shorthand",
+    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20.5",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-missing-gray-channel",
+    "query": "version=2.0&type=gray&bidx=1&color_formula=gamma%20b%201",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "formula-gray-saturation",
+    "query": "version=2.0&type=gray&bidx=1&color_formula=saturation%201",
+    "code": "E_SEMANTIC"
   }
 ]

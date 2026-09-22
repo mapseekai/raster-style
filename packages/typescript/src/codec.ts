@@ -1,3 +1,4 @@
+import { encodeFormula, decodeFormula } from './profile.js';
 import registry from './generated/query-bindings-v2.js';
 import type { RasterStyle } from './generated/types.js';
 import { fail } from './errors.js';
@@ -53,6 +54,11 @@ function parseNumber(value: string, integer = false): number {
 
 function encodeValue(value: JsonValue, codec: string): string {
   switch (codec) {
+    case 'formula':
+    case 'post_formula':
+      return encodeFormula(value);
+    case 'nodata':
+      return value === 'nan' ? 'nan' : canonicalJson(value);
     case 'string':
       return value as string;
     case 'number':
@@ -73,6 +79,11 @@ function encodeValue(value: JsonValue, codec: string): string {
 
 function decodeValue(value: string, codec: string): JsonValue {
   switch (codec) {
+    case 'formula':
+    case 'post_formula':
+      return decodeFormula(value, codec === 'post_formula');
+    case 'nodata':
+      return value === 'nan' ? 'nan' : parseNumber(value);
     case 'string':
       assertUnicode(value);
       return value;

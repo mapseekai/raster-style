@@ -1,8 +1,5 @@
 {
   "version": "2.0",
-  "renderer": {
-    "type": "gray"
-  },
   "extensions": {
     "mapseek.test.config": {
       "version": "1",
@@ -24,9 +21,9 @@
       }
     }
   },
-  "channels": {
-    "kind": "bands",
-    "bands": [
+  "renderer": {
+    "type": "gray",
+    "bidx": [
       1
     ]
   }

@@ -1,68 +1,1155 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:mapseek:raster-style:2.0",
-  "title": "Raster Style Spec v2 — 2.0.0-draft.3",
-  "description": "Raster rendering configuration only. No legend, presentation metadata, category labels or automatic classification recipes. Normative semantic and backend-capability validation is additionally required; see the specification.",
+  "title": "RasterStyle",
+  "description": "Grouped raster style with structured color formulas and scalar opacity.",
   "type": "object",
   "properties": {
     "version": {
       "const": "2.0"
     },
-    "channels": {
-      "$ref": "#/$defs/channels"
-    },
-    "calibration": {
-      "$ref": "#/$defs/calibration"
-    },
-    "nodata": {
-      "$ref": "#/$defs/nodata"
+    "renderer": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "anyOf": [
+            {
+              "const": "gray"
+            },
+            {
+              "const": "rgb"
+            },
+            {
+              "const": "single_color"
+            },
+            {
+              "const": "pseudocolor"
+            },
+            {
+              "const": "shaded_relief"
+            },
+            {
+              "const": "categorized"
+            },
+            {
+              "const": "hillshade"
+            }
+          ]
+        },
+        "renderer_invert": {
+          "type": "boolean"
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+        },
+        "color_mapping": {
+          "anyOf": [
+            {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/continuous"
+                },
+                {
+                  "$ref": "#/$defs/discrete"
+                }
+              ]
+            },
+            {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/exact"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "mode": {
+                      "const": "source"
+                    }
+                  },
+                  "required": [
+                    "mode"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          ]
+        },
+        "colormap": {
+          "anyOf": [
+            {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    "^(0|-?[1-9][0-9]*)$": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 255
+                      },
+                      "minItems": 4,
+                      "maxItems": 4
+                    }
+                  },
+                  "additionalProperties": false,
+                  "minProperties": 1,
+                  "maxProperties": 4096
+                },
+                {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 4096,
+                  "items": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 255
+                        },
+                        "minItems": 4,
+                        "maxItems": 4
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^(0|-?[1-9][0-9]*)$": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                }
+              },
+              "additionalProperties": false,
+              "minProperties": 1,
+              "maxProperties": 4096
+            }
+          ]
+        },
+        "colormap_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "terrain": {
+          "$ref": "#/$defs/terrain"
+        },
+        "strength": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "bidx": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "expression": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 6146
+        },
+        "language": {
+          "const": "raster-expr/1"
+        },
+        "index": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "ndvi"
+                },
+                "bindings": {
+                  "type": "object",
+                  "properties": {
+                    "red": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    },
+                    "nir": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    }
+                  },
+                  "required": [
+                    "red",
+                    "nir"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "name",
+                "bindings"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "ndwi_mcfeeters"
+                },
+                "bindings": {
+                  "type": "object",
+                  "properties": {
+                    "green": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    },
+                    "nir": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    }
+                  },
+                  "required": [
+                    "green",
+                    "nir"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "name",
+                "bindings"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "ndmi"
+                },
+                "bindings": {
+                  "type": "object",
+                  "properties": {
+                    "nir": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    },
+                    "swir": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    }
+                  },
+                  "required": [
+                    "nir",
+                    "swir"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "name",
+                "bindings"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "ndbi"
+                },
+                "bindings": {
+                  "type": "object",
+                  "properties": {
+                    "nir": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    },
+                    "swir": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    }
+                  },
+                  "required": [
+                    "nir",
+                    "swir"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "name",
+                "bindings"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "evi"
+                },
+                "bindings": {
+                  "type": "object",
+                  "properties": {
+                    "red": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    },
+                    "nir": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    },
+                    "blue": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    }
+                  },
+                  "required": [
+                    "red",
+                    "nir",
+                    "blue"
+                  ],
+                  "additionalProperties": false
+                },
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "g": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "c1": {
+                      "type": "number"
+                    },
+                    "c2": {
+                      "type": "number"
+                    },
+                    "l": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "name",
+                "bindings"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "const": "savi"
+                },
+                "bindings": {
+                  "type": "object",
+                  "properties": {
+                    "red": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    },
+                    "nir": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    }
+                  },
+                  "required": [
+                    "red",
+                    "nir"
+                  ],
+                  "additionalProperties": false
+                },
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "l": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "name",
+                "bindings"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "minProperties": 1,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "pseudocolor"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "required": [
+                  "color_mapping"
+                ]
+              },
+              {
+                "required": [
+                  "colormap"
+                ]
+              },
+              {
+                "required": [
+                  "colormap_name"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "shaded_relief"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "required": [
+                  "color_mapping"
+                ]
+              },
+              {
+                "required": [
+                  "colormap"
+                ]
+              },
+              {
+                "required": [
+                  "colormap_name"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "categorized"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "required": [
+                  "color_mapping"
+                ]
+              },
+              {
+                "required": [
+                  "colormap"
+                ]
+              },
+              {
+                "required": [
+                  "colormap_name"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "oneOf": [
+            {
+              "properties": {
+                "color": false,
+                "color_mapping": false,
+                "colormap": false,
+                "colormap_name": false,
+                "renderer_invert": {
+                  "type": "boolean"
+                },
+                "strength": false,
+                "terrain": false,
+                "type": {
+                  "const": "gray"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            {
+              "properties": {
+                "color": false,
+                "color_mapping": false,
+                "colormap": false,
+                "colormap_name": false,
+                "renderer_invert": false,
+                "strength": false,
+                "terrain": false,
+                "type": {
+                  "const": "rgb"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            {
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+                },
+                "color_mapping": false,
+                "colormap": false,
+                "colormap_name": false,
+                "renderer_invert": false,
+                "strength": false,
+                "terrain": false,
+                "type": {
+                  "const": "single_color"
+                }
+              },
+              "required": [
+                "type",
+                "color"
+              ]
+            },
+            {
+              "properties": {
+                "color": false,
+                "color_mapping": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/continuous"
+                    },
+                    {
+                      "$ref": "#/$defs/discrete"
+                    }
+                  ]
+                },
+                "colormap": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "patternProperties": {
+                        "^(0|-?[1-9][0-9]*)$": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 255
+                          },
+                          "minItems": 4,
+                          "maxItems": 4
+                        }
+                      },
+                      "additionalProperties": false,
+                      "minProperties": 1,
+                      "maxProperties": 4096
+                    },
+                    {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 4096,
+                      "items": {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "minItems": 2,
+                            "maxItems": 2
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 255
+                            },
+                            "minItems": 4,
+                            "maxItems": 4
+                          }
+                        ],
+                        "items": false,
+                        "minItems": 2,
+                        "maxItems": 2
+                      }
+                    }
+                  ]
+                },
+                "colormap_name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[a-zA-Z0-9_-]+$"
+                },
+                "renderer_invert": false,
+                "strength": false,
+                "terrain": false,
+                "type": {
+                  "const": "pseudocolor"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            {
+              "properties": {
+                "color": false,
+                "color_mapping": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/continuous"
+                    },
+                    {
+                      "$ref": "#/$defs/discrete"
+                    }
+                  ]
+                },
+                "colormap": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "patternProperties": {
+                        "^(0|-?[1-9][0-9]*)$": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 255
+                          },
+                          "minItems": 4,
+                          "maxItems": 4
+                        }
+                      },
+                      "additionalProperties": false,
+                      "minProperties": 1,
+                      "maxProperties": 4096
+                    },
+                    {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 4096,
+                      "items": {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "minItems": 2,
+                            "maxItems": 2
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 255
+                            },
+                            "minItems": 4,
+                            "maxItems": 4
+                          }
+                        ],
+                        "items": false,
+                        "minItems": 2,
+                        "maxItems": 2
+                      }
+                    }
+                  ]
+                },
+                "colormap_name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[a-zA-Z0-9_-]+$"
+                },
+                "renderer_invert": false,
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "terrain": {
+                  "$ref": "#/$defs/terrain"
+                },
+                "type": {
+                  "const": "shaded_relief"
+                }
+              },
+              "required": [
+                "type",
+                "terrain"
+              ]
+            },
+            {
+              "properties": {
+                "color": false,
+                "color_mapping": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/exact"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "mode": {
+                          "const": "source"
+                        }
+                      },
+                      "required": [
+                        "mode"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                },
+                "colormap": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^(0|-?[1-9][0-9]*)$": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 255
+                      },
+                      "minItems": 4,
+                      "maxItems": 4
+                    }
+                  },
+                  "additionalProperties": false,
+                  "minProperties": 1,
+                  "maxProperties": 4096
+                },
+                "colormap_name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[a-zA-Z0-9_-]+$"
+                },
+                "renderer_invert": false,
+                "strength": false,
+                "terrain": false,
+                "type": {
+                  "const": "categorized"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            {
+              "properties": {
+                "color": false,
+                "color_mapping": false,
+                "colormap": false,
+                "colormap_name": false,
+                "renderer_invert": false,
+                "strength": false,
+                "terrain": {
+                  "$ref": "#/$defs/terrain"
+                },
+                "type": {
+                  "const": "hillshade"
+                }
+              },
+              "required": [
+                "type",
+                "terrain"
+              ]
+            }
+          ]
+        },
+        {
+          "oneOf": [
+            {
+              "required": [
+                "bidx"
+              ]
+            },
+            {
+              "required": [
+                "expression"
+              ]
+            },
+            {
+              "required": [
+                "index"
+              ]
+            }
+          ]
+        },
+        {
+          "if": {
+            "required": [
+              "language"
+            ]
+          },
+          "then": {
+            "required": [
+              "expression"
+            ]
+          }
+        }
+      ]
     },
     "resampling": {
-      "$ref": "#/$defs/resampling"
+      "type": "object",
+      "properties": {
+        "read": {
+          "enum": [
+            "nearest",
+            "bilinear",
+            "cubic",
+            "cubic_spline",
+            "lanczos",
+            "average",
+            "mode"
+          ]
+        },
+        "reproject": {
+          "enum": [
+            "nearest",
+            "bilinear",
+            "cubic",
+            "cubic_spline",
+            "lanczos",
+            "average",
+            "mode"
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
     },
     "stretch": {
-      "$ref": "#/$defs/stretch"
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "none"
+            },
+            "range_policy": {
+              "enum": [
+                "clamp",
+                "transparent"
+              ]
+            }
+          },
+          "required": [
+            "method"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "linear"
+            },
+            "range_policy": {
+              "enum": [
+                "clamp",
+                "transparent"
+              ]
+            },
+            "rescale": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 2,
+                "maxItems": 2
+              },
+              "minItems": 1,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "method",
+            "rescale"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "minmax"
+            },
+            "range_policy": {
+              "enum": [
+                "clamp",
+                "transparent"
+              ]
+            }
+          },
+          "required": [
+            "method"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "percentile"
+            },
+            "range_policy": {
+              "enum": [
+                "clamp",
+                "transparent"
+              ]
+            },
+            "percentiles": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "required": [
+            "method",
+            "percentiles"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "stddev"
+            },
+            "range_policy": {
+              "enum": [
+                "clamp",
+                "transparent"
+              ]
+            },
+            "stddev": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "method",
+            "stddev"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "histogram_equalization"
+            },
+            "range_policy": {
+              "enum": [
+                "clamp",
+                "transparent"
+              ]
+            }
+          },
+          "required": [
+            "method"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "curve"
+            },
+            "range_policy": {
+              "enum": [
+                "clamp",
+                "transparent"
+              ]
+            },
+            "curves": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "minItems": 2,
+                "maxItems": 4096
+              },
+              "minItems": 1,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "method",
+            "curves"
+          ],
+          "additionalProperties": false
+        }
+      ]
     },
-    "statistics": {
-      "$ref": "#/$defs/statistics"
-    },
-    "renderer": {
-      "$ref": "#/$defs/renderer"
+    "nodata": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": "nan"
+        }
+      ]
     },
     "effects": {
-      "$ref": "#/$defs/effects"
+      "type": "object",
+      "properties": {
+        "color_formula": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pre_operation"
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "post_color_formula": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/post_operation"
+          },
+          "minItems": 1,
+          "maxItems": 64
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
     },
     "opacity": {
-      "$ref": "#/$defs/opacity"
-    },
-    "mosaic": {
-      "$ref": "#/$defs/mosaic"
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
     },
     "image": {
-      "$ref": "#/$defs/image"
-    },
-    "extensions": {
-      "$ref": "#/$defs/extensions"
-    }
-  },
-  "required": [
-    "version",
-    "channels",
-    "renderer"
-  ],
-  "additionalProperties": false,
-  "$defs": {
-    "color": {
-      "type": "string",
-      "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
-    },
-    "pair": {
-      "type": "array",
-      "items": {
-        "type": "number"
+      "type": "object",
+      "properties": {
+        "format": {
+          "enum": [
+            "png",
+            "webp",
+            "jpeg"
+          ]
+        },
+        "tilesize": {
+          "enum": [
+            64,
+            128,
+            256,
+            512,
+            1024
+          ]
+        },
+        "quality": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "lossless": {
+          "type": "boolean"
+        },
+        "background": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+        }
       },
-      "minItems": 2,
-      "maxItems": 2
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
     },
     "calibration": {
       "oneOf": [
@@ -123,510 +1210,49 @@
         }
       ]
     },
-    "nodata": {
-      "oneOf": [
-        {
-          "type": "object",
-          "properties": {
-            "mode": {
-              "enum": [
-                "source",
-                "ignore"
-              ]
-            },
-            "use_mask": {
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "mode"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "mode": {
-              "const": "override"
-            },
-            "use_mask": {
-              "type": "boolean"
-            },
-            "values": {
-              "type": "array",
-              "items": {
-                "oneOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "enum": [
-                      "nan",
-                      "inf",
-                      "-inf"
-                    ]
-                  }
-                ]
-              },
-              "minItems": 1,
-              "maxItems": 64
-            }
-          },
-          "required": [
-            "mode",
-            "values"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "mode": {
-              "const": "override"
-            },
-            "use_mask": {
-              "type": "boolean"
-            },
-            "per_band": {
-              "type": "object",
-              "patternProperties": {
-                "^[1-9][0-9]*$": {
-                  "type": "array",
-                  "items": {
-                    "oneOf": [
-                      {
-                        "type": "number"
-                      },
-                      {
-                        "enum": [
-                          "nan",
-                          "inf",
-                          "-inf"
-                        ]
-                      }
-                    ]
-                  },
-                  "minItems": 1,
-                  "maxItems": 64
-                }
-              },
-              "minProperties": 1,
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "mode",
-            "per_band"
-          ],
-          "additionalProperties": false
-        }
-      ]
+    "statistics": {
+      "$ref": "#/$defs/statistics"
     },
-    "resampling": {
+    "mosaic": {
       "type": "object",
       "properties": {
-        "read": {
+        "pixel_selection": {
           "enum": [
-            "nearest",
-            "bilinear",
-            "cubic",
-            "cubic_spline",
-            "lanczos",
-            "average",
-            "mode"
+            "first",
+            "highest",
+            "lowest",
+            "mean",
+            "median"
           ]
         },
-        "warp": {
+        "stage": {
           "enum": [
-            "nearest",
-            "bilinear",
-            "cubic",
-            "cubic_spline",
-            "lanczos",
-            "average",
-            "mode"
+            "before_channels",
+            "after_channels"
           ]
+        },
+        "rank_channel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
         }
       },
-      "required": [],
-      "additionalProperties": false,
-      "minProperties": 1
+      "required": [
+        "pixel_selection",
+        "stage"
+      ],
+      "additionalProperties": false
     },
-    "stretch": {
-      "oneOf": [
-        {
-          "type": "object",
-          "properties": {
-            "method": {
-              "const": "none"
-            },
-            "range_policy": {
-              "enum": [
-                "clamp",
-                "transparent"
-              ]
-            },
-            "gamma": {
-              "type": "array",
-              "items": {
-                "type": "number",
-                "exclusiveMinimum": 0
-              },
-              "minItems": 1,
-              "maxItems": 3
-            },
-            "sigmoid": {
-              "type": "object",
-              "properties": {
-                "contrast": {
-                  "type": "number",
-                  "exclusiveMinimum": 0
-                },
-                "midpoint": {
-                  "type": "number",
-                  "exclusiveMinimum": 0,
-                  "exclusiveMaximum": 1
-                }
-              },
-              "required": [
-                "contrast",
-                "midpoint"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "method"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "method": {
-              "const": "linear"
-            },
-            "range_policy": {
-              "enum": [
-                "clamp",
-                "transparent"
-              ]
-            },
-            "gamma": {
-              "type": "array",
-              "items": {
-                "type": "number",
-                "exclusiveMinimum": 0
-              },
-              "minItems": 1,
-              "maxItems": 3
-            },
-            "sigmoid": {
-              "type": "object",
-              "properties": {
-                "contrast": {
-                  "type": "number",
-                  "exclusiveMinimum": 0
-                },
-                "midpoint": {
-                  "type": "number",
-                  "exclusiveMinimum": 0,
-                  "exclusiveMaximum": 1
-                }
-              },
-              "required": [
-                "contrast",
-                "midpoint"
-              ],
-              "additionalProperties": false
-            },
-            "ranges": {
-              "type": "array",
-              "items": {
-                "type": "array",
-                "items": {
-                  "type": "number"
-                },
-                "minItems": 2,
-                "maxItems": 2
-              },
-              "minItems": 1,
-              "maxItems": 3
-            }
-          },
-          "required": [
-            "method",
-            "ranges"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "method": {
-              "const": "minmax"
-            },
-            "range_policy": {
-              "enum": [
-                "clamp",
-                "transparent"
-              ]
-            },
-            "gamma": {
-              "type": "array",
-              "items": {
-                "type": "number",
-                "exclusiveMinimum": 0
-              },
-              "minItems": 1,
-              "maxItems": 3
-            },
-            "sigmoid": {
-              "type": "object",
-              "properties": {
-                "contrast": {
-                  "type": "number",
-                  "exclusiveMinimum": 0
-                },
-                "midpoint": {
-                  "type": "number",
-                  "exclusiveMinimum": 0,
-                  "exclusiveMaximum": 1
-                }
-              },
-              "required": [
-                "contrast",
-                "midpoint"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "method"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "method": {
-              "const": "percentile"
-            },
-            "range_policy": {
-              "enum": [
-                "clamp",
-                "transparent"
-              ]
-            },
-            "gamma": {
-              "type": "array",
-              "items": {
-                "type": "number",
-                "exclusiveMinimum": 0
-              },
-              "minItems": 1,
-              "maxItems": 3
-            },
-            "sigmoid": {
-              "type": "object",
-              "properties": {
-                "contrast": {
-                  "type": "number",
-                  "exclusiveMinimum": 0
-                },
-                "midpoint": {
-                  "type": "number",
-                  "exclusiveMinimum": 0,
-                  "exclusiveMaximum": 1
-                }
-              },
-              "required": [
-                "contrast",
-                "midpoint"
-              ],
-              "additionalProperties": false
-            },
-            "percentiles": {
-              "type": "array",
-              "items": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 100
-              },
-              "minItems": 2,
-              "maxItems": 2
-            }
-          },
-          "required": [
-            "method",
-            "percentiles"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "method": {
-              "const": "stddev"
-            },
-            "range_policy": {
-              "enum": [
-                "clamp",
-                "transparent"
-              ]
-            },
-            "gamma": {
-              "type": "array",
-              "items": {
-                "type": "number",
-                "exclusiveMinimum": 0
-              },
-              "minItems": 1,
-              "maxItems": 3
-            },
-            "sigmoid": {
-              "type": "object",
-              "properties": {
-                "contrast": {
-                  "type": "number",
-                  "exclusiveMinimum": 0
-                },
-                "midpoint": {
-                  "type": "number",
-                  "exclusiveMinimum": 0,
-                  "exclusiveMaximum": 1
-                }
-              },
-              "required": [
-                "contrast",
-                "midpoint"
-              ],
-              "additionalProperties": false
-            },
-            "stddev": {
-              "type": "number",
-              "exclusiveMinimum": 0
-            }
-          },
-          "required": [
-            "method",
-            "stddev"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "method": {
-              "const": "histogram_equalization"
-            },
-            "range_policy": {
-              "enum": [
-                "clamp",
-                "transparent"
-              ]
-            },
-            "gamma": {
-              "type": "array",
-              "items": {
-                "type": "number",
-                "exclusiveMinimum": 0
-              },
-              "minItems": 1,
-              "maxItems": 3
-            },
-            "sigmoid": {
-              "type": "object",
-              "properties": {
-                "contrast": {
-                  "type": "number",
-                  "exclusiveMinimum": 0
-                },
-                "midpoint": {
-                  "type": "number",
-                  "exclusiveMinimum": 0,
-                  "exclusiveMaximum": 1
-                }
-              },
-              "required": [
-                "contrast",
-                "midpoint"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "method"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "method": {
-              "const": "curve"
-            },
-            "range_policy": {
-              "enum": [
-                "clamp",
-                "transparent"
-              ]
-            },
-            "gamma": {
-              "type": "array",
-              "items": {
-                "type": "number",
-                "exclusiveMinimum": 0
-              },
-              "minItems": 1,
-              "maxItems": 3
-            },
-            "sigmoid": {
-              "type": "object",
-              "properties": {
-                "contrast": {
-                  "type": "number",
-                  "exclusiveMinimum": 0
-                },
-                "midpoint": {
-                  "type": "number",
-                  "exclusiveMinimum": 0,
-                  "exclusiveMaximum": 1
-                }
-              },
-              "required": [
-                "contrast",
-                "midpoint"
-              ],
-              "additionalProperties": false
-            },
-            "curves": {
-              "type": "array",
-              "items": {
-                "type": "array",
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "number"
-                  },
-                  "minItems": 2,
-                  "maxItems": 2
-                },
-                "minItems": 2,
-                "maxItems": 4096
-              },
-              "minItems": 1,
-              "maxItems": 3
-            }
-          },
-          "required": [
-            "method",
-            "curves"
-          ],
-          "additionalProperties": false
-        }
-      ]
-    },
+    "extensions": {
+      "$ref": "#/$defs/extensions"
+    }
+  },
+  "required": [
+    "version",
+    "renderer"
+  ],
+  "additionalProperties": false,
+  "$defs": {
     "statistics": {
       "type": "object",
       "properties": {
@@ -963,369 +1589,6 @@
         }
       ]
     },
-    "renderer": {
-      "oneOf": [
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "const": "gray"
-            },
-            "invert": {
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "type"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "const": "rgb"
-            }
-          },
-          "required": [
-            "type"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "const": "single_color"
-            },
-            "color": {
-              "type": "string",
-              "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
-            }
-          },
-          "required": [
-            "type",
-            "color"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "const": "pseudocolor"
-            },
-            "color_map": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/continuous"
-                },
-                {
-                  "$ref": "#/$defs/discrete"
-                }
-              ]
-            }
-          },
-          "required": [
-            "type",
-            "color_map"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "const": "shaded_relief"
-            },
-            "terrain": {
-              "$ref": "#/$defs/terrain"
-            },
-            "strength": {
-              "type": "number",
-              "minimum": 0,
-              "maximum": 1
-            },
-            "color_map": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/continuous"
-                },
-                {
-                  "$ref": "#/$defs/discrete"
-                }
-              ]
-            }
-          },
-          "required": [
-            "type",
-            "terrain",
-            "color_map"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "const": "categorized"
-            },
-            "color_map": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/exact"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "mode": {
-                      "const": "source"
-                    }
-                  },
-                  "required": [
-                    "mode"
-                  ],
-                  "additionalProperties": false
-                }
-              ]
-            }
-          },
-          "required": [
-            "type",
-            "color_map"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "const": "hillshade"
-            },
-            "terrain": {
-              "$ref": "#/$defs/terrain"
-            }
-          },
-          "required": [
-            "type",
-            "terrain"
-          ],
-          "additionalProperties": false
-        }
-      ]
-    },
-    "effects": {
-      "type": "object",
-      "properties": {
-        "brightness": {
-          "type": "number",
-          "minimum": -1,
-          "maximum": 1
-        },
-        "contrast": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 4
-        },
-        "saturation": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 4
-        },
-        "grayscale": {
-          "enum": [
-            "none",
-            "luma",
-            "average"
-          ]
-        },
-        "invert": {
-          "type": "boolean"
-        }
-      },
-      "required": [],
-      "additionalProperties": false,
-      "minProperties": 1
-    },
-    "opacity": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "alpha_band": {
-          "type": "object",
-          "properties": {
-            "band": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 65535
-            },
-            "range": {
-              "type": "array",
-              "items": {
-                "type": "number"
-              },
-              "minItems": 2,
-              "maxItems": 2
-            }
-          },
-          "required": [
-            "band",
-            "range"
-          ],
-          "additionalProperties": false
-        },
-        "rules": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "kind": {
-                    "const": "value"
-                  },
-                  "channel": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 3
-                  },
-                  "value": {
-                    "type": "number"
-                  },
-                  "alpha": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 1
-                  }
-                },
-                "required": [
-                  "kind",
-                  "channel",
-                  "value",
-                  "alpha"
-                ],
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "kind": {
-                    "const": "range"
-                  },
-                  "channel": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 3
-                  },
-                  "min": {
-                    "type": "number"
-                  },
-                  "max": {
-                    "type": "number"
-                  },
-                  "include_max": {
-                    "type": "boolean"
-                  },
-                  "alpha": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 1
-                  }
-                },
-                "required": [
-                  "kind",
-                  "channel",
-                  "min",
-                  "max",
-                  "alpha"
-                ],
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "kind": {
-                    "const": "rgb"
-                  },
-                  "values": {
-                    "type": "array",
-                    "items": {
-                      "type": "number"
-                    },
-                    "minItems": 3,
-                    "maxItems": 3
-                  },
-                  "tolerance": {
-                    "type": "array",
-                    "items": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "minItems": 3,
-                    "maxItems": 3
-                  },
-                  "alpha": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 1
-                  }
-                },
-                "required": [
-                  "kind",
-                  "values",
-                  "tolerance",
-                  "alpha"
-                ],
-                "additionalProperties": false
-              }
-            ]
-          },
-          "minItems": 1,
-          "maxItems": 256
-        },
-        "nodata_color": {
-          "type": "string",
-          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
-        }
-      },
-      "required": [],
-      "additionalProperties": false,
-      "minProperties": 1
-    },
-    "mosaic": {
-      "type": "object",
-      "properties": {
-        "pixel_selection": {
-          "enum": [
-            "first",
-            "highest",
-            "lowest",
-            "mean",
-            "median"
-          ]
-        },
-        "stage": {
-          "enum": [
-            "before_channels",
-            "after_channels"
-          ]
-        },
-        "rank_channel": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 64
-        }
-      },
-      "required": [
-        "pixel_selection",
-        "stage"
-      ],
-      "additionalProperties": false
-    },
     "extensions": {
       "type": "object",
       "patternProperties": {
@@ -1358,361 +1621,273 @@
       "minProperties": 1,
       "additionalProperties": false
     },
-    "channels": {
+    "pre_operation": {
       "oneOf": [
         {
           "type": "object",
           "properties": {
-            "kind": {
-              "const": "bands"
+            "op": {
+              "const": "gamma"
             },
-            "bands": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "minimum": 1,
-                "maximum": 65535
-              },
-              "minItems": 1,
-              "maxItems": 3
+            "value": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "channels": {
+              "enum": [
+                "r",
+                "g",
+                "b",
+                "rg",
+                "rb",
+                "gb",
+                "rgb"
+              ]
             }
           },
           "required": [
-            "kind",
-            "bands"
+            "op",
+            "value"
           ],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
-            "kind": {
-              "const": "expression"
+            "op": {
+              "const": "sigmoidal"
             },
-            "language": {
-              "const": "raster-expr/1"
+            "contrast": {
+              "type": "number",
+              "exclusiveMinimum": 0
             },
-            "expressions": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 2048
-              },
-              "minItems": 1,
-              "maxItems": 3
+            "midpoint": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "exclusiveMaximum": 1
+            },
+            "channels": {
+              "enum": [
+                "r",
+                "g",
+                "b",
+                "rg",
+                "rb",
+                "gb",
+                "rgb"
+              ]
             }
           },
           "required": [
-            "kind",
-            "language",
-            "expressions"
+            "op",
+            "contrast",
+            "midpoint"
           ],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
-            "kind": {
-              "const": "index"
+            "op": {
+              "const": "saturation"
             },
-            "name": {
-              "const": "ndvi"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "red": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "red",
-                "nir"
-              ],
-              "additionalProperties": false
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 4
             }
           },
           "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "ndwi_mcfeeters"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "green": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "green",
-                "nir"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "ndmi"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "swir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "nir",
-                "swir"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "ndbi"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "swir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "nir",
-                "swir"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "evi"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "red": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "blue": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "red",
-                "nir",
-                "blue"
-              ],
-              "additionalProperties": false
-            },
-            "parameters": {
-              "type": "object",
-              "properties": {
-                "g": {
-                  "type": "number",
-                  "exclusiveMinimum": 0
-                },
-                "c1": {
-                  "type": "number"
-                },
-                "c2": {
-                  "type": "number"
-                },
-                "l": {
-                  "type": "number"
-                }
-              },
-              "required": [],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "index"
-            },
-            "name": {
-              "const": "savi"
-            },
-            "bindings": {
-              "type": "object",
-              "properties": {
-                "red": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                },
-                "nir": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 65535
-                }
-              },
-              "required": [
-                "red",
-                "nir"
-              ],
-              "additionalProperties": false
-            },
-            "parameters": {
-              "type": "object",
-              "properties": {
-                "l": {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 1
-                }
-              },
-              "required": [],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "kind",
-            "name",
-            "bindings"
+            "op",
+            "value"
           ],
           "additionalProperties": false
         }
       ]
     },
-    "image": {
-      "type": "object",
-      "properties": {
-        "format": {
-          "enum": [
-            "png",
-            "webp",
-            "jpeg"
-          ]
+    "post_operation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "gamma"
+            },
+            "value": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "channels": {
+              "enum": [
+                "r",
+                "g",
+                "b",
+                "rg",
+                "rb",
+                "gb",
+                "rgb"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
         },
-        "alpha": {
-          "enum": [
-            "preserve",
-            "flatten"
-          ]
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "sigmoidal"
+            },
+            "contrast": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "midpoint": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "exclusiveMaximum": 1
+            },
+            "channels": {
+              "enum": [
+                "r",
+                "g",
+                "b",
+                "rg",
+                "rb",
+                "gb",
+                "rgb"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "contrast",
+            "midpoint"
+          ],
+          "additionalProperties": false
         },
-        "background": {
-          "type": "string",
-          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "brightness"
+            },
+            "value": {
+              "type": "number",
+              "minimum": -1,
+              "maximum": 1
+            },
+            "channels": {
+              "enum": [
+                "r",
+                "g",
+                "b",
+                "rg",
+                "rb",
+                "gb",
+                "rgb"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
         },
-        "quality": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 100
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "contrast"
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 4
+            },
+            "channels": {
+              "enum": [
+                "r",
+                "g",
+                "b",
+                "rg",
+                "rb",
+                "gb",
+                "rgb"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
         },
-        "lossless": {
-          "type": "boolean"
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "saturation"
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 4
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
         },
-        "size": {
-          "enum": [
-            64,
-            128,
-            256,
-            512,
-            1024
-          ]
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "grayscale"
+            },
+            "method": {
+              "enum": [
+                "luma",
+                "average"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "method"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "invert"
+            },
+            "channels": {
+              "enum": [
+                "r",
+                "g",
+                "b",
+                "rg",
+                "rb",
+                "gb",
+                "rgb"
+              ]
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "additionalProperties": false
         }
-      },
-      "required": [],
-      "additionalProperties": false,
-      "minProperties": 1
+      ]
     }
   }
 }

@@ -1,0 +1,50 @@
+{
+  "version": "2.0",
+  "renderer": {
+    "type": "rgb",
+    "bidx": [
+      4,
+      3,
+      2
+    ]
+  },
+  "resampling": {
+    "read": "bilinear",
+    "reproject": "bilinear"
+  },
+  "stretch": {
+    "method": "linear",
+    "rescale": [
+      [
+        0,
+        3000
+      ]
+    ]
+  },
+  "nodata": -9999,
+  "effects": {
+    "color_formula": [
+      {
+        "op": "gamma",
+        "channels": "rgb",
+        "value": 1.1
+      },
+      {
+        "op": "saturation",
+        "value": 1.2
+      }
+    ],
+    "post_color_formula": [
+      {
+        "op": "brightness",
+        "channels": "rgb",
+        "value": 0.05
+      }
+    ]
+  },
+  "opacity": 1,
+  "image": {
+    "format": "png",
+    "tilesize": 256
+  }
+}

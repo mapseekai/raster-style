@@ -1,285 +1,5 @@
 /** Generated from the Raster Style Spec v2 JSON Schema. Run pnpm generate; do not edit. */
 
-export type Channels =
-  | {
-      kind: 'bands';
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      bands: [number, ...number[]];
-    }
-  | {
-      kind: 'expression';
-      language: 'raster-expr/1';
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      expressions: [string, ...string[]];
-    }
-  | {
-      kind: 'index';
-      name: 'ndvi';
-      bindings: {
-        red: number;
-        nir: number;
-      };
-    }
-  | {
-      kind: 'index';
-      name: 'ndwi_mcfeeters';
-      bindings: {
-        green: number;
-        nir: number;
-      };
-    }
-  | {
-      kind: 'index';
-      name: 'ndmi';
-      bindings: {
-        nir: number;
-        swir: number;
-      };
-    }
-  | {
-      kind: 'index';
-      name: 'ndbi';
-      bindings: {
-        nir: number;
-        swir: number;
-      };
-    }
-  | {
-      kind: 'index';
-      name: 'evi';
-      bindings: {
-        red: number;
-        nir: number;
-        blue: number;
-      };
-      parameters?: {
-        g?: number;
-        c1?: number;
-        c2?: number;
-        l?: number;
-      };
-    }
-  | {
-      kind: 'index';
-      name: 'savi';
-      bindings: {
-        red: number;
-        nir: number;
-      };
-      parameters?: {
-        l?: number;
-      };
-    };
-export type Calibration =
-  | {
-      mode: 'none' | 'metadata';
-    }
-  | {
-      mode: 'linear';
-      /**
-       * @minItems 1
-       * @maxItems 64
-       */
-      coefficients: [
-        {
-          band: number;
-          scale: number;
-          offset: number;
-        },
-        ...{
-          band: number;
-          scale: number;
-          offset: number;
-        }[]
-      ];
-    };
-export type Nodata =
-  | {
-      mode: 'source' | 'ignore';
-      use_mask?: boolean;
-    }
-  | {
-      mode: 'override';
-      use_mask?: boolean;
-      /**
-       * @minItems 1
-       * @maxItems 64
-       */
-      values: [number | ('nan' | 'inf' | '-inf'), ...(number | ('nan' | 'inf' | '-inf'))[]];
-    }
-  | {
-      mode: 'override';
-      use_mask?: boolean;
-      per_band: {
-        /**
-         * @minItems 1
-         * @maxItems 64
-         *
-         * This interface was referenced by `undefined`'s JSON-Schema definition
-         * via the `patternProperty` "^[1-9][0-9]*$".
-         */
-        [k: string]: [number | ('nan' | 'inf' | '-inf'), ...(number | ('nan' | 'inf' | '-inf'))[]];
-      };
-    };
-export type Stretch =
-  | {
-      method: 'none';
-      range_policy?: 'clamp' | 'transparent';
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      gamma?: [number, ...number[]];
-      sigmoid?: {
-        contrast: number;
-        midpoint: number;
-      };
-    }
-  | {
-      method: 'linear';
-      range_policy?: 'clamp' | 'transparent';
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      gamma?: [number, ...number[]];
-      sigmoid?: {
-        contrast: number;
-        midpoint: number;
-      };
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      ranges: [[number, number, ...number[]], ...[number, number, ...number[]][]];
-    }
-  | {
-      method: 'minmax';
-      range_policy?: 'clamp' | 'transparent';
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      gamma?: [number, ...number[]];
-      sigmoid?: {
-        contrast: number;
-        midpoint: number;
-      };
-    }
-  | {
-      method: 'percentile';
-      range_policy?: 'clamp' | 'transparent';
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      gamma?: [number, ...number[]];
-      sigmoid?: {
-        contrast: number;
-        midpoint: number;
-      };
-      /**
-       * @minItems 2
-       * @maxItems 2
-       */
-      percentiles: [number, number, ...number[]];
-    }
-  | {
-      method: 'stddev';
-      range_policy?: 'clamp' | 'transparent';
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      gamma?: [number, ...number[]];
-      sigmoid?: {
-        contrast: number;
-        midpoint: number;
-      };
-      stddev: number;
-    }
-  | {
-      method: 'histogram_equalization';
-      range_policy?: 'clamp' | 'transparent';
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      gamma?: [number, ...number[]];
-      sigmoid?: {
-        contrast: number;
-        midpoint: number;
-      };
-    }
-  | {
-      method: 'curve';
-      range_policy?: 'clamp' | 'transparent';
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      gamma?: [number, ...number[]];
-      sigmoid?: {
-        contrast: number;
-        midpoint: number;
-      };
-      /**
-       * @minItems 1
-       * @maxItems 3
-       */
-      curves: [
-        [
-          [number, number, ...number[]],
-          [number, number, ...number[]],
-          ...[number, number, ...number[]][]
-        ],
-        ...[
-          [number, number, ...number[]],
-          [number, number, ...number[]],
-          ...[number, number, ...number[]][]
-        ][]
-      ];
-    };
-export type Renderer =
-  | {
-      type: 'gray';
-      invert?: boolean;
-    }
-  | {
-      type: 'rgb';
-    }
-  | {
-      type: 'single_color';
-      color: string;
-    }
-  | {
-      type: 'pseudocolor';
-      color_map: Continuous | Discrete;
-    }
-  | {
-      type: 'shaded_relief';
-      terrain: Terrain;
-      strength?: number;
-      color_map: Continuous | Discrete;
-    }
-  | {
-      type: 'categorized';
-      color_map:
-        | Exact
-        | {
-            mode: 'source';
-          };
-    }
-  | {
-      type: 'hillshade';
-      terrain: Terrain;
-    };
 export type Continuous =
   | {
       mode: 'continuous';
@@ -334,34 +54,282 @@ export type Terrain =
       edge?: 'nodata';
       method: 'multidirectional';
     };
+export type PreOperation =
+  | {
+      op: 'gamma';
+      value: number;
+      channels?: 'r' | 'g' | 'b' | 'rg' | 'rb' | 'gb' | 'rgb';
+    }
+  | {
+      op: 'sigmoidal';
+      contrast: number;
+      midpoint: number;
+      channels?: 'r' | 'g' | 'b' | 'rg' | 'rb' | 'gb' | 'rgb';
+    }
+  | {
+      op: 'saturation';
+      value: number;
+    };
+export type PostOperation =
+  | {
+      op: 'gamma';
+      value: number;
+      channels?: 'r' | 'g' | 'b' | 'rg' | 'rb' | 'gb' | 'rgb';
+    }
+  | {
+      op: 'sigmoidal';
+      contrast: number;
+      midpoint: number;
+      channels?: 'r' | 'g' | 'b' | 'rg' | 'rb' | 'gb' | 'rgb';
+    }
+  | {
+      op: 'brightness';
+      value: number;
+      channels?: 'r' | 'g' | 'b' | 'rg' | 'rb' | 'gb' | 'rgb';
+    }
+  | {
+      op: 'contrast';
+      value: number;
+      channels?: 'r' | 'g' | 'b' | 'rg' | 'rb' | 'gb' | 'rgb';
+    }
+  | {
+      op: 'saturation';
+      value: number;
+    }
+  | {
+      op: 'grayscale';
+      method: 'luma' | 'average';
+    }
+  | {
+      op: 'invert';
+      channels?: 'r' | 'g' | 'b' | 'rg' | 'rb' | 'gb' | 'rgb';
+    };
 
 /**
- * Raster rendering configuration only. No legend, presentation metadata, category labels or automatic classification recipes. Normative semantic and backend-capability validation is additionally required; see the specification.
+ * Grouped raster style with structured color formulas and scalar opacity.
  */
 export interface RasterStyle {
   version: '2.0';
-  channels: Channels;
-  calibration?: Calibration;
-  nodata?: Nodata;
-  resampling?: Resampling;
-  stretch?: Stretch;
+  renderer: {
+    [k: string]: unknown;
+  } & (
+    | {
+        color?: never;
+        color_mapping?: never;
+        colormap?: never;
+        colormap_name?: never;
+        renderer_invert?: boolean;
+        strength?: never;
+        terrain?: never;
+        type: 'gray';
+      }
+    | {
+        color?: never;
+        color_mapping?: never;
+        colormap?: never;
+        colormap_name?: never;
+        renderer_invert?: never;
+        strength?: never;
+        terrain?: never;
+        type: 'rgb';
+      }
+    | {
+        color: string;
+        color_mapping?: never;
+        colormap?: never;
+        colormap_name?: never;
+        renderer_invert?: never;
+        strength?: never;
+        terrain?: never;
+        type: 'single_color';
+      }
+    | {
+        color?: never;
+        color_mapping?: Continuous | Discrete;
+        colormap?:
+          | {
+              /**
+               * @minItems 4
+               * @maxItems 4
+               *
+               * This interface was referenced by `undefined`'s JSON-Schema definition
+               * via the `patternProperty` "^(0|-?[1-9][0-9]*)$".
+               */
+              [k: string]: [number, number, number, number, ...number[]];
+            }
+          | [never[], ...never[][]];
+        colormap_name?: string;
+        renderer_invert?: never;
+        strength?: never;
+        terrain?: never;
+        type: 'pseudocolor';
+      }
+    | {
+        color?: never;
+        color_mapping?: Continuous | Discrete;
+        colormap?:
+          | {
+              /**
+               * @minItems 4
+               * @maxItems 4
+               *
+               * This interface was referenced by `undefined`'s JSON-Schema definition
+               * via the `patternProperty` "^(0|-?[1-9][0-9]*)$".
+               */
+              [k: string]: [number, number, number, number, ...number[]];
+            }
+          | [never[], ...never[][]];
+        colormap_name?: string;
+        renderer_invert?: never;
+        strength?: number;
+        terrain: Terrain;
+        type: 'shaded_relief';
+      }
+    | {
+        color?: never;
+        color_mapping?:
+          | Exact
+          | {
+              mode: 'source';
+            };
+        colormap?: {
+          /**
+           * @minItems 4
+           * @maxItems 4
+           *
+           * This interface was referenced by `undefined`'s JSON-Schema definition
+           * via the `patternProperty` "^(0|-?[1-9][0-9]*)$".
+           */
+          [k: string]: [number, number, number, number, ...number[]];
+        };
+        colormap_name?: string;
+        renderer_invert?: never;
+        strength?: never;
+        terrain?: never;
+        type: 'categorized';
+      }
+    | {
+        color?: never;
+        color_mapping?: never;
+        colormap?: never;
+        colormap_name?: never;
+        renderer_invert?: never;
+        strength?: never;
+        terrain: Terrain;
+        type: 'hillshade';
+      }
+  );
+  resampling?: {
+    read?: 'nearest' | 'bilinear' | 'cubic' | 'cubic_spline' | 'lanczos' | 'average' | 'mode';
+    reproject?: 'nearest' | 'bilinear' | 'cubic' | 'cubic_spline' | 'lanczos' | 'average' | 'mode';
+  };
+  stretch?:
+    | {
+        method: 'none';
+        range_policy?: 'clamp' | 'transparent';
+      }
+    | {
+        method: 'linear';
+        range_policy?: 'clamp' | 'transparent';
+        /**
+         * @minItems 1
+         * @maxItems 3
+         */
+        rescale: [[number, number, ...number[]], ...[number, number, ...number[]][]];
+      }
+    | {
+        method: 'minmax';
+        range_policy?: 'clamp' | 'transparent';
+      }
+    | {
+        method: 'percentile';
+        range_policy?: 'clamp' | 'transparent';
+        /**
+         * @minItems 2
+         * @maxItems 2
+         */
+        percentiles: [number, number, ...number[]];
+      }
+    | {
+        method: 'stddev';
+        range_policy?: 'clamp' | 'transparent';
+        stddev: number;
+      }
+    | {
+        method: 'histogram_equalization';
+        range_policy?: 'clamp' | 'transparent';
+      }
+    | {
+        method: 'curve';
+        range_policy?: 'clamp' | 'transparent';
+        /**
+         * @minItems 1
+         * @maxItems 3
+         */
+        curves: [
+          [
+            [number, number, ...number[]],
+            [number, number, ...number[]],
+            ...[number, number, ...number[]][]
+          ],
+          ...[
+            [number, number, ...number[]],
+            [number, number, ...number[]],
+            ...[number, number, ...number[]][]
+          ][]
+        ];
+      };
+  nodata?: number | 'nan';
+  effects?: {
+    /**
+     * @minItems 1
+     * @maxItems 64
+     */
+    color_formula?: [PreOperation, ...PreOperation[]];
+    /**
+     * @minItems 1
+     * @maxItems 64
+     */
+    post_color_formula?: [PostOperation, ...PostOperation[]];
+  };
+  opacity?: number;
+  image?: {
+    format?: 'png' | 'webp' | 'jpeg';
+    tilesize?: 64 | 128 | 256 | 512 | 1024;
+    quality?: number;
+    lossless?: boolean;
+    background?: string;
+  };
+  calibration?:
+    | {
+        mode: 'none' | 'metadata';
+      }
+    | {
+        mode: 'linear';
+        /**
+         * @minItems 1
+         * @maxItems 64
+         */
+        coefficients: [
+          {
+            band: number;
+            scale: number;
+            offset: number;
+          },
+          ...{
+            band: number;
+            scale: number;
+            offset: number;
+          }[]
+        ];
+      };
   statistics?: Statistics;
-  renderer: Renderer;
-  effects?: Effects;
-  opacity?: Opacity;
-  mosaic?: Mosaic;
-  image?: Image;
+  mosaic?: {
+    pixel_selection: 'first' | 'highest' | 'lowest' | 'mean' | 'median';
+    stage: 'before_channels' | 'after_channels';
+    rank_channel?: number;
+  };
   extensions?: Extensions;
-}
-export interface Resampling {
-  read?: 'nearest' | 'bilinear' | 'cubic' | 'cubic_spline' | 'lanczos' | 'average' | 'mode';
-  warp?: 'nearest' | 'bilinear' | 'cubic' | 'cubic_spline' | 'lanczos' | 'average' | 'mode';
-}
-export interface Statistics {
-  scope: 'dataset' | 'mosaic' | 'viewport';
-  accuracy: 'exact' | 'sample';
-  sample_size?: number;
-  ref?: string;
 }
 export interface Ramp {
   name: string;
@@ -401,103 +369,11 @@ export interface Exact {
   ];
   fallback_color?: string;
 }
-export interface Effects {
-  brightness?: number;
-  contrast?: number;
-  saturation?: number;
-  grayscale?: 'none' | 'luma' | 'average';
-  invert?: boolean;
-}
-export interface Opacity {
-  value?: number;
-  alpha_band?: {
-    band: number;
-    /**
-     * @minItems 2
-     * @maxItems 2
-     */
-    range: [number, number, ...number[]];
-  };
-  /**
-   * @minItems 1
-   * @maxItems 256
-   */
-  rules?: [
-    (
-      | {
-          kind: 'value';
-          channel: number;
-          value: number;
-          alpha: number;
-        }
-      | {
-          kind: 'range';
-          channel: number;
-          min: number;
-          max: number;
-          include_max?: boolean;
-          alpha: number;
-        }
-      | {
-          kind: 'rgb';
-          /**
-           * @minItems 3
-           * @maxItems 3
-           */
-          values: [number, number, number, ...number[]];
-          /**
-           * @minItems 3
-           * @maxItems 3
-           */
-          tolerance: [number, number, number, ...number[]];
-          alpha: number;
-        }
-    ),
-    ...(
-      | {
-          kind: 'value';
-          channel: number;
-          value: number;
-          alpha: number;
-        }
-      | {
-          kind: 'range';
-          channel: number;
-          min: number;
-          max: number;
-          include_max?: boolean;
-          alpha: number;
-        }
-      | {
-          kind: 'rgb';
-          /**
-           * @minItems 3
-           * @maxItems 3
-           */
-          values: [number, number, number, ...number[]];
-          /**
-           * @minItems 3
-           * @maxItems 3
-           */
-          tolerance: [number, number, number, ...number[]];
-          alpha: number;
-        }
-    )[]
-  ];
-  nodata_color?: string;
-}
-export interface Mosaic {
-  pixel_selection: 'first' | 'highest' | 'lowest' | 'mean' | 'median';
-  stage: 'before_channels' | 'after_channels';
-  rank_channel?: number;
-}
-export interface Image {
-  format?: 'png' | 'webp' | 'jpeg';
-  alpha?: 'preserve' | 'flatten';
-  background?: string;
-  quality?: number;
-  lossless?: boolean;
-  size?: 64 | 128 | 256 | 512 | 1024;
+export interface Statistics {
+  scope: 'dataset' | 'mosaic' | 'viewport';
+  accuracy: 'exact' | 'sample';
+  sample_size?: number;
+  ref?: string;
 }
 export interface Extensions {
   /**

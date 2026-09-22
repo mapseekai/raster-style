@@ -1,11 +1,16 @@
 {
   "version": "2.0",
   "renderer": {
-    "type": "rgb"
+    "type": "rgb",
+    "bidx": [
+      4,
+      3,
+      2
+    ]
   },
   "stretch": {
     "method": "linear",
-    "ranges": [
+    "rescale": [
       [
         0,
         3000
@@ -18,28 +23,33 @@
         0,
         3000
       ]
-    ],
-    "gamma": [
-      1.1,
-      1.1,
-      1.1
-    ]
-  },
-  "resampling": {
-    "read": "bilinear",
-    "warp": "bilinear"
-  },
-  "channels": {
-    "kind": "bands",
-    "bands": [
-      4,
-      3,
-      2
     ]
   },
   "image": {
     "format": "png",
-    "alpha": "preserve",
-    "size": 256
+    "tilesize": 256
+  },
+  "resampling": {
+    "read": "bilinear",
+    "reproject": "bilinear"
+  },
+  "effects": {
+    "color_formula": [
+      {
+        "op": "gamma",
+        "channels": "r",
+        "value": 1.1
+      },
+      {
+        "op": "gamma",
+        "channels": "g",
+        "value": 1.1
+      },
+      {
+        "op": "gamma",
+        "channels": "b",
+        "value": 1.1
+      }
+    ]
   }
 }

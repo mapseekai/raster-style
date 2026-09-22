@@ -1,0 +1,13 @@
+{
+  "version": "2.0",
+  "nodata": "nan",
+  "calibration": {
+    "mode": "none"
+  },
+  "renderer": {
+    "bidx": [
+      1
+    ],
+    "type": "gray"
+  }
+}

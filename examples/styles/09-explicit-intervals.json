@@ -2,7 +2,7 @@
   "version": "2.0",
   "renderer": {
     "type": "pseudocolor",
-    "color_map": {
+    "color_mapping": {
       "mode": "discrete",
       "domain": "data",
       "breaks": [
@@ -22,15 +22,12 @@
       ],
       "boundary": "left_closed",
       "outside_color": "#00000000"
-    }
+    },
+    "bidx": [
+      1
+    ]
   },
   "stretch": {
     "method": "none"
-  },
-  "channels": {
-    "kind": "bands",
-    "bands": [
-      1
-    ]
   }
 }

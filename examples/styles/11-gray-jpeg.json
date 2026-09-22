@@ -2,28 +2,24 @@
   "version": "2.0",
   "renderer": {
     "type": "gray",
-    "invert": false
+    "renderer_invert": false,
+    "bidx": [
+      1
+    ]
   },
   "stretch": {
     "method": "linear",
-    "ranges": [
+    "rescale": [
       [
         0,
         255
       ]
     ]
   },
-  "channels": {
-    "kind": "bands",
-    "bands": [
-      1
-    ]
-  },
   "image": {
     "format": "jpeg",
-    "alpha": "flatten",
     "background": "#ffffffff",
     "quality": 85,
-    "size": 256
+    "tilesize": 256
   }
 }

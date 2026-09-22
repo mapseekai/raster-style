@@ -39,13 +39,25 @@ def main() -> None:
         maximum = generator.uniform(1, 100000)
         style = {
             "version": "2.0",
-            "channels": {"kind": "bands", "bands": [generator.randint(1, 65535) for _ in range(channels)]},
-            "renderer": {"type": "rgb" if channels == 3 else "gray"},
-            "stretch": {"method": "linear", "ranges": [[minimum, maximum]], "gamma": [generator.uniform(.1, 4)]},
-            "effects": {"brightness": generator.uniform(-1, 1), "invert": index % 3 == 0},
-            "opacity": {"value": generator.random(), "nodata_color": "#AAbbCC"},
+            "renderer": {"bidx": [generator.randint(1, 65535) for _ in range(channels)], "type": "rgb" if channels == 3 else "gray"},
+            "stretch": {"method": "linear", "rescale": [[minimum, maximum]]},
+            "effects": {
+                "color_formula": [{"op": "gamma", "channels": "rgb" if channels == 3 else "r", "value": generator.uniform(.1, 4)}],
+                "post_color_formula": [{"op": "brightness", "value": generator.uniform(-1, 1)}],
+            },
+            "opacity": generator.random(),
             "image": {"format": "webp", "quality": generator.randint(1, 100), "lossless": False},
         }
+        if index % 3 == 0:
+            operations = [
+                {"op": "gamma", "channels": generator.choice(["r", "g", "b", "rg", "rb", "gb", "rgb"]), "value": generator.uniform(.1, 4)},
+                {"op": "sigmoidal", "contrast": generator.uniform(.1, 20), "midpoint": generator.uniform(.01, .99)},
+                {"op": "saturation", "value": generator.uniform(0, 4)},
+                {"op": "grayscale", "method": "luma"},
+                {"op": "invert"},
+            ]
+            generator.shuffle(operations)
+            style["effects"]["post_color_formula"] = operations
         requests.append({"op": "encode", "json": json.dumps(style), "name": f"generated-{index}"})
     commands = {
         "typescript": ["node", "packages/typescript/test/runner.mjs"],

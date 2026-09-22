@@ -2,7 +2,7 @@
   "version": "2.0",
   "renderer": {
     "type": "categorized",
-    "color_map": {
+    "color_mapping": {
       "mode": "exact",
       "entries": [
         {
@@ -19,19 +19,16 @@
         }
       ],
       "fallback_color": "#00000000"
-    }
+    },
+    "bidx": [
+      1
+    ]
   },
   "stretch": {
     "method": "none"
   },
   "resampling": {
     "read": "nearest",
-    "warp": "nearest"
-  },
-  "channels": {
-    "kind": "bands",
-    "bands": [
-      1
-    ]
+    "reproject": "nearest"
   }
 }

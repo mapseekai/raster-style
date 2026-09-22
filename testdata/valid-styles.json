@@ -2,11 +2,16 @@
   "01-rgb-fixed": {
     "version": "2.0",
     "renderer": {
-      "type": "rgb"
+      "type": "rgb",
+      "bidx": [
+        4,
+        3,
+        2
+      ]
     },
     "stretch": {
       "method": "linear",
-      "ranges": [
+      "rescale": [
         [
           0,
           3000
@@ -19,36 +24,45 @@
           0,
           3000
         ]
-      ],
-      "gamma": [
-        1.1,
-        1.1,
-        1.1
-      ]
-    },
-    "resampling": {
-      "read": "bilinear",
-      "warp": "bilinear"
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        4,
-        3,
-        2
       ]
     },
     "image": {
       "format": "png",
-      "alpha": "preserve",
-      "size": 256
+      "tilesize": 256
+    },
+    "resampling": {
+      "read": "bilinear",
+      "reproject": "bilinear"
+    },
+    "effects": {
+      "color_formula": [
+        {
+          "op": "gamma",
+          "channels": "r",
+          "value": 1.1
+        },
+        {
+          "op": "gamma",
+          "channels": "g",
+          "value": 1.1
+        },
+        {
+          "op": "gamma",
+          "channels": "b",
+          "value": 1.1
+        }
+      ]
     }
   },
   "02-ndvi-continuous": {
     "version": "2.0",
+    "opacity": 1,
+    "calibration": {
+      "mode": "metadata"
+    },
     "renderer": {
       "type": "pseudocolor",
-      "color_map": {
+      "color_mapping": {
         "mode": "continuous",
         "domain": "data",
         "interpolation": "srgb",
@@ -68,40 +82,32 @@
         ],
         "under": "clamp",
         "over": "clamp"
+      },
+      "index": {
+        "name": "ndvi",
+        "bindings": {
+          "red": 4,
+          "nir": 8
+        }
       }
     },
     "stretch": {
       "method": "none"
     },
-    "resampling": {
-      "read": "bilinear",
-      "warp": "bilinear"
-    },
-    "opacity": {
-      "value": 1,
-      "nodata_color": "#00000000"
-    },
-    "channels": {
-      "kind": "index",
-      "name": "ndvi",
-      "bindings": {
-        "red": 4,
-        "nir": 8
-      }
-    },
-    "calibration": {
-      "mode": "metadata"
-    },
     "image": {
       "format": "png",
-      "size": 256
+      "tilesize": 256
+    },
+    "resampling": {
+      "read": "bilinear",
+      "reproject": "bilinear"
     }
   },
   "03-discrete-breaks": {
     "version": "2.0",
     "renderer": {
       "type": "pseudocolor",
-      "color_map": {
+      "color_mapping": {
         "mode": "discrete",
         "domain": "data",
         "breaks": [
@@ -117,27 +123,24 @@
         ],
         "boundary": "left_closed",
         "outside_color": "#00000000"
-      }
+      },
+      "bidx": [
+        1
+      ]
     },
     "stretch": {
       "method": "none"
     },
     "resampling": {
       "read": "nearest",
-      "warp": "nearest"
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
+      "reproject": "nearest"
     }
   },
   "04-categorized": {
     "version": "2.0",
     "renderer": {
       "type": "categorized",
-      "color_map": {
+      "color_mapping": {
         "mode": "exact",
         "entries": [
           {
@@ -154,20 +157,17 @@
           }
         ],
         "fallback_color": "#00000000"
-      }
+      },
+      "bidx": [
+        1
+      ]
     },
     "stretch": {
       "method": "none"
     },
     "resampling": {
       "read": "nearest",
-      "warp": "nearest"
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
+      "reproject": "nearest"
     }
   },
   "05-hillshade": {
@@ -182,52 +182,52 @@
         "z_factor": 1,
         "vertical_unit": "metre",
         "edge": "nodata"
-      }
+      },
+      "bidx": [
+        1
+      ]
     },
     "stretch": {
       "method": "none"
     },
-    "resampling": {
-      "read": "bilinear",
-      "warp": "bilinear"
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
-    },
     "image": {
       "format": "png",
-      "size": 512
+      "tilesize": 512
+    },
+    "resampling": {
+      "read": "bilinear",
+      "reproject": "bilinear"
     }
   },
   "06-percentile-stretch": {
     "version": "2.0",
+    "statistics": {
+      "scope": "dataset",
+      "accuracy": "sample",
+      "sample_size": 1000000
+    },
     "renderer": {
-      "type": "rgb"
+      "type": "rgb",
+      "bidx": [
+        4,
+        3,
+        2
+      ]
     },
     "stretch": {
       "method": "percentile",
       "percentiles": [
         2,
         98
-      ],
-      "gamma": [
-        1.1
       ]
     },
-    "statistics": {
-      "scope": "dataset",
-      "accuracy": "sample",
-      "sample_size": 1000000
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        4,
-        3,
-        2
+    "effects": {
+      "color_formula": [
+        {
+          "op": "gamma",
+          "channels": "rgb",
+          "value": 1.1
+        }
       ]
     }
   },
@@ -235,7 +235,7 @@
     "version": "2.0",
     "renderer": {
       "type": "pseudocolor",
-      "color_map": {
+      "color_mapping": {
         "mode": "continuous",
         "domain": "data",
         "interpolation": "srgb",
@@ -255,28 +255,22 @@
         ],
         "under": "clamp",
         "over": "clamp"
-      }
+      },
+      "language": "raster-expr/1",
+      "expression": "(b8-b4)/(b8+b4)"
     },
     "stretch": {
       "method": "none"
+    },
+    "image": {
+      "format": "webp",
+      "lossless": true,
+      "tilesize": 256
     },
     "mosaic": {
       "pixel_selection": "highest",
       "stage": "after_channels",
       "rank_channel": 1
-    },
-    "channels": {
-      "kind": "expression",
-      "language": "raster-expr/1",
-      "expressions": [
-        "(b8-b4)/(b8+b4)"
-      ]
-    },
-    "image": {
-      "format": "webp",
-      "alpha": "preserve",
-      "lossless": true,
-      "size": 256
     }
   },
   "08-shaded-relief": {
@@ -293,7 +287,7 @@
         "edge": "nodata"
       },
       "strength": 0.65,
-      "color_map": {
+      "color_mapping": {
         "mode": "continuous",
         "domain": "data",
         "stops": [
@@ -310,23 +304,20 @@
             "color": "#ffffffff"
           }
         ]
-      }
+      },
+      "bidx": [
+        1
+      ]
     },
     "stretch": {
       "method": "none"
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
     }
   },
   "09-explicit-intervals": {
     "version": "2.0",
     "renderer": {
       "type": "pseudocolor",
-      "color_map": {
+      "color_mapping": {
         "mode": "discrete",
         "domain": "data",
         "breaks": [
@@ -346,129 +337,65 @@
         ],
         "boundary": "left_closed",
         "outside_color": "#00000000"
-      }
+      },
+      "bidx": [
+        1
+      ]
     },
     "stretch": {
       "method": "none"
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
     }
   },
   "10-single-color": {
     "version": "2.0",
+    "opacity": 0.8,
     "renderer": {
       "type": "single_color",
-      "color": "#ff880080"
+      "color": "#ff880080",
+      "bidx": [
+        1
+      ]
     },
     "stretch": {
       "method": "none"
     },
-    "opacity": {
-      "value": 0.8,
-      "rules": [
-        {
-          "kind": "value",
-          "channel": 1,
-          "value": 0,
-          "alpha": 0
-        }
-      ],
-      "nodata_color": "#00000000"
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
-    },
     "image": {
       "format": "png",
-      "size": 256
+      "tilesize": 256
     }
   },
   "11-gray-jpeg": {
     "version": "2.0",
     "renderer": {
       "type": "gray",
-      "invert": false
+      "renderer_invert": false,
+      "bidx": [
+        1
+      ]
     },
     "stretch": {
       "method": "linear",
-      "ranges": [
+      "rescale": [
         [
           0,
           255
         ]
       ]
     },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
-    },
     "image": {
       "format": "jpeg",
-      "alpha": "flatten",
       "background": "#ffffffff",
       "quality": 85,
-      "size": 256
+      "tilesize": 256
     }
   },
   "12-all-gray-fields": {
     "version": "2.0",
-    "renderer": {
-      "type": "gray",
-      "invert": true
-    },
-    "stretch": {
-      "method": "stddev",
-      "stddev": 2.5,
-      "gamma": [
-        1.2
-      ],
-      "range_policy": "transparent",
-      "sigmoid": {
-        "contrast": 5,
-        "midpoint": 0.4
-      }
-    },
-    "effects": {
-      "brightness": 0.1,
-      "contrast": 1.5,
-      "saturation": 0.8,
-      "grayscale": "luma",
-      "invert": false
-    },
-    "opacity": {
-      "value": 0.8,
-      "alpha_band": {
-        "band": 2,
-        "range": [
-          0,
-          255
-        ]
-      },
-      "nodata_color": "#FFAABB"
-    },
+    "opacity": 0.8,
     "statistics": {
       "scope": "dataset",
       "accuracy": "sample",
       "sample_size": 1000
-    },
-    "resampling": {
-      "read": "cubic_spline",
-      "warp": "average"
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        1
-      ]
     },
     "calibration": {
       "mode": "linear",
@@ -480,26 +407,67 @@
         }
       ]
     },
-    "nodata": {
-      "mode": "override",
-      "values": [
-        "nan",
-        "inf",
-        "-inf",
-        -9999
-      ],
-      "use_mask": false
+    "renderer": {
+      "type": "gray",
+      "renderer_invert": true,
+      "bidx": [
+        1
+      ]
+    },
+    "stretch": {
+      "method": "stddev",
+      "stddev": 2.5,
+      "range_policy": "transparent"
     },
     "image": {
       "format": "png",
-      "alpha": "preserve",
-      "size": 64
+      "tilesize": 64
+    },
+    "resampling": {
+      "read": "cubic_spline",
+      "reproject": "average"
+    },
+    "effects": {
+      "post_color_formula": [
+        {
+          "op": "brightness",
+          "value": 0.1
+        },
+        {
+          "op": "contrast",
+          "value": 1.5
+        },
+        {
+          "op": "saturation",
+          "value": 0.8
+        },
+        {
+          "op": "grayscale",
+          "method": "luma"
+        }
+      ],
+      "color_formula": [
+        {
+          "op": "gamma",
+          "channels": "r",
+          "value": 1.2
+        },
+        {
+          "op": "sigmoidal",
+          "channels": "r",
+          "contrast": 5,
+          "midpoint": 0.4
+        }
+      ]
     }
   },
   "13-curve": {
     "version": "2.0",
     "renderer": {
-      "type": "gray"
+      "type": "gray",
+      "bidx": [
+        1
+      ]
     },
     "stretch": {
       "method": "curve",
@@ -518,72 +486,56 @@
             1
           ]
         ]
-      ],
-      "gamma": [
-        1
-      ]
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
-        1
       ]
     }
   },
   "14-histogram": {
     "version": "2.0",
-    "renderer": {
-      "type": "gray"
-    },
-    "stretch": {
-      "method": "histogram_equalization"
-    },
     "statistics": {
       "scope": "dataset",
       "accuracy": "exact"
     },
-    "channels": {
-      "kind": "bands",
-      "bands": [
+    "renderer": {
+      "type": "gray",
+      "bidx": [
         1
       ]
+    },
+    "stretch": {
+      "method": "histogram_equalization"
     }
   },
   "15-evi": {
     "version": "2.0",
     "renderer": {
-      "type": "gray"
+      "type": "gray",
+      "index": {
+        "name": "evi",
+        "bindings": {
+          "red": 3,
+          "nir": 4,
+          "blue": 1
+        },
+        "parameters": {
+          "g": 2.5,
+          "c1": 6,
+          "c2": 7.5,
+          "l": 1
+        }
+      }
     },
     "stretch": {
       "method": "linear",
-      "ranges": [
+      "rescale": [
         [
           -1,
           1
         ]
       ]
-    },
-    "channels": {
-      "kind": "index",
-      "name": "evi",
-      "bindings": {
-        "red": 3,
-        "nir": 4,
-        "blue": 1
-      },
-      "parameters": {
-        "g": 2.5,
-        "c1": 6,
-        "c2": 7.5,
-        "l": 1
-      }
     }
   },
   "16-unicode-extension": {
     "version": "2.0",
-    "renderer": {
-      "type": "gray"
-    },
     "extensions": {
       "mapseek.test.config": {
         "version": "1",
@@ -605,9 +557,9 @@
         }
       }
     },
-    "channels": {
-      "kind": "bands",
-      "bands": [
+    "renderer": {
+      "type": "gray",
+      "bidx": [
         1
       ]
     }
@@ -615,11 +567,8 @@
   "17-repeated-bands": {
     "version": "2.0",
     "renderer": {
-      "type": "rgb"
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
+      "type": "rgb",
+      "bidx": [
         1,
         1,
         1
@@ -629,13 +578,809 @@
   "18-minimal": {
     "version": "2.0",
     "renderer": {
-      "type": "gray"
-    },
-    "channels": {
-      "kind": "bands",
-      "bands": [
+      "type": "gray",
+      "bidx": [
         1
       ]
+    }
+  },
+  "19-ordered-color-operations": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        4,
+        3,
+        2
+      ],
+      "type": "rgb"
+    },
+    "stretch": {
+      "method": "linear",
+      "rescale": [
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    "effects": {
+      "post_color_formula": [
+        {
+          "op": "saturation",
+          "value": 1.2
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1.1
+        },
+        {
+          "op": "sigmoidal",
+          "channels": "rgb",
+          "contrast": 6,
+          "midpoint": 0.5
+        },
+        {
+          "op": "gamma",
+          "channels": "b",
+          "value": 0.9
+        }
+      ]
+    }
+  },
+  "ordered-color-all-operations": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        4,
+        3,
+        2
+      ],
+      "type": "rgb"
+    },
+    "stretch": {
+      "method": "linear",
+      "rescale": [
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    "effects": {
+      "post_color_formula": [
+        {
+          "op": "gamma",
+          "value": 1.1
+        },
+        {
+          "op": "sigmoidal",
+          "contrast": 2,
+          "midpoint": 0.4
+        },
+        {
+          "op": "brightness",
+          "channels": "r",
+          "value": 0.1
+        },
+        {
+          "op": "contrast",
+          "channels": "g",
+          "value": 1.2
+        },
+        {
+          "op": "saturation",
+          "value": 0
+        },
+        {
+          "op": "grayscale",
+          "method": "luma"
+        },
+        {
+          "op": "grayscale",
+          "method": "average"
+        },
+        {
+          "op": "invert",
+          "channels": "gb"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "brightness",
+          "channels": "rg",
+          "value": -0.2
+        }
+      ]
+    }
+  },
+  "ordered-color-reversed": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        4,
+        3,
+        2
+      ],
+      "type": "rgb"
+    },
+    "stretch": {
+      "method": "linear",
+      "rescale": [
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    "effects": {
+      "post_color_formula": [
+        {
+          "op": "gamma",
+          "channels": "b",
+          "value": 0.9
+        },
+        {
+          "op": "sigmoidal",
+          "channels": "rgb",
+          "contrast": 6,
+          "midpoint": 0.5
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1.1
+        },
+        {
+          "op": "saturation",
+          "value": 1.2
+        }
+      ]
+    }
+  },
+  "formula-rb": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        4,
+        3,
+        2
+      ],
+      "type": "rgb"
+    },
+    "effects": {
+      "color_formula": [
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1.1
+        }
+      ]
+    }
+  },
+  "formula-normalization": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        4,
+        3,
+        2
+      ],
+      "type": "rgb"
+    },
+    "effects": {
+      "color_formula": [
+        {
+          "op": "gamma",
+          "channels": "r",
+          "value": 1.1
+        },
+        {
+          "op": "sigmoidal",
+          "channels": "rgb",
+          "contrast": 6,
+          "midpoint": 0.5
+        },
+        {
+          "op": "saturation",
+          "value": 0
+        }
+      ]
+    }
+  },
+  "formula-repeated": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        4,
+        3,
+        2
+      ],
+      "type": "rgb"
+    },
+    "effects": {
+      "color_formula": [
+        {
+          "op": "gamma",
+          "channels": "r",
+          "value": 1.1
+        },
+        {
+          "op": "gamma",
+          "channels": "b",
+          "value": 0.9
+        },
+        {
+          "op": "gamma",
+          "channels": "r",
+          "value": 2
+        }
+      ]
+    }
+  },
+  "formula-gray": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        1
+      ],
+      "type": "gray"
+    },
+    "effects": {
+      "color_formula": [
+        {
+          "op": "gamma",
+          "channels": "r",
+          "value": 1.1
+        }
+      ]
+    }
+  },
+  "formula-max-operations": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        4,
+        3,
+        2
+      ],
+      "type": "rgb"
+    },
+    "effects": {
+      "color_formula": [
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        },
+        {
+          "op": "gamma",
+          "channels": "rb",
+          "value": 1
+        }
+      ]
+    }
+  },
+  "formula-post-operations": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        4,
+        3,
+        2
+      ],
+      "type": "rgb"
+    },
+    "effects": {
+      "color_formula": [
+        {
+          "op": "gamma",
+          "channels": "rgb",
+          "value": 1.2
+        }
+      ],
+      "post_color_formula": [
+        {
+          "op": "sigmoidal",
+          "contrast": 6,
+          "midpoint": 0.5
+        }
+      ]
+    }
+  },
+  "expression-three": {
+    "version": "2.0",
+    "renderer": {
+      "language": "raster-expr/1",
+      "expression": " b4 ; b3; b2 ",
+      "type": "rgb"
+    }
+  },
+  "native-colormap": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        1
+      ],
+      "type": "pseudocolor",
+      "colormap": {
+        "0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "255": [
+          255,
+          255,
+          255,
+          255
+        ]
+      }
+    },
+    "stretch": {
+      "method": "linear",
+      "rescale": [
+        [
+          0,
+          3000
+        ]
+      ]
+    }
+  },
+  "native-intervals": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        1
+      ],
+      "type": "pseudocolor",
+      "colormap": [
+        [
+          [
+            0,
+            100
+          ],
+          [
+            255,
+            0,
+            0,
+            255
+          ]
+        ],
+        [
+          [
+            100,
+            200
+          ],
+          [
+            0,
+            0,
+            255,
+            128
+          ]
+        ]
+      ]
+    }
+  },
+  "native-categorized": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        1
+      ],
+      "type": "categorized",
+      "colormap": {
+        "-1": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "2": [
+          255,
+          255,
+          255,
+          255
+        ]
+      }
+    }
+  },
+  "named-colormap": {
+    "version": "2.0",
+    "renderer": {
+      "bidx": [
+        1
+      ],
+      "type": "pseudocolor",
+      "colormap_name": "viridis"
+    }
+  },
+  "native-nodata-number": {
+    "version": "2.0",
+    "nodata": -9999,
+    "calibration": {
+      "mode": "metadata"
+    },
+    "renderer": {
+      "bidx": [
+        1
+      ],
+      "type": "gray"
+    }
+  },
+  "native-nodata-nan": {
+    "version": "2.0",
+    "nodata": "nan",
+    "calibration": {
+      "mode": "none"
+    },
+    "renderer": {
+      "bidx": [
+        1
+      ],
+      "type": "gray"
+    }
+  },
+  "23-simple-rgb": {
+    "version": "2.0",
+    "renderer": {
+      "type": "rgb",
+      "bidx": [
+        4,
+        3,
+        2
+      ]
+    },
+    "resampling": {
+      "read": "bilinear",
+      "reproject": "bilinear"
+    },
+    "stretch": {
+      "method": "linear",
+      "rescale": [
+        [
+          0,
+          3000
+        ]
+      ]
+    },
+    "nodata": -9999,
+    "effects": {
+      "color_formula": [
+        {
+          "op": "gamma",
+          "channels": "rgb",
+          "value": 1.1
+        },
+        {
+          "op": "saturation",
+          "value": 1.2
+        }
+      ],
+      "post_color_formula": [
+        {
+          "op": "brightness",
+          "channels": "rgb",
+          "value": 0.05
+        }
+      ]
+    },
+    "opacity": 1,
+    "image": {
+      "format": "png",
+      "tilesize": 256
     }
   }
 }

@@ -1,53 +1,10 @@
 {
   "version": "2.0",
-  "renderer": {
-    "type": "gray",
-    "invert": true
-  },
-  "stretch": {
-    "method": "stddev",
-    "stddev": 2.5,
-    "gamma": [
-      1.2
-    ],
-    "range_policy": "transparent",
-    "sigmoid": {
-      "contrast": 5,
-      "midpoint": 0.4
-    }
-  },
-  "effects": {
-    "brightness": 0.1,
-    "contrast": 1.5,
-    "saturation": 0.8,
-    "grayscale": "luma",
-    "invert": false
-  },
-  "opacity": {
-    "value": 0.8,
-    "alpha_band": {
-      "band": 2,
-      "range": [
-        0,
-        255
-      ]
-    },
-    "nodata_color": "#FFAABB"
-  },
+  "opacity": 0.8,
   "statistics": {
     "scope": "dataset",
     "accuracy": "sample",
     "sample_size": 1000
-  },
-  "resampling": {
-    "read": "cubic_spline",
-    "warp": "average"
-  },
-  "channels": {
-    "kind": "bands",
-    "bands": [
-      1
-    ]
   },
   "calibration": {
     "mode": "linear",
@@ -59,19 +16,57 @@
       }
     ]
   },
-  "nodata": {
-    "mode": "override",
-    "values": [
-      "nan",
-      "inf",
-      "-inf",
-      -9999
-    ],
-    "use_mask": false
+  "renderer": {
+    "type": "gray",
+    "renderer_invert": true,
+    "bidx": [
+      1
+    ]
+  },
+  "stretch": {
+    "method": "stddev",
+    "stddev": 2.5,
+    "range_policy": "transparent"
   },
   "image": {
     "format": "png",
-    "alpha": "preserve",
-    "size": 64
+    "tilesize": 64
+  },
+  "resampling": {
+    "read": "cubic_spline",
+    "reproject": "average"
+  },
+  "effects": {
+    "post_color_formula": [
+      {
+        "op": "brightness",
+        "value": 0.1
+      },
+      {
+        "op": "contrast",
+        "value": 1.5
+      },
+      {
+        "op": "saturation",
+        "value": 0.8
+      },
+      {
+        "op": "grayscale",
+        "method": "luma"
+      }
+    ],
+    "color_formula": [
+      {
+        "op": "gamma",
+        "channels": "r",
+        "value": 1.2
+      },
+      {
+        "op": "sigmoidal",
+        "channels": "r",
+        "contrast": 5,
+        "midpoint": 0.4
+      }
+    ]
   }
 }

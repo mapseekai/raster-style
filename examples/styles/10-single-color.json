@@ -1,32 +1,18 @@
 {
   "version": "2.0",
+  "opacity": 0.8,
   "renderer": {
     "type": "single_color",
-    "color": "#ff880080"
+    "color": "#ff880080",
+    "bidx": [
+      1
+    ]
   },
   "stretch": {
     "method": "none"
   },
-  "opacity": {
-    "value": 0.8,
-    "rules": [
-      {
-        "kind": "value",
-        "channel": 1,
-        "value": 0,
-        "alpha": 0
-      }
-    ],
-    "nodata_color": "#00000000"
-  },
-  "channels": {
-    "kind": "bands",
-    "bands": [
-      1
-    ]
-  },
   "image": {
     "format": "png",
-    "size": 256
+    "tilesize": 256
   }
 }

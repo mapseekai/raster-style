@@ -81,7 +81,7 @@ fn budgets_and_serde() {
     .unwrap();
     assert_eq!(
         codec
-            .decode_query("rsv=2.0&renderer=gray")
+            .decode_query("version=2.0&type=gray")
             .unwrap_err()
             .code,
         "E_LIMIT"

@@ -1,7 +1,10 @@
 {
   "version": "2.0",
   "renderer": {
-    "type": "gray"
+    "type": "gray",
+    "bidx": [
+      1
+    ]
   },
   "stretch": {
     "method": "curve",
@@ -20,15 +23,6 @@
           1
         ]
       ]
-    ],
-    "gamma": [
-      1
-    ]
-  },
-  "channels": {
-    "kind": "bands",
-    "bands": [
-      1
     ]
   }
 }

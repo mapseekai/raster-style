@@ -6,7 +6,7 @@ Raster Style Spec v2 的 Rust JSON ↔ Q2 查询参数编解码工具，支持�
 
 ```toml
 [dependencies]
-raster-style = "0.1.0"
+raster-style = "0.2.0"
 ```
 
 ## 使用
@@ -15,7 +15,7 @@ raster-style = "0.1.0"
 use raster_style::{json_to_query, query_to_json};
 
 fn main() -> Result<(), raster_style::Error> {
-    let style = r#"{"version":"2.0","channels":{"kind":"bands","bands":[4,3,2]},"renderer":{"type":"rgb"}}"#;
+    let style = r#"{"version":"2.0","renderer":{"type":"rgb","bidx":[4,3,2]}}"#;
     let query = json_to_query(style)?;
     let json = query_to_json(&query)?;
     println!("{json}");
@@ -23,7 +23,7 @@ fn main() -> Result<(), raster_style::Error> {
 }
 ```
 
-完整接口见 [SDK 使用说明](https://github.com/mapseekai/raster-style/blob/v0.1.0/docs/SDK.md)。
+完整接口见 [SDK 使用说明](https://github.com/mapseekai/raster-style/blob/v0.2.0/docs/SDK.md)。
 
 ## 许可证
 

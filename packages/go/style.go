@@ -49,6 +49,9 @@ func newStyle(value any) (*Style, error) {
 		return nil, failure("E_SCHEMA", "Raster style does not match the schema", "")
 	}
 	document := value.(map[string]any)
+	if err := normalizeProfile(document); err != nil {
+		return nil, err
+	}
 	if err := validateSemantics(document); err != nil {
 		return nil, err
 	}
@@ -160,12 +163,12 @@ func normalizeColor(color string) string {
 	return color
 }
 func normalizeColors(style map[string]any) {
-	for _, path := range []string{"renderer.color", "opacity.nodata_color", "image.background"} {
+	for _, path := range []string{"renderer.color", "image.background"} {
 		if color, found := getPath(style, path); found {
 			setPath(style, path, normalizeColor(color.(string)))
 		}
 	}
-	colorMap := objectAt(objectAt(style, "renderer"), "color_map")
+	colorMap := objectAt(objectAt(style, "renderer"), "color_mapping")
 	for _, key := range []string{"under", "over", "outside_color", "fallback_color"} {
 		if color, ok := colorMap[key].(string); ok && strings.HasPrefix(color, "#") {
 			colorMap[key] = normalizeColor(color)

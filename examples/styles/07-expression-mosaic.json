@@ -2,7 +2,7 @@
   "version": "2.0",
   "renderer": {
     "type": "pseudocolor",
-    "color_map": {
+    "color_mapping": {
       "mode": "continuous",
       "domain": "data",
       "interpolation": "srgb",
@@ -22,27 +22,21 @@
       ],
       "under": "clamp",
       "over": "clamp"
-    }
+    },
+    "language": "raster-expr/1",
+    "expression": "(b8-b4)/(b8+b4)"
   },
   "stretch": {
     "method": "none"
+  },
+  "image": {
+    "format": "webp",
+    "lossless": true,
+    "tilesize": 256
   },
   "mosaic": {
     "pixel_selection": "highest",
     "stage": "after_channels",
     "rank_channel": 1
-  },
-  "channels": {
-    "kind": "expression",
-    "language": "raster-expr/1",
-    "expressions": [
-      "(b8-b4)/(b8+b4)"
-    ]
-  },
-  "image": {
-    "format": "webp",
-    "alpha": "preserve",
-    "lossless": true,
-    "size": 256
   }
 }

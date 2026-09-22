@@ -4,11 +4,16 @@
     "raster_style": {
       "version": "2.0",
       "renderer": {
+        "bidx": [
+          4,
+          3,
+          2
+        ],
         "type": "rgb"
       },
       "stretch": {
         "method": "linear",
-        "ranges": [
+        "rescale": [
           [
             0,
             3000
@@ -21,99 +26,101 @@
             0,
             3000
           ]
-        ],
-        "gamma": [
-          1.1,
-          1.1,
-          1.1
-        ]
-      },
-      "resampling": {
-        "read": "bilinear",
-        "warp": "bilinear"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          4,
-          3,
-          2
         ]
       },
       "image": {
         "format": "png",
-        "alpha": "preserve",
-        "size": 256
+        "tilesize": 256
+      },
+      "resampling": {
+        "reproject": "bilinear",
+        "read": "bilinear"
+      },
+      "effects": {
+        "color_formula": [
+          {
+            "op": "gamma",
+            "channels": "r",
+            "value": 1.1
+          },
+          {
+            "op": "gamma",
+            "channels": "g",
+            "value": 1.1
+          },
+          {
+            "op": "gamma",
+            "channels": "b",
+            "value": 1.1
+          }
+        ]
       }
     },
-    "query": "alpha=preserve&bidx=4&bidx=3&bidx=2&format=png&gamma=1.1&gamma=1.1&gamma=1.1&renderer=rgb&reproject=bilinear&resampling=bilinear&rescale=0%2C3000&rescale=0%2C3000&rescale=0%2C3000&rsv=2.0&selector=bands&size=256&stretch=linear"
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20r%201.1%2C%20gamma%20g%201.1%2C%20gamma%20b%201.1&format=png&method=linear&reproject=bilinear&resampling=bilinear&rescale=0%2C3000&rescale=0%2C3000&rescale=0%2C3000&tilesize=256&type=rgb&version=2.0"
   },
   {
     "name": "02-ndvi-continuous",
     "raster_style": {
+      "opacity": 1,
+      "calibration": {
+        "mode": "metadata"
+      },
       "version": "2.0",
       "renderer": {
-        "type": "pseudocolor",
-        "color_map": {
-          "mode": "continuous",
+        "index": {
+          "bindings": {
+            "nir": 8,
+            "red": 4
+          },
+          "name": "ndvi"
+        },
+        "color_mapping": {
           "domain": "data",
           "interpolation": "srgb",
+          "mode": "continuous",
+          "over": "clamp",
           "stops": [
             {
-              "value": -1,
-              "color": "#313695ff"
+              "color": "#313695ff",
+              "value": -1
             },
             {
-              "value": 0,
-              "color": "#ffffbfff"
+              "color": "#ffffbfff",
+              "value": 0
             },
             {
-              "value": 1,
-              "color": "#006837ff"
+              "color": "#006837ff",
+              "value": 1
             }
           ],
-          "under": "clamp",
-          "over": "clamp"
-        }
+          "under": "clamp"
+        },
+        "type": "pseudocolor"
       },
       "stretch": {
         "method": "none"
       },
-      "resampling": {
-        "read": "bilinear",
-        "warp": "bilinear"
-      },
-      "opacity": {
-        "value": 1,
-        "nodata_color": "#00000000"
-      },
-      "channels": {
-        "kind": "index",
-        "name": "ndvi",
-        "bindings": {
-          "red": 4,
-          "nir": 8
-        }
-      },
-      "calibration": {
-        "mode": "metadata"
-      },
       "image": {
         "format": "png",
-        "size": 256
+        "tilesize": 256
+      },
+      "resampling": {
+        "reproject": "bilinear",
+        "read": "bilinear"
       }
     },
-    "query": "calibration=%7B%22mode%22%3A%22metadata%22%7D&cmap=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&format=png&index=ndvi&index_bands=%7B%22nir%22%3A8%2C%22red%22%3A4%7D&nodata_color=00000000&opacity=1&renderer=pseudocolor&reproject=bilinear&resampling=bilinear&rsv=2.0&selector=index&size=256&stretch=none"
+    "query": "calibration=%7B%22mode%22%3A%22metadata%22%7D&color_mapping=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&format=png&index=%7B%22bindings%22%3A%7B%22nir%22%3A8%2C%22red%22%3A4%7D%2C%22name%22%3A%22ndvi%22%7D&method=none&opacity=1&reproject=bilinear&resampling=bilinear&tilesize=256&type=pseudocolor&version=2.0"
   },
   {
     "name": "03-discrete-breaks",
     "raster_style": {
       "version": "2.0",
       "renderer": {
-        "type": "pseudocolor",
-        "color_map": {
-          "mode": "discrete",
-          "domain": "data",
+        "bidx": [
+          1
+        ],
+        "color_mapping": {
+          "boundary": "left_closed",
           "breaks": [
             0,
             100,
@@ -125,108 +132,108 @@
             "#ffffbfff",
             "#d7191cff"
           ],
-          "boundary": "left_closed",
+          "domain": "data",
+          "mode": "discrete",
           "outside_color": "#00000000"
-        }
+        },
+        "type": "pseudocolor"
       },
       "stretch": {
         "method": "none"
       },
       "resampling": {
-        "read": "nearest",
-        "warp": "nearest"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
+        "reproject": "nearest",
+        "read": "nearest"
       }
     },
-    "query": "bidx=1&cmap=%7B%22boundary%22%3A%22left_closed%22%2C%22breaks%22%3A%5B0%2C100%2C500%2C1000%5D%2C%22colors%22%3A%5B%22%232c7bb6ff%22%2C%22%23ffffbfff%22%2C%22%23d7191cff%22%5D%2C%22domain%22%3A%22data%22%2C%22mode%22%3A%22discrete%22%2C%22outside_color%22%3A%22%2300000000%22%7D&renderer=pseudocolor&reproject=nearest&resampling=nearest&rsv=2.0&selector=bands&stretch=none"
+    "query": "bidx=1&color_mapping=%7B%22boundary%22%3A%22left_closed%22%2C%22breaks%22%3A%5B0%2C100%2C500%2C1000%5D%2C%22colors%22%3A%5B%22%232c7bb6ff%22%2C%22%23ffffbfff%22%2C%22%23d7191cff%22%5D%2C%22domain%22%3A%22data%22%2C%22mode%22%3A%22discrete%22%2C%22outside_color%22%3A%22%2300000000%22%7D&method=none&reproject=nearest&resampling=nearest&type=pseudocolor&version=2.0"
   },
   {
     "name": "04-categorized",
     "raster_style": {
       "version": "2.0",
       "renderer": {
-        "type": "categorized",
-        "color_map": {
-          "mode": "exact",
+        "bidx": [
+          1
+        ],
+        "color_mapping": {
           "entries": [
             {
-              "value": 1,
-              "color": "#228b22ff"
+              "color": "#228b22ff",
+              "value": 1
             },
             {
-              "value": 2,
-              "color": "#4169e1ff"
+              "color": "#4169e1ff",
+              "value": 2
             },
             {
-              "value": 3,
-              "color": "#d2b48cff"
+              "color": "#d2b48cff",
+              "value": 3
             }
           ],
-          "fallback_color": "#00000000"
-        }
+          "fallback_color": "#00000000",
+          "mode": "exact"
+        },
+        "type": "categorized"
       },
       "stretch": {
         "method": "none"
       },
       "resampling": {
-        "read": "nearest",
-        "warp": "nearest"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
+        "reproject": "nearest",
+        "read": "nearest"
       }
     },
-    "query": "bidx=1&cmap=%7B%22entries%22%3A%5B%7B%22color%22%3A%22%23228b22ff%22%2C%22value%22%3A1%7D%2C%7B%22color%22%3A%22%234169e1ff%22%2C%22value%22%3A2%7D%2C%7B%22color%22%3A%22%23d2b48cff%22%2C%22value%22%3A3%7D%5D%2C%22fallback_color%22%3A%22%2300000000%22%2C%22mode%22%3A%22exact%22%7D&renderer=categorized&reproject=nearest&resampling=nearest&rsv=2.0&selector=bands&stretch=none"
+    "query": "bidx=1&color_mapping=%7B%22entries%22%3A%5B%7B%22color%22%3A%22%23228b22ff%22%2C%22value%22%3A1%7D%2C%7B%22color%22%3A%22%234169e1ff%22%2C%22value%22%3A2%7D%2C%7B%22color%22%3A%22%23d2b48cff%22%2C%22value%22%3A3%7D%5D%2C%22fallback_color%22%3A%22%2300000000%22%2C%22mode%22%3A%22exact%22%7D&method=none&reproject=nearest&resampling=nearest&type=categorized&version=2.0"
   },
   {
     "name": "05-hillshade",
     "raster_style": {
       "version": "2.0",
       "renderer": {
-        "type": "hillshade",
+        "bidx": [
+          1
+        ],
         "terrain": {
-          "method": "single",
-          "gradient": "horn",
-          "azimuth": 315,
           "altitude": 45,
-          "z_factor": 1,
+          "azimuth": 315,
+          "edge": "nodata",
+          "gradient": "horn",
+          "method": "single",
           "vertical_unit": "metre",
-          "edge": "nodata"
-        }
+          "z_factor": 1
+        },
+        "type": "hillshade"
       },
       "stretch": {
         "method": "none"
       },
-      "resampling": {
-        "read": "bilinear",
-        "warp": "bilinear"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      },
       "image": {
         "format": "png",
-        "size": 512
+        "tilesize": 512
+      },
+      "resampling": {
+        "reproject": "bilinear",
+        "read": "bilinear"
       }
     },
-    "query": "bidx=1&format=png&renderer=hillshade&reproject=bilinear&resampling=bilinear&rsv=2.0&selector=bands&size=512&stretch=none&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D"
+    "query": "bidx=1&format=png&method=none&reproject=bilinear&resampling=bilinear&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D&tilesize=512&type=hillshade&version=2.0"
   },
   {
     "name": "06-percentile-stretch",
     "raster_style": {
+      "statistics": {
+        "accuracy": "sample",
+        "sample_size": 1000000,
+        "scope": "dataset"
+      },
       "version": "2.0",
       "renderer": {
+        "bidx": [
+          4,
+          3,
+          2
+        ],
         "type": "rgb"
       },
       "stretch": {
@@ -234,135 +241,120 @@
         "percentiles": [
           2,
           98
-        ],
-        "gamma": [
-          1.1
         ]
       },
-      "statistics": {
-        "scope": "dataset",
-        "accuracy": "sample",
-        "sample_size": 1000000
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          4,
-          3,
-          2
+      "effects": {
+        "color_formula": [
+          {
+            "op": "gamma",
+            "channels": "rgb",
+            "value": 1.1
+          }
         ]
       }
     },
-    "query": "bidx=4&bidx=3&bidx=2&gamma=1.1&percentile=2%2C98&renderer=rgb&rsv=2.0&selector=bands&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000000%2C%22scope%22%3A%22dataset%22%7D&stretch=percentile"
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.1&method=percentile&percentiles=2%2C98&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000000%2C%22scope%22%3A%22dataset%22%7D&type=rgb&version=2.0"
   },
   {
     "name": "07-expression-mosaic",
     "raster_style": {
       "version": "2.0",
       "renderer": {
-        "type": "pseudocolor",
-        "color_map": {
-          "mode": "continuous",
+        "color_mapping": {
           "domain": "data",
           "interpolation": "srgb",
+          "mode": "continuous",
+          "over": "clamp",
           "stops": [
             {
-              "value": -1,
-              "color": "#313695ff"
+              "color": "#313695ff",
+              "value": -1
             },
             {
-              "value": 0,
-              "color": "#ffffbfff"
+              "color": "#ffffbfff",
+              "value": 0
             },
             {
-              "value": 1,
-              "color": "#006837ff"
+              "color": "#006837ff",
+              "value": 1
             }
           ],
-          "under": "clamp",
-          "over": "clamp"
-        }
+          "under": "clamp"
+        },
+        "expression": "(b8-b4)/(b8+b4)",
+        "language": "raster-expr/1",
+        "type": "pseudocolor"
       },
       "stretch": {
         "method": "none"
       },
-      "mosaic": {
-        "pixel_selection": "highest",
-        "stage": "after_channels",
-        "rank_channel": 1
-      },
-      "channels": {
-        "kind": "expression",
-        "language": "raster-expr/1",
-        "expressions": [
-          "(b8-b4)/(b8+b4)"
-        ]
-      },
       "image": {
         "format": "webp",
-        "alpha": "preserve",
         "lossless": true,
-        "size": 256
+        "tilesize": 256
+      },
+      "mosaic": {
+        "pixel_selection": "highest",
+        "rank_channel": 1,
+        "stage": "after_channels"
       }
     },
-    "query": "alpha=preserve&cmap=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&expr_lang=raster-expr%2F1&expression=%28b8-b4%29%2F%28b8%2Bb4%29&format=webp&lossless=true&mosaic_stage=after_channels&pixel_selection=highest&rank_channel=1&renderer=pseudocolor&rsv=2.0&selector=expression&size=256&stretch=none"
+    "query": "color_mapping=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&expression=%28b8-b4%29%2F%28b8%2Bb4%29&format=webp&language=raster-expr%2F1&lossless=true&method=none&pixel_selection=highest&rank_channel=1&stage=after_channels&tilesize=256&type=pseudocolor&version=2.0"
   },
   {
     "name": "08-shaded-relief",
     "raster_style": {
       "version": "2.0",
       "renderer": {
-        "type": "shaded_relief",
-        "terrain": {
-          "method": "single",
-          "gradient": "horn",
-          "azimuth": 315,
-          "altitude": 45,
-          "z_factor": 1,
-          "vertical_unit": "metre",
-          "edge": "nodata"
-        },
-        "strength": 0.65,
-        "color_map": {
-          "mode": "continuous",
+        "bidx": [
+          1
+        ],
+        "color_mapping": {
           "domain": "data",
+          "mode": "continuous",
           "stops": [
             {
-              "value": 0,
-              "color": "#78a86bff"
+              "color": "#78a86bff",
+              "value": 0
             },
             {
-              "value": 1000,
-              "color": "#c9b18cff"
+              "color": "#c9b18cff",
+              "value": 1000
             },
             {
-              "value": 3000,
-              "color": "#ffffffff"
+              "color": "#ffffffff",
+              "value": 3000
             }
           ]
-        }
+        },
+        "strength": 0.65,
+        "terrain": {
+          "altitude": 45,
+          "azimuth": 315,
+          "edge": "nodata",
+          "gradient": "horn",
+          "method": "single",
+          "vertical_unit": "metre",
+          "z_factor": 1
+        },
+        "type": "shaded_relief"
       },
       "stretch": {
         "method": "none"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
       }
     },
-    "query": "bidx=1&cmap=%7B%22domain%22%3A%22data%22%2C%22mode%22%3A%22continuous%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%2378a86bff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23c9b18cff%22%2C%22value%22%3A1000%7D%2C%7B%22color%22%3A%22%23ffffffff%22%2C%22value%22%3A3000%7D%5D%7D&renderer=shaded_relief&rsv=2.0&selector=bands&shade_strength=0.65&stretch=none&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D"
+    "query": "bidx=1&color_mapping=%7B%22domain%22%3A%22data%22%2C%22mode%22%3A%22continuous%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%2378a86bff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23c9b18cff%22%2C%22value%22%3A1000%7D%2C%7B%22color%22%3A%22%23ffffffff%22%2C%22value%22%3A3000%7D%5D%7D&method=none&strength=0.65&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D&type=shaded_relief&version=2.0"
   },
   {
     "name": "09-explicit-intervals",
     "raster_style": {
       "version": "2.0",
       "renderer": {
-        "type": "pseudocolor",
-        "color_map": {
-          "mode": "discrete",
-          "domain": "data",
+        "bidx": [
+          1
+        ],
+        "color_mapping": {
+          "boundary": "left_closed",
           "breaks": [
             0,
             5,
@@ -378,181 +370,156 @@
             "#5ec962ff",
             "#fde725ff"
           ],
-          "boundary": "left_closed",
+          "domain": "data",
+          "mode": "discrete",
           "outside_color": "#00000000"
-        }
+        },
+        "type": "pseudocolor"
       },
       "stretch": {
         "method": "none"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
       }
     },
-    "query": "bidx=1&cmap=%7B%22boundary%22%3A%22left_closed%22%2C%22breaks%22%3A%5B0%2C5%2C15%2C30%2C60%2C100%5D%2C%22colors%22%3A%5B%22%23440154ff%22%2C%22%233b528bff%22%2C%22%2321918cff%22%2C%22%235ec962ff%22%2C%22%23fde725ff%22%5D%2C%22domain%22%3A%22data%22%2C%22mode%22%3A%22discrete%22%2C%22outside_color%22%3A%22%2300000000%22%7D&renderer=pseudocolor&rsv=2.0&selector=bands&stretch=none"
+    "query": "bidx=1&color_mapping=%7B%22boundary%22%3A%22left_closed%22%2C%22breaks%22%3A%5B0%2C5%2C15%2C30%2C60%2C100%5D%2C%22colors%22%3A%5B%22%23440154ff%22%2C%22%233b528bff%22%2C%22%2321918cff%22%2C%22%235ec962ff%22%2C%22%23fde725ff%22%5D%2C%22domain%22%3A%22data%22%2C%22mode%22%3A%22discrete%22%2C%22outside_color%22%3A%22%2300000000%22%7D&method=none&type=pseudocolor&version=2.0"
   },
   {
     "name": "10-single-color",
     "raster_style": {
+      "opacity": 0.8,
       "version": "2.0",
       "renderer": {
-        "type": "single_color",
-        "color": "#ff880080"
+        "bidx": [
+          1
+        ],
+        "color": "#ff880080",
+        "type": "single_color"
       },
       "stretch": {
         "method": "none"
       },
-      "opacity": {
-        "value": 0.8,
-        "rules": [
-          {
-            "kind": "value",
-            "channel": 1,
-            "value": 0,
-            "alpha": 0
-          }
-        ],
-        "nodata_color": "#00000000"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      },
       "image": {
         "format": "png",
-        "size": 256
+        "tilesize": 256
       }
     },
-    "query": "alpha_rules=%5B%7B%22alpha%22%3A0%2C%22channel%22%3A1%2C%22kind%22%3A%22value%22%2C%22value%22%3A0%7D%5D&bidx=1&fill=ff880080&format=png&nodata_color=00000000&opacity=0.8&renderer=single_color&rsv=2.0&selector=bands&size=256&stretch=none"
+    "query": "bidx=1&color=ff880080&format=png&method=none&opacity=0.8&tilesize=256&type=single_color&version=2.0"
   },
   {
     "name": "11-gray-jpeg",
     "raster_style": {
       "version": "2.0",
       "renderer": {
-        "type": "gray",
-        "invert": false
+        "bidx": [
+          1
+        ],
+        "renderer_invert": false,
+        "type": "gray"
       },
       "stretch": {
         "method": "linear",
-        "ranges": [
+        "rescale": [
           [
             0,
             255
           ]
         ]
       },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      },
       "image": {
-        "format": "jpeg",
-        "alpha": "flatten",
         "background": "#ffffffff",
+        "format": "jpeg",
         "quality": 85,
-        "size": 256
+        "tilesize": 256
       }
     },
-    "query": "alpha=flatten&background=ffffffff&bidx=1&format=jpeg&gray_invert=false&quality=85&renderer=gray&rescale=0%2C255&rsv=2.0&selector=bands&size=256&stretch=linear"
+    "query": "background=ffffffff&bidx=1&format=jpeg&method=linear&quality=85&renderer_invert=false&rescale=0%2C255&tilesize=256&type=gray&version=2.0"
   },
   {
     "name": "12-all-gray-fields",
     "raster_style": {
-      "version": "2.0",
-      "renderer": {
-        "type": "gray",
-        "invert": true
-      },
-      "stretch": {
-        "method": "stddev",
-        "stddev": 2.5,
-        "gamma": [
-          1.2
-        ],
-        "range_policy": "transparent",
-        "sigmoid": {
-          "contrast": 5,
-          "midpoint": 0.4
-        }
-      },
-      "effects": {
-        "brightness": 0.1,
-        "contrast": 1.5,
-        "saturation": 0.8,
-        "grayscale": "luma",
-        "invert": false
-      },
-      "opacity": {
-        "value": 0.8,
-        "alpha_band": {
-          "band": 2,
-          "range": [
-            0,
-            255
-          ]
-        },
-        "nodata_color": "#FFAABB"
-      },
-      "statistics": {
-        "scope": "dataset",
-        "accuracy": "sample",
-        "sample_size": 1000
-      },
-      "resampling": {
-        "read": "cubic_spline",
-        "warp": "average"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
-      },
       "calibration": {
-        "mode": "linear",
         "coefficients": [
           {
             "band": 1,
-            "scale": 0.2,
-            "offset": -1
+            "offset": -1,
+            "scale": 0.2
           }
-        ]
-      },
-      "nodata": {
-        "mode": "override",
-        "values": [
-          "nan",
-          "inf",
-          "-inf",
-          -9999
         ],
-        "use_mask": false
+        "mode": "linear"
+      },
+      "opacity": 0.8,
+      "statistics": {
+        "accuracy": "sample",
+        "sample_size": 1000,
+        "scope": "dataset"
+      },
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          1
+        ],
+        "renderer_invert": true,
+        "type": "gray"
+      },
+      "stretch": {
+        "method": "stddev",
+        "range_policy": "transparent",
+        "stddev": 2.5
       },
       "image": {
         "format": "png",
-        "alpha": "preserve",
-        "size": 64
+        "tilesize": 64
+      },
+      "resampling": {
+        "reproject": "average",
+        "read": "cubic_spline"
+      },
+      "effects": {
+        "color_formula": [
+          {
+            "op": "gamma",
+            "channels": "r",
+            "value": 1.2
+          },
+          {
+            "op": "sigmoidal",
+            "channels": "r",
+            "contrast": 5,
+            "midpoint": 0.4
+          }
+        ],
+        "post_color_formula": [
+          {
+            "op": "brightness",
+            "value": 0.1
+          },
+          {
+            "op": "contrast",
+            "value": 1.5
+          },
+          {
+            "op": "saturation",
+            "value": 0.8
+          },
+          {
+            "method": "luma",
+            "op": "grayscale"
+          }
+        ]
       }
     },
-    "query": "alpha=preserve&alpha_band=%7B%22band%22%3A2%2C%22range%22%3A%5B0%2C255%5D%7D&bidx=1&brightness=0.1&calibration=%7B%22coefficients%22%3A%5B%7B%22band%22%3A1%2C%22offset%22%3A-1%2C%22scale%22%3A0.2%7D%5D%2C%22mode%22%3A%22linear%22%7D&contrast=1.5&format=png&gamma=1.2&gray_invert=true&grayscale=luma&invert=false&nodata=%7B%22mode%22%3A%22override%22%2C%22use_mask%22%3Afalse%2C%22values%22%3A%5B%22nan%22%2C%22inf%22%2C%22-inf%22%2C-9999%5D%7D&nodata_color=ffaabbff&opacity=0.8&range_policy=transparent&renderer=gray&reproject=average&resampling=cubic_spline&rsv=2.0&saturation=0.8&selector=bands&sigmoid=%7B%22contrast%22%3A5%2C%22midpoint%22%3A0.4%7D&size=64&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000%2C%22scope%22%3A%22dataset%22%7D&stddev=2.5&stretch=stddev"
+    "query": "bidx=1&calibration=%7B%22coefficients%22%3A%5B%7B%22band%22%3A1%2C%22offset%22%3A-1%2C%22scale%22%3A0.2%7D%5D%2C%22mode%22%3A%22linear%22%7D&color_formula=gamma%20r%201.2%2C%20sigmoidal%20r%205%200.4&format=png&method=stddev&opacity=0.8&post_color_formula=brightness%20rgb%200.1%2C%20contrast%20rgb%201.5%2C%20saturation%200.8%2C%20grayscale%20luma&range_policy=transparent&renderer_invert=true&reproject=average&resampling=cubic_spline&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000%2C%22scope%22%3A%22dataset%22%7D&stddev=2.5&tilesize=64&type=gray&version=2.0"
   },
   {
     "name": "13-curve",
     "raster_style": {
       "version": "2.0",
       "renderer": {
+        "bidx": [
+          1
+        ],
         "type": "gray"
       },
       "stretch": {
-        "method": "curve",
         "curves": [
           [
             [
@@ -569,145 +536,1200 @@
             ]
           ]
         ],
-        "gamma": [
-          1
-        ]
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
+        "method": "curve"
       }
     },
-    "query": "bidx=1&curve=%5B%5B%5B0%2C0%5D%2C%5B50%2C0.2%5D%2C%5B100%2C1%5D%5D%5D&gamma=1&renderer=gray&rsv=2.0&selector=bands&stretch=curve"
+    "query": "bidx=1&curves=%5B%5B%5B0%2C0%5D%2C%5B50%2C0.2%5D%2C%5B100%2C1%5D%5D%5D&method=curve&type=gray&version=2.0"
   },
   {
     "name": "14-histogram",
     "raster_style": {
+      "statistics": {
+        "accuracy": "exact",
+        "scope": "dataset"
+      },
       "version": "2.0",
       "renderer": {
+        "bidx": [
+          1
+        ],
         "type": "gray"
       },
       "stretch": {
         "method": "histogram_equalization"
-      },
-      "statistics": {
-        "scope": "dataset",
-        "accuracy": "exact"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
-          1
-        ]
       }
     },
-    "query": "bidx=1&renderer=gray&rsv=2.0&selector=bands&statistics=%7B%22accuracy%22%3A%22exact%22%2C%22scope%22%3A%22dataset%22%7D&stretch=histogram_equalization"
+    "query": "bidx=1&method=histogram_equalization&statistics=%7B%22accuracy%22%3A%22exact%22%2C%22scope%22%3A%22dataset%22%7D&type=gray&version=2.0"
   },
   {
     "name": "15-evi",
     "raster_style": {
       "version": "2.0",
       "renderer": {
+        "index": {
+          "bindings": {
+            "blue": 1,
+            "nir": 4,
+            "red": 3
+          },
+          "name": "evi",
+          "parameters": {
+            "c1": 6,
+            "c2": 7.5,
+            "g": 2.5,
+            "l": 1
+          }
+        },
         "type": "gray"
       },
       "stretch": {
         "method": "linear",
-        "ranges": [
+        "rescale": [
           [
             -1,
             1
           ]
         ]
-      },
-      "channels": {
-        "kind": "index",
-        "name": "evi",
-        "bindings": {
-          "red": 3,
-          "nir": 4,
-          "blue": 1
-        },
-        "parameters": {
-          "g": 2.5,
-          "c1": 6,
-          "c2": 7.5,
-          "l": 1
-        }
       }
     },
-    "query": "index=evi&index_bands=%7B%22blue%22%3A1%2C%22nir%22%3A4%2C%22red%22%3A3%7D&index_params=%7B%22c1%22%3A6%2C%22c2%22%3A7.5%2C%22g%22%3A2.5%2C%22l%22%3A1%7D&renderer=gray&rescale=-1%2C1&rsv=2.0&selector=index&stretch=linear"
+    "query": "index=%7B%22bindings%22%3A%7B%22blue%22%3A1%2C%22nir%22%3A4%2C%22red%22%3A3%7D%2C%22name%22%3A%22evi%22%2C%22parameters%22%3A%7B%22c1%22%3A6%2C%22c2%22%3A7.5%2C%22g%22%3A2.5%2C%22l%22%3A1%7D%7D&method=linear&rescale=-1%2C1&type=gray&version=2.0"
   },
   {
     "name": "16-unicode-extension",
     "raster_style": {
-      "version": "2.0",
-      "renderer": {
-        "type": "gray"
-      },
       "extensions": {
         "mapseek.test.config": {
-          "version": "1",
-          "stage": "after_color",
           "config": {
-            "text": "a+b & #50% 中文 / ? =",
+            "__proto__": {
+              "safe": true
+            },
+            "color": "#ABCDEF",
             "numbers": [
               0,
               1e+21,
               1e-7,
               5e-324
             ],
+            "text": "a+b & #50% 中文 / ? =",
             "😀": 2,
-            "": 1,
-            "__proto__": {
-              "safe": true
-            },
-            "color": "#ABCDEF"
-          }
+            "": 1
+          },
+          "stage": "after_color",
+          "version": "1"
         }
       },
-      "channels": {
-        "kind": "bands",
-        "bands": [
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
           1
-        ]
+        ],
+        "type": "gray"
       }
     },
-    "query": "bidx=1&extensions=%7B%22mapseek.test.config%22%3A%7B%22config%22%3A%7B%22__proto__%22%3A%7B%22safe%22%3Atrue%7D%2C%22color%22%3A%22%23ABCDEF%22%2C%22numbers%22%3A%5B0%2C1e%2B21%2C1e-7%2C5e-324%5D%2C%22text%22%3A%22a%2Bb%20%26%20%2350%25%20%E4%B8%AD%E6%96%87%20%2F%20%3F%20%3D%22%2C%22%F0%9F%98%80%22%3A2%2C%22%EE%80%80%22%3A1%7D%2C%22stage%22%3A%22after_color%22%2C%22version%22%3A%221%22%7D%7D&renderer=gray&rsv=2.0&selector=bands"
+    "query": "bidx=1&extensions=%7B%22mapseek.test.config%22%3A%7B%22config%22%3A%7B%22__proto__%22%3A%7B%22safe%22%3Atrue%7D%2C%22color%22%3A%22%23ABCDEF%22%2C%22numbers%22%3A%5B0%2C1e%2B21%2C1e-7%2C5e-324%5D%2C%22text%22%3A%22a%2Bb%20%26%20%2350%25%20%E4%B8%AD%E6%96%87%20%2F%20%3F%20%3D%22%2C%22%F0%9F%98%80%22%3A2%2C%22%EE%80%80%22%3A1%7D%2C%22stage%22%3A%22after_color%22%2C%22version%22%3A%221%22%7D%7D&type=gray&version=2.0"
   },
   {
     "name": "17-repeated-bands",
     "raster_style": {
       "version": "2.0",
       "renderer": {
-        "type": "rgb"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
+        "bidx": [
           1,
           1,
           1
-        ]
+        ],
+        "type": "rgb"
       }
     },
-    "query": "bidx=1&bidx=1&bidx=1&renderer=rgb&rsv=2.0&selector=bands"
+    "query": "bidx=1&bidx=1&bidx=1&type=rgb&version=2.0"
   },
   {
     "name": "18-minimal",
     "raster_style": {
       "version": "2.0",
       "renderer": {
-        "type": "gray"
-      },
-      "channels": {
-        "kind": "bands",
-        "bands": [
+        "bidx": [
           1
+        ],
+        "type": "gray"
+      }
+    },
+    "query": "bidx=1&type=gray&version=2.0"
+  },
+  {
+    "name": "19-ordered-color-operations",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          4,
+          3,
+          2
+        ],
+        "type": "rgb"
+      },
+      "stretch": {
+        "method": "linear",
+        "rescale": [
+          [
+            0,
+            3000
+          ]
+        ]
+      },
+      "effects": {
+        "post_color_formula": [
+          {
+            "op": "saturation",
+            "value": 1.2
+          },
+          {
+            "channels": "rb",
+            "op": "gamma",
+            "value": 1.1
+          },
+          {
+            "channels": "rgb",
+            "contrast": 6,
+            "midpoint": 0.5,
+            "op": "sigmoidal"
+          },
+          {
+            "channels": "b",
+            "op": "gamma",
+            "value": 0.9
+          }
         ]
       }
     },
-    "query": "bidx=1&renderer=gray&rsv=2.0&selector=bands"
+    "query": "bidx=4&bidx=3&bidx=2&method=linear&post_color_formula=saturation%201.2%2C%20gamma%20rb%201.1%2C%20sigmoidal%20rgb%206%200.5%2C%20gamma%20b%200.9&rescale=0%2C3000&type=rgb&version=2.0"
+  },
+  {
+    "name": "ordered-color-all-operations",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          4,
+          3,
+          2
+        ],
+        "type": "rgb"
+      },
+      "stretch": {
+        "method": "linear",
+        "rescale": [
+          [
+            0,
+            3000
+          ]
+        ]
+      },
+      "effects": {
+        "post_color_formula": [
+          {
+            "op": "gamma",
+            "value": 1.1
+          },
+          {
+            "contrast": 2,
+            "midpoint": 0.4,
+            "op": "sigmoidal"
+          },
+          {
+            "channels": "r",
+            "op": "brightness",
+            "value": 0.1
+          },
+          {
+            "channels": "g",
+            "op": "contrast",
+            "value": 1.2
+          },
+          {
+            "op": "saturation",
+            "value": 0
+          },
+          {
+            "method": "luma",
+            "op": "grayscale"
+          },
+          {
+            "method": "average",
+            "op": "grayscale"
+          },
+          {
+            "channels": "gb",
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "channels": "rg",
+            "op": "brightness",
+            "value": -0.2
+          }
+        ]
+      }
+    },
+    "query": "bidx=4&bidx=3&bidx=2&method=linear&post_color_formula=gamma%20rgb%201.1%2C%20sigmoidal%20rgb%202%200.4%2C%20brightness%20r%200.1%2C%20contrast%20g%201.2%2C%20saturation%200%2C%20grayscale%20luma%2C%20grayscale%20average%2C%20invert%20gb%2C%20invert%20rgb%2C%20brightness%20rg%20-0.2&rescale=0%2C3000&type=rgb&version=2.0"
+  },
+  {
+    "name": "ordered-color-reversed",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          4,
+          3,
+          2
+        ],
+        "type": "rgb"
+      },
+      "stretch": {
+        "method": "linear",
+        "rescale": [
+          [
+            0,
+            3000
+          ]
+        ]
+      },
+      "effects": {
+        "post_color_formula": [
+          {
+            "channels": "b",
+            "op": "gamma",
+            "value": 0.9
+          },
+          {
+            "channels": "rgb",
+            "contrast": 6,
+            "midpoint": 0.5,
+            "op": "sigmoidal"
+          },
+          {
+            "channels": "rb",
+            "op": "gamma",
+            "value": 1.1
+          },
+          {
+            "op": "saturation",
+            "value": 1.2
+          }
+        ]
+      }
+    },
+    "query": "bidx=4&bidx=3&bidx=2&method=linear&post_color_formula=gamma%20b%200.9%2C%20sigmoidal%20rgb%206%200.5%2C%20gamma%20rb%201.1%2C%20saturation%201.2&rescale=0%2C3000&type=rgb&version=2.0"
+  },
+  {
+    "name": "operations-max-length-gray",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          1
+        ],
+        "type": "gray"
+      },
+      "effects": {
+        "post_color_formula": [
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          },
+          {
+            "op": "invert"
+          }
+        ]
+      }
+    },
+    "query": "bidx=1&post_color_formula=invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb&type=gray&version=2.0"
+  },
+  {
+    "name": "formula-rb",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          4,
+          3,
+          2
+        ],
+        "type": "rgb"
+      },
+      "effects": {
+        "color_formula": [
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1.1
+          }
+        ]
+      }
+    },
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rb%201.1&type=rgb&version=2.0"
+  },
+  {
+    "name": "formula-normalization",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          4,
+          3,
+          2
+        ],
+        "type": "rgb"
+      },
+      "effects": {
+        "color_formula": [
+          {
+            "op": "gamma",
+            "channels": "r",
+            "value": 1.1
+          },
+          {
+            "op": "sigmoidal",
+            "channels": "rgb",
+            "contrast": 6,
+            "midpoint": 0.5
+          },
+          {
+            "op": "saturation",
+            "value": 0
+          }
+        ]
+      }
+    },
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20r%201.1%2C%20sigmoidal%20rgb%206%200.5%2C%20saturation%200&type=rgb&version=2.0"
+  },
+  {
+    "name": "formula-repeated",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          4,
+          3,
+          2
+        ],
+        "type": "rgb"
+      },
+      "effects": {
+        "color_formula": [
+          {
+            "op": "gamma",
+            "channels": "r",
+            "value": 1.1
+          },
+          {
+            "op": "gamma",
+            "channels": "b",
+            "value": 0.9
+          },
+          {
+            "op": "gamma",
+            "channels": "r",
+            "value": 2
+          }
+        ]
+      }
+    },
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20r%201.1%2C%20gamma%20b%200.9%2C%20gamma%20r%202&type=rgb&version=2.0"
+  },
+  {
+    "name": "formula-gray",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          1
+        ],
+        "type": "gray"
+      },
+      "effects": {
+        "color_formula": [
+          {
+            "op": "gamma",
+            "channels": "r",
+            "value": 1.1
+          }
+        ]
+      }
+    },
+    "query": "bidx=1&color_formula=gamma%20r%201.1&type=gray&version=2.0"
+  },
+  {
+    "name": "formula-max-operations",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          4,
+          3,
+          2
+        ],
+        "type": "rgb"
+      },
+      "effects": {
+        "color_formula": [
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          },
+          {
+            "op": "gamma",
+            "channels": "rb",
+            "value": 1
+          }
+        ]
+      }
+    },
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201&type=rgb&version=2.0"
+  },
+  {
+    "name": "formula-post-operations",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          4,
+          3,
+          2
+        ],
+        "type": "rgb"
+      },
+      "effects": {
+        "color_formula": [
+          {
+            "op": "gamma",
+            "channels": "rgb",
+            "value": 1.2
+          }
+        ],
+        "post_color_formula": [
+          {
+            "op": "sigmoidal",
+            "contrast": 6,
+            "midpoint": 0.5
+          }
+        ]
+      }
+    },
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.2&post_color_formula=sigmoidal%20rgb%206%200.5&type=rgb&version=2.0"
+  },
+  {
+    "name": "expression-three",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "language": "raster-expr/1",
+        "expression": " b4 ; b3; b2 ",
+        "type": "rgb"
+      }
+    },
+    "query": "expression=b4%3Bb3%3Bb2&language=raster-expr%2F1&type=rgb&version=2.0"
+  },
+  {
+    "name": "native-colormap",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          1
+        ],
+        "type": "pseudocolor",
+        "colormap": {
+          "0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "255": [
+            255,
+            255,
+            255,
+            255
+          ]
+        }
+      },
+      "stretch": {
+        "method": "linear",
+        "rescale": [
+          [
+            0,
+            3000
+          ]
+        ]
+      }
+    },
+    "query": "bidx=1&colormap=%7B%220%22%3A%5B0%2C0%2C0%2C0%5D%2C%22255%22%3A%5B255%2C255%2C255%2C255%5D%7D&method=linear&rescale=0%2C3000&type=pseudocolor&version=2.0"
+  },
+  {
+    "name": "native-intervals",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          1
+        ],
+        "type": "pseudocolor",
+        "colormap": [
+          [
+            [
+              0,
+              100
+            ],
+            [
+              255,
+              0,
+              0,
+              255
+            ]
+          ],
+          [
+            [
+              100,
+              200
+            ],
+            [
+              0,
+              0,
+              255,
+              128
+            ]
+          ]
+        ]
+      }
+    },
+    "query": "bidx=1&colormap=%5B%5B%5B0%2C100%5D%2C%5B255%2C0%2C0%2C255%5D%5D%2C%5B%5B100%2C200%5D%2C%5B0%2C0%2C255%2C128%5D%5D%5D&type=pseudocolor&version=2.0"
+  },
+  {
+    "name": "native-categorized",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          1
+        ],
+        "type": "categorized",
+        "colormap": {
+          "2": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "-1": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "query": "bidx=1&colormap=%7B%22-1%22%3A%5B0%2C0%2C0%2C0%5D%2C%222%22%3A%5B255%2C255%2C255%2C255%5D%7D&type=categorized&version=2.0"
+  },
+  {
+    "name": "named-colormap",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "bidx": [
+          1
+        ],
+        "type": "pseudocolor",
+        "colormap_name": "viridis"
+      }
+    },
+    "query": "bidx=1&colormap_name=viridis&type=pseudocolor&version=2.0"
+  },
+  {
+    "name": "native-nodata-number",
+    "raster_style": {
+      "version": "2.0",
+      "nodata": -9999,
+      "calibration": {
+        "mode": "metadata"
+      },
+      "renderer": {
+        "bidx": [
+          1
+        ],
+        "type": "gray"
+      }
+    },
+    "query": "bidx=1&calibration=%7B%22mode%22%3A%22metadata%22%7D&nodata=-9999&type=gray&version=2.0"
+  },
+  {
+    "name": "native-nodata-nan",
+    "raster_style": {
+      "version": "2.0",
+      "nodata": "nan",
+      "calibration": {
+        "mode": "none"
+      },
+      "renderer": {
+        "bidx": [
+          1
+        ],
+        "type": "gray"
+      }
+    },
+    "query": "bidx=1&calibration=%7B%22mode%22%3A%22none%22%7D&nodata=nan&type=gray&version=2.0"
+  },
+  {
+    "name": "23-simple-rgb",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "type": "rgb",
+        "bidx": [
+          4,
+          3,
+          2
+        ]
+      },
+      "resampling": {
+        "read": "bilinear",
+        "reproject": "bilinear"
+      },
+      "stretch": {
+        "method": "linear",
+        "rescale": [
+          [
+            0,
+            3000
+          ]
+        ]
+      },
+      "nodata": -9999,
+      "effects": {
+        "color_formula": [
+          {
+            "op": "gamma",
+            "channels": "rgb",
+            "value": 1.1
+          },
+          {
+            "op": "saturation",
+            "value": 1.2
+          }
+        ],
+        "post_color_formula": [
+          {
+            "op": "brightness",
+            "channels": "rgb",
+            "value": 0.05
+          }
+        ]
+      },
+      "opacity": 1,
+      "image": {
+        "format": "png",
+        "tilesize": 256
+      }
+    },
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.1%2C%20saturation%201.2&format=png&method=linear&nodata=-9999&opacity=1&post_color_formula=brightness%20rgb%200.05&reproject=bilinear&resampling=bilinear&rescale=0%2C3000&tilesize=256&type=rgb&version=2.0"
   }
 ]

@@ -12,7 +12,7 @@
       "edge": "nodata"
     },
     "strength": 0.65,
-    "color_map": {
+    "color_mapping": {
       "mode": "continuous",
       "domain": "data",
       "stops": [
@@ -29,15 +29,12 @@
           "color": "#ffffffff"
         }
       ]
-    }
+    },
+    "bidx": [
+      1
+    ]
   },
   "stretch": {
     "method": "none"
-  },
-  "channels": {
-    "kind": "bands",
-    "bands": [
-      1
-    ]
   }
 }

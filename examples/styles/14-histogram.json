@@ -1,19 +1,16 @@
 {
   "version": "2.0",
-  "renderer": {
-    "type": "gray"
-  },
-  "stretch": {
-    "method": "histogram_equalization"
-  },
   "statistics": {
     "scope": "dataset",
     "accuracy": "exact"
   },
-  "channels": {
-    "kind": "bands",
-    "bands": [
+  "renderer": {
+    "type": "gray",
+    "bidx": [
       1
     ]
+  },
+  "stretch": {
+    "method": "histogram_equalization"
   }
 }

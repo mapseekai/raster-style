@@ -106,6 +106,14 @@ func numeric(value string, integer bool) (float64, error) {
 
 func encodeValue(value any, codec string) (string, error) {
 	switch codec {
+	case "formula", "post_formula":
+		return encodeFormula(value)
+	case "nodata":
+		if value == "nan" {
+			return "nan", nil
+		}
+		data, err := canonicalJSON(value)
+		return string(data), err
 	case "string":
 		return value.(string), nil
 	case "boolean":
@@ -130,6 +138,13 @@ func encodeValue(value any, codec string) (string, error) {
 
 func decodeValue(value, codec string) (any, error) {
 	switch codec {
+	case "formula", "post_formula":
+		return decodeFormula(value, codec == "post_formula")
+	case "nodata":
+		if value == "nan" {
+			return "nan", nil
+		}
+		return numeric(value, false)
 	case "string":
 		return value, nil
 	case "number":

@@ -1,0 +1,44 @@
+{
+  "version": "2.0",
+  "renderer": {
+    "bidx": [
+      4,
+      3,
+      2
+    ],
+    "type": "rgb"
+  },
+  "stretch": {
+    "method": "linear",
+    "rescale": [
+      [
+        0,
+        3000
+      ]
+    ]
+  },
+  "effects": {
+    "post_color_formula": [
+      {
+        "op": "saturation",
+        "value": 1.2
+      },
+      {
+        "op": "gamma",
+        "channels": "rb",
+        "value": 1.1
+      },
+      {
+        "op": "sigmoidal",
+        "channels": "rgb",
+        "contrast": 6,
+        "midpoint": 0.5
+      },
+      {
+        "op": "gamma",
+        "channels": "b",
+        "value": 0.9
+      }
+    ]
+  }
+}

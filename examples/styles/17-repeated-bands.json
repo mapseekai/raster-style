@@ -1,11 +1,8 @@
 {
   "version": "2.0",
   "renderer": {
-    "type": "rgb"
-  },
-  "channels": {
-    "kind": "bands",
-    "bands": [
+    "type": "rgb",
+    "bidx": [
       1,
       1,
       1

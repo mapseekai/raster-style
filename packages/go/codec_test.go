@@ -95,7 +95,7 @@ func TestBudgetsAndOwnership(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = codec.DecodeQuery("rsv=2.0&renderer=gray")
+	_, err = codec.DecodeQuery("version=2.0&type=gray")
 	assertCode(t, err, "E_LIMIT")
 	_, err = ParseJSON([]byte(strings.Repeat(" ", MaxJSONBytes+1)))
 	assertCode(t, err, "E_LIMIT")
@@ -167,7 +167,7 @@ func FuzzDecodeQuery(f *testing.F) {
 	for _, value := range fixtures(f, "roundtrip") {
 		f.Add(value.Query)
 	}
-	f.Add("rsv=2.0&foo=%FF")
+	f.Add("version=2.0&foo=%FF")
 	f.Fuzz(func(t *testing.T, query string) {
 		style, err := DecodeQuery(query)
 		if err != nil {

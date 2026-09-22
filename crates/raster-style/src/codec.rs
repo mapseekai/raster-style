@@ -122,6 +122,14 @@ fn numeric(text: &str, integer: bool) -> Result<Value> {
 
 fn encode_value(value: &Value, codec: &str) -> Result<String> {
     match codec {
+        "formula" | "post_formula" => crate::profile::encode_formula(value),
+        "nodata" => {
+            if value == "nan" {
+                Ok("nan".into())
+            } else {
+                canonical_value(value)
+            }
+        }
         "string" => Ok(value.as_str().expect("schema-validated string").into()),
         "color" => Ok(value.as_str().expect("schema-validated color")[1..].into()),
         "boolean" | "integer" | "number" | "json" => canonical_value(value),
@@ -136,6 +144,14 @@ fn encode_value(value: &Value, codec: &str) -> Result<String> {
 
 fn decode_value(text: &str, codec: &str) -> Result<Value> {
     match codec {
+        "formula" | "post_formula" => crate::profile::decode_formula(text, codec == "post_formula"),
+        "nodata" => {
+            if text == "nan" {
+                Ok(Value::String("nan".into()))
+            } else {
+                numeric(text, false)
+            }
+        }
         "string" => Ok(Value::String(text.into())),
         "number" => numeric(text, false),
         "integer" => numeric(text, true),

@@ -10,23 +10,20 @@
       "z_factor": 1,
       "vertical_unit": "metre",
       "edge": "nodata"
-    }
+    },
+    "bidx": [
+      1
+    ]
   },
   "stretch": {
     "method": "none"
   },
-  "resampling": {
-    "read": "bilinear",
-    "warp": "bilinear"
-  },
-  "channels": {
-    "kind": "bands",
-    "bands": [
-      1
-    ]
-  },
   "image": {
     "format": "png",
-    "size": 512
+    "tilesize": 512
+  },
+  "resampling": {
+    "read": "bilinear",
+    "reproject": "bilinear"
   }
 }

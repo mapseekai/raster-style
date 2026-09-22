@@ -19,55 +19,51 @@ func validateSemantics(style map[string]any) error {
 			firstError = failure("E_SEMANTIC", message, path)
 		}
 	}
-	channelSpec := objectAt(style, "channels")
+	channelSpec := objectAt(style, "renderer")
 	channels := 1
-	switch channelSpec["kind"] {
-	case "bands":
-		channels = len(arrayAt(channelSpec, "bands"))
-	case "expression":
-		channels = len(arrayAt(channelSpec, "expressions"))
+	if bands, ok := channelSpec["bidx"]; ok {
+		channels = len(bands.([]any))
+	} else if expression, ok := channelSpec["expression"]; ok {
+		channels = len(strings.Split(expression.(string), ";"))
 	}
-	renderer := objectAt(style, "renderer")
+	renderer := channelSpec
 	expected := 1
 	if renderer["type"] == "rgb" {
 		expected = 3
 	}
-	require(channels == expected, "channels", "Renderer channel cardinality mismatch")
+	require(channels == expected, "kind", "Renderer channel cardinality mismatch")
 	stretch := objectAt(style, "stretch")
-	for _, key := range []string{"ranges", "curves", "gamma"} {
+	for _, key := range []string{"rescale", "curves"} {
 		if values, exists := stretch[key]; exists {
 			count := len(values.([]any))
-			require(count == 1 || count == channels, "stretch."+key, "Expected one value or one per channel")
+			require(count == 1 || count == channels, key, "Expected one value or one per channel")
 		}
 	}
-	for _, value := range arrayAt(stretch, "ranges") {
+	for _, value := range arrayAt(stretch, "rescale") {
 		pair := value.([]any)
-		require(pair[0].(float64) < pair[1].(float64), "stretch.ranges", "Range must increase")
+		require(pair[0].(float64) < pair[1].(float64), "rescale", "Range must increase")
 	}
 	if pair, exists := stretch["percentiles"].([]any); exists {
-		require(pair[0].(float64) < pair[1].(float64), "stretch.percentiles", "Percentiles must increase")
+		require(pair[0].(float64) < pair[1].(float64), "percentiles", "Percentiles must increase")
 	}
 	for _, value := range arrayAt(stretch, "curves") {
 		curve := value.([]any)
 		for index, value := range curve {
 			point := value.([]any)
-			require(point[1].(float64) >= 0 && point[1].(float64) <= 1, "stretch.curves", "Curve output must be in [0,1]")
+			require(point[1].(float64) >= 0 && point[1].(float64) <= 1, "curves", "Curve output must be in [0,1]")
 			if index > 0 {
 				previous := curve[index-1].([]any)
-				require(previous[0].(float64) < point[0].(float64) && previous[1].(float64) <= point[1].(float64), "stretch.curves", "Curve must be monotonic")
+				require(previous[0].(float64) < point[0].(float64) && previous[1].(float64) <= point[1].(float64), "curves", "Curve must be monotonic")
 			}
 		}
 	}
-	colorMap := objectAt(renderer, "color_map")
+	colorMap := objectAt(renderer, "color_mapping")
 	bypass := renderer["type"] == "categorized" || renderer["type"] == "single_color" || renderer["type"] == "hillshade" || colorMap["domain"] == "data"
 	if bypass {
 		method, present := stretch["method"]
-		require(!present || method == "none", "stretch", "Data-domain renderer must bypass stretch")
-		for _, gamma := range arrayAt(stretch, "gamma") {
-			require(gamma.(float64) == 1, "stretch", "Data-domain renderer must bypass stretch")
-		}
-		_, sigmoid := stretch["sigmoid"]
-		require(!sigmoid, "stretch", "Data-domain renderer must bypass stretch")
+		require(!present || method == "none", "method", "Data-domain renderer must bypass stretch")
+		_, formula := objectAt(style, "effects")["color_formula"]
+		require(!formula, "color_formula", "Data-domain renderer must bypass color formula")
 	}
 	switch colorMap["mode"] {
 	case "continuous":
@@ -76,45 +72,29 @@ func validateSemantics(style map[string]any) error {
 			value := item.(map[string]any)["value"].(float64)
 			values = append(values, value)
 			if colorMap["domain"] == "normalized" {
-				require(value >= 0 && value <= 1, "renderer.color_map.stops", "Normalized stops must be in [0,1]")
+				require(value >= 0 && value <= 1, "color_mapping.stops", "Normalized stops must be in [0,1]")
 			}
 		}
-		require(increasing(values), "renderer.color_map.stops", "Stops must increase")
+		require(increasing(values), "color_mapping.stops", "Stops must increase")
 	case "discrete":
 		breaks := arrayAt(colorMap, "breaks")
-		require(len(arrayAt(colorMap, "colors"))+1 == len(breaks), "renderer.color_map", "Break/color cardinality mismatch")
-		require(increasing(breaks), "renderer.color_map.breaks", "Breaks must increase")
+		require(len(arrayAt(colorMap, "colors"))+1 == len(breaks), "color_mapping", "Break/color cardinality mismatch")
+		require(increasing(breaks), "color_mapping.breaks", "Breaks must increase")
 	case "exact":
 		seen := make(map[float64]bool)
 		for _, item := range arrayAt(colorMap, "entries") {
 			value := item.(map[string]any)["value"].(float64)
-			require(!seen[value], "renderer.color_map.entries", "Exact keys must be unique")
+			require(!seen[value], "color_mapping.entries", "Exact keys must be unique")
 			seen[value] = true
 		}
 	}
 	mosaic := objectAt(style, "mosaic")
 	if renderer["type"] == "categorized" {
-		for _, value := range objectAt(style, "resampling") {
-			require(value == "nearest" || value == "mode", "resampling", "Categorical rendering requires nearest or mode")
+		for _, key := range []string{"read", "reproject"} {
+			value := objectAt(style, "resampling")[key]
+			require(value == nil || value == "nearest" || value == "mode", "resampling", "Categorical rendering requires nearest or mode")
 		}
-		require(mosaic["pixel_selection"] != "mean" && mosaic["pixel_selection"] != "median", "mosaic.pixel_selection", "Categorical rendering forbids arithmetic mosaic")
-	}
-	opacity := objectAt(style, "opacity")
-	if alpha := objectAt(opacity, "alpha_band"); alpha != nil {
-		pair := arrayAt(alpha, "range")
-		require(pair[0].(float64) < pair[1].(float64), "opacity.alpha_band.range", "Alpha range must increase")
-	}
-	for _, item := range arrayAt(opacity, "rules") {
-		rule := item.(map[string]any)
-		if channel, exists := rule["channel"]; exists {
-			require(channel.(float64) <= float64(channels), "opacity.rules", "Rule channel is out of bounds")
-		}
-		if rule["kind"] == "range" {
-			require(rule["min"].(float64) < rule["max"].(float64), "opacity.rules", "Rule range must increase")
-		}
-		if rule["kind"] == "rgb" {
-			require(channels == 3, "opacity.rules", "RGB rule requires three channels")
-		}
+		require(mosaic["pixel_selection"] != "mean" && mosaic["pixel_selection"] != "median", "pixel_selection", "Categorical rendering forbids arithmetic mosaic")
 	}
 	calibration := objectAt(style, "calibration")
 	seenBands := make(map[float64]bool)
@@ -124,9 +104,9 @@ func validateSemantics(style map[string]any) error {
 		seenBands[band] = true
 	}
 	if rank, exists := mosaic["rank_channel"]; exists {
-		require(mosaic["pixel_selection"] == "highest" || mosaic["pixel_selection"] == "lowest", "mosaic.rank_channel", "Rank applies only to highest/lowest")
+		require(mosaic["pixel_selection"] == "highest" || mosaic["pixel_selection"] == "lowest", "rank_channel", "Rank applies only to highest/lowest")
 		if mosaic["stage"] == "after_channels" {
-			require(rank.(float64) <= float64(channels), "mosaic.rank_channel", "Rank channel is out of bounds")
+			require(rank.(float64) <= float64(channels), "rank_channel", "Rank channel is out of bounds")
 		}
 	}
 	image := objectAt(style, "image")
@@ -134,22 +114,18 @@ func validateSemantics(style map[string]any) error {
 	if format == nil {
 		format = "png"
 	}
-	if format == "jpeg" || image["alpha"] == "flatten" {
-		_, background := image["background"]
-		require(image["alpha"] == "flatten" && background, "image", "Flatten requires background; JPEG requires flatten")
-	}
 	if color, exists := image["background"].(string); exists {
-		require(len(color) == 7 || strings.HasSuffix(strings.ToLower(color), "ff"), "image.background", "Background must be opaque")
+		require(len(color) == 7 || strings.HasSuffix(strings.ToLower(color), "ff"), "background", "Background must be opaque")
 	}
 	_, quality := image["quality"]
 	if format == "png" {
-		require(!quality, "image.quality", "PNG does not accept lossy quality")
+		require(!quality, "quality", "PNG does not accept lossy quality")
 	}
 	if _, lossless := image["lossless"]; lossless {
-		require(format == "webp", "image.lossless", "Lossless is a WebP option")
+		require(format == "webp", "lossless", "Lossless is a WebP option")
 	}
 	if image["lossless"] == true {
-		require(!quality, "image.quality", "Lossless output does not accept lossy quality")
+		require(!quality, "quality", "Lossless output does not accept lossy quality")
 	}
 	return firstError
 }

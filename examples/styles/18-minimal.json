@@ -1,11 +1,8 @@
 {
   "version": "2.0",
   "renderer": {
-    "type": "gray"
-  },
-  "channels": {
-    "kind": "bands",
-    "bands": [
+    "type": "gray",
+    "bidx": [
       1
     ]
   }
