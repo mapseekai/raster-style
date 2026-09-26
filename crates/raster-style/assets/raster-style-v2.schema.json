@@ -37,7 +37,8 @@
           ]
         },
         "renderer_invert": {
-          "type": "boolean"
+          "type": "boolean",
+          "default": false
         },
         "color": {
           "type": "string",
@@ -77,79 +78,7 @@
           ]
         },
         "colormap": {
-          "anyOf": [
-            {
-              "oneOf": [
-                {
-                  "type": "object",
-                  "patternProperties": {
-                    "^(0|-?[1-9][0-9]*)$": {
-                      "type": "array",
-                      "items": {
-                        "type": "integer",
-                        "minimum": 0,
-                        "maximum": 255
-                      },
-                      "minItems": 4,
-                      "maxItems": 4
-                    }
-                  },
-                  "additionalProperties": false,
-                  "minProperties": 1,
-                  "maxProperties": 4096
-                },
-                {
-                  "type": "array",
-                  "minItems": 1,
-                  "maxItems": 4096,
-                  "items": {
-                    "type": "array",
-                    "prefixItems": [
-                      {
-                        "type": "array",
-                        "items": {
-                          "type": "number"
-                        },
-                        "minItems": 2,
-                        "maxItems": 2
-                      },
-                      {
-                        "type": "array",
-                        "items": {
-                          "type": "integer",
-                          "minimum": 0,
-                          "maximum": 255
-                        },
-                        "minItems": 4,
-                        "maxItems": 4
-                      }
-                    ],
-                    "items": false,
-                    "minItems": 2,
-                    "maxItems": 2
-                  }
-                }
-              ]
-            },
-            {
-              "type": "object",
-              "patternProperties": {
-                "^(0|-?[1-9][0-9]*)$": {
-                  "type": "array",
-                  "items": {
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 255
-                  },
-                  "minItems": 4,
-                  "maxItems": 4
-                }
-              },
-              "additionalProperties": false,
-              "minProperties": 1,
-              "maxProperties": 4096
-            }
-          ]
+          "$ref": "#/$defs/nativeColormap"
         },
         "colormap_name": {
           "type": "string",
@@ -163,7 +92,8 @@
         "strength": {
           "type": "number",
           "minimum": 0,
-          "maximum": 1
+          "maximum": 1,
+          "default": 0.65
         },
         "bidx": {
           "type": "array",
@@ -181,7 +111,8 @@
           "maxLength": 6146
         },
         "language": {
-          "const": "raster-expr/1"
+          "const": "raster-expr/1",
+          "default": "raster-expr/1"
         },
         "index": {
           "oneOf": [
@@ -596,57 +527,7 @@
                   ]
                 },
                 "colormap": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "patternProperties": {
-                        "^(0|-?[1-9][0-9]*)$": {
-                          "type": "array",
-                          "items": {
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 255
-                          },
-                          "minItems": 4,
-                          "maxItems": 4
-                        }
-                      },
-                      "additionalProperties": false,
-                      "minProperties": 1,
-                      "maxProperties": 4096
-                    },
-                    {
-                      "type": "array",
-                      "minItems": 1,
-                      "maxItems": 4096,
-                      "items": {
-                        "type": "array",
-                        "prefixItems": [
-                          {
-                            "type": "array",
-                            "items": {
-                              "type": "number"
-                            },
-                            "minItems": 2,
-                            "maxItems": 2
-                          },
-                          {
-                            "type": "array",
-                            "items": {
-                              "type": "integer",
-                              "minimum": 0,
-                              "maximum": 255
-                            },
-                            "minItems": 4,
-                            "maxItems": 4
-                          }
-                        ],
-                        "items": false,
-                        "minItems": 2,
-                        "maxItems": 2
-                      }
-                    }
-                  ]
+                  "$ref": "#/$defs/nativeColormap"
                 },
                 "colormap_name": {
                   "type": "string",
@@ -679,57 +560,7 @@
                   ]
                 },
                 "colormap": {
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "patternProperties": {
-                        "^(0|-?[1-9][0-9]*)$": {
-                          "type": "array",
-                          "items": {
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 255
-                          },
-                          "minItems": 4,
-                          "maxItems": 4
-                        }
-                      },
-                      "additionalProperties": false,
-                      "minProperties": 1,
-                      "maxProperties": 4096
-                    },
-                    {
-                      "type": "array",
-                      "minItems": 1,
-                      "maxItems": 4096,
-                      "items": {
-                        "type": "array",
-                        "prefixItems": [
-                          {
-                            "type": "array",
-                            "items": {
-                              "type": "number"
-                            },
-                            "minItems": 2,
-                            "maxItems": 2
-                          },
-                          {
-                            "type": "array",
-                            "items": {
-                              "type": "integer",
-                              "minimum": 0,
-                              "maximum": 255
-                            },
-                            "minItems": 4,
-                            "maxItems": 4
-                          }
-                        ],
-                        "items": false,
-                        "minItems": 2,
-                        "maxItems": 2
-                      }
-                    }
-                  ]
+                  "$ref": "#/$defs/nativeColormap"
                 },
                 "colormap_name": {
                   "type": "string",
@@ -778,22 +609,7 @@
                   ]
                 },
                 "colormap": {
-                  "type": "object",
-                  "patternProperties": {
-                    "^(0|-?[1-9][0-9]*)$": {
-                      "type": "array",
-                      "items": {
-                        "type": "integer",
-                        "minimum": 0,
-                        "maximum": 255
-                      },
-                      "minItems": 4,
-                      "maxItems": 4
-                    }
-                  },
-                  "additionalProperties": false,
-                  "minProperties": 1,
-                  "maxProperties": 4096
+                  "$ref": "#/$defs/exactColormap"
                 },
                 "colormap_name": {
                   "type": "string",
@@ -864,6 +680,30 @@
               "expression"
             ]
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "color_mapping": {
+                "properties": {
+                  "mode": {
+                    "const": "source"
+                  }
+                },
+                "required": [
+                  "mode"
+                ]
+              }
+            },
+            "required": [
+              "color_mapping"
+            ]
+          },
+          "then": {
+            "required": [
+              "bidx"
+            ]
+          }
         }
       ]
     },
@@ -879,7 +719,8 @@
             "lanczos",
             "average",
             "mode"
-          ]
+          ],
+          "default": "nearest"
         },
         "reproject": {
           "enum": [
@@ -890,7 +731,8 @@
             "lanczos",
             "average",
             "mode"
-          ]
+          ],
+          "default": "nearest"
         }
       },
       "required": [],
@@ -909,7 +751,8 @@
               "enum": [
                 "clamp",
                 "transparent"
-              ]
+              ],
+              "default": "clamp"
             }
           },
           "required": [
@@ -927,7 +770,8 @@
               "enum": [
                 "clamp",
                 "transparent"
-              ]
+              ],
+              "default": "clamp"
             },
             "rescale": {
               "type": "array",
@@ -959,7 +803,8 @@
               "enum": [
                 "clamp",
                 "transparent"
-              ]
+              ],
+              "default": "clamp"
             }
           },
           "required": [
@@ -977,7 +822,8 @@
               "enum": [
                 "clamp",
                 "transparent"
-              ]
+              ],
+              "default": "clamp"
             },
             "percentiles": {
               "type": "array",
@@ -1006,7 +852,8 @@
               "enum": [
                 "clamp",
                 "transparent"
-              ]
+              ],
+              "default": "clamp"
             },
             "stddev": {
               "type": "number",
@@ -1029,7 +876,8 @@
               "enum": [
                 "clamp",
                 "transparent"
-              ]
+              ],
+              "default": "clamp"
             }
           },
           "required": [
@@ -1047,7 +895,8 @@
               "enum": [
                 "clamp",
                 "transparent"
-              ]
+              ],
+              "default": "clamp"
             },
             "curves": {
               "type": "array",
@@ -1113,7 +962,8 @@
     "opacity": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "default": 1
     },
     "image": {
       "type": "object",
@@ -1123,7 +973,8 @@
             "png",
             "webp",
             "jpeg"
-          ]
+          ],
+          "default": "png"
         },
         "tilesize": {
           "enum": [
@@ -1132,19 +983,23 @@
             256,
             512,
             1024
-          ]
+          ],
+          "default": 256
         },
         "quality": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 100
+          "maximum": 100,
+          "default": 85
         },
         "lossless": {
-          "type": "boolean"
+          "type": "boolean",
+          "default": false
         },
         "background": {
           "type": "string",
-          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$",
+          "default": "#000000ff"
         }
       },
       "required": [],
@@ -1234,7 +1089,9 @@
         "rank_channel": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 64
+          "maximum": 64,
+          "default": 1,
+          "description": "One-based position: before_channels uses distinct dependency bands sorted by source band number; after_channels uses renderer output order. Applies only to highest/lowest."
         }
       },
       "required": [
@@ -1254,36 +1111,64 @@
   "additionalProperties": false,
   "$defs": {
     "statistics": {
-      "type": "object",
-      "properties": {
-        "scope": {
-          "enum": [
-            "dataset",
-            "mosaic",
-            "viewport"
-          ]
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "scope": {
+              "enum": [
+                "dataset",
+                "mosaic",
+                "viewport"
+              ]
+            },
+            "accuracy": {
+              "const": "exact"
+            },
+            "ref": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Immutable snapshot; scope and accuracy are required assertions. All data and execution dependencies must match."
+            }
+          },
+          "required": [
+            "scope",
+            "accuracy"
+          ],
+          "additionalProperties": false
         },
-        "accuracy": {
-          "enum": [
-            "exact",
-            "sample"
-          ]
-        },
-        "sample_size": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 10000000
-        },
-        "ref": {
-          "type": "string",
-          "minLength": 1
+        {
+          "type": "object",
+          "properties": {
+            "scope": {
+              "enum": [
+                "dataset",
+                "mosaic",
+                "viewport"
+              ]
+            },
+            "accuracy": {
+              "const": "sample"
+            },
+            "sample_size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000000,
+              "description": "Only with accuracy=sample; omitted sample_size resolves to 1000000 in the execution plan."
+            },
+            "ref": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Immutable snapshot; scope and accuracy are required assertions. All data and execution dependencies must match."
+            }
+          },
+          "required": [
+            "scope",
+            "accuracy"
+          ],
+          "additionalProperties": false
         }
-      },
-      "required": [
-        "scope",
-        "accuracy"
-      ],
-      "additionalProperties": false
+      ]
     },
     "ramp": {
       "type": "object",
@@ -1320,10 +1205,12 @@
               "enum": [
                 "srgb",
                 "linear_rgb"
-              ]
+              ],
+              "default": "srgb"
             },
             "reverse": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": false
             },
             "under": {
               "oneOf": [
@@ -1334,7 +1221,8 @@
                   "type": "string",
                   "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
                 }
-              ]
+              ],
+              "default": "clamp"
             },
             "over": {
               "oneOf": [
@@ -1345,7 +1233,8 @@
                   "type": "string",
                   "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
                 }
-              ]
+              ],
+              "default": "clamp"
             },
             "stops": {
               "type": "array",
@@ -1390,10 +1279,12 @@
               "enum": [
                 "srgb",
                 "linear_rgb"
-              ]
+              ],
+              "default": "srgb"
             },
             "reverse": {
-              "type": "boolean"
+              "type": "boolean",
+              "default": false
             },
             "under": {
               "oneOf": [
@@ -1404,7 +1295,8 @@
                   "type": "string",
                   "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
                 }
-              ]
+              ],
+              "default": "clamp"
             },
             "over": {
               "oneOf": [
@@ -1415,7 +1307,8 @@
                   "type": "string",
                   "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
                 }
-              ]
+              ],
+              "default": "clamp"
             },
             "ramp": {
               "$ref": "#/$defs/ramp"
@@ -1460,11 +1353,13 @@
           "enum": [
             "left_closed",
             "right_closed"
-          ]
+          ],
+          "default": "left_closed"
         },
         "outside_color": {
           "type": "string",
-          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$",
+          "default": "#00000000"
         }
       },
       "required": [
@@ -1505,7 +1400,8 @@
         },
         "fallback_color": {
           "type": "string",
-          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$"
+          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$",
+          "default": "#00000000"
         }
       },
       "required": [
@@ -1520,25 +1416,30 @@
           "type": "object",
           "properties": {
             "gradient": {
-              "const": "horn"
+              "const": "horn",
+              "default": "horn"
             },
             "altitude": {
               "type": "number",
               "exclusiveMinimum": 0,
-              "maximum": 90
+              "maximum": 90,
+              "default": 45
             },
             "z_factor": {
               "type": "number",
-              "exclusiveMinimum": 0
+              "exclusiveMinimum": 0,
+              "default": 1
             },
             "vertical_unit": {
               "enum": [
                 "metre",
                 "foot"
-              ]
+              ],
+              "default": "metre"
             },
             "edge": {
-              "const": "nodata"
+              "const": "nodata",
+              "default": "nodata"
             },
             "method": {
               "const": "single"
@@ -1546,7 +1447,8 @@
             "azimuth": {
               "type": "number",
               "minimum": 0,
-              "exclusiveMaximum": 360
+              "exclusiveMaximum": 360,
+              "default": 315
             }
           },
           "required": [
@@ -1558,25 +1460,30 @@
           "type": "object",
           "properties": {
             "gradient": {
-              "const": "horn"
+              "const": "horn",
+              "default": "horn"
             },
             "altitude": {
               "type": "number",
               "exclusiveMinimum": 0,
-              "maximum": 90
+              "maximum": 90,
+              "default": 45
             },
             "z_factor": {
               "type": "number",
-              "exclusiveMinimum": 0
+              "exclusiveMinimum": 0,
+              "default": 1
             },
             "vertical_unit": {
               "enum": [
                 "metre",
                 "foot"
-              ]
+              ],
+              "default": "metre"
             },
             "edge": {
-              "const": "nodata"
+              "const": "nodata",
+              "default": "nodata"
             },
             "method": {
               "const": "multidirectional"
@@ -1888,6 +1795,62 @@
           "additionalProperties": false
         }
       ]
+    },
+    "nativeColormap": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/exactColormap"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4096,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 2,
+                "maxItems": 2
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255
+                },
+                "minItems": 4,
+                "maxItems": 4
+              }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          }
+        }
+      ]
+    },
+    "exactColormap": {
+      "type": "object",
+      "patternProperties": {
+        "^(0|-?[1-9][0-9]*)$": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1,
+      "maxProperties": 4096
     }
   }
 }

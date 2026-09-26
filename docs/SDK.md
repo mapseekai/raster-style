@@ -65,6 +65,8 @@ post_color_formula=brightness rgb 0.05
 
 归一化会补全支持通道选择的操作：映射前单输出默认 r、三输出默认 rgb；映射后默认 rgb。其他可选字段保留省略状态。规范化后的样式满足 JSON → Query → JSON 往返一致。
 
+Schema 的 default 仅描述渲染语义，SDK 不把它们写入样式。渲染服务按[默认值表](../spec/v2/Raster-Style-Spec-v2.md#2-配置分组)解析执行计划；样式的字节规范化与执行默认值解析是两个独立步骤。
+
 ## 配置要点
 
 - renderer 在 bidx、expression、index 中选择一种输入，type 决定渲染方式。
@@ -73,5 +75,11 @@ post_color_formula=brightness rgb 0.05
 - calibration 支持 none、metadata、linear；统计拉伸可配置 statistics，多源样式可配置 mosaic。
 - renderer 的 colormap、colormap_name、color_mapping 选择一种颜色来源。
 - expression 通过分号分隔输出，SDK 检查长度、非空与数量，服务负责 AST 编译。
+- source 调色板仅接受 bidx，calibration 省略或 none，扩展仅允许 after_color；服务验证多源调色板一致。
+- statistics 的 ref 与 scope/accuracy 一起提供，作为不可变快照的匹配断言；exact 不接受 sample_size。
+- before_channels 的 rank_channel 按输入依赖波段去重、升序后的列表编号；SDK 检查 bidx/index，服务编译表达式后检查其依赖表。
+- 数据路径不接受 range_policy；原生 colormap 在 none 且无 color_formula 时为直接数据路径，其余按显示路径计算字节索引。
 
 像元计算、后端适配与部署能力由渲染服务执行。SDK 通过 Schema、静态语义及三语言一致性检查保证配置传输。
+
+算法与像元规则见[执行语义](../spec/v2/Raster-Style-Execution.md)、[raster-expr/1](../spec/v2/Raster-Expression-v1.md)与[TiTiler 适配档案](../spec/v2/Raster-Style-TiTiler-Profile.md)。

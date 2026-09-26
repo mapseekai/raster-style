@@ -36,6 +36,12 @@ export type Continuous =
       over?: 'clamp' | string;
       ramp: Ramp;
     };
+export type NativeColormap =
+  | ExactColormap
+  | [
+      [[number, number, ...number[]], [number, number, number, number, ...number[]]],
+      ...[[number, number, ...number[]], [number, number, number, number, ...number[]]][]
+    ];
 export type Terrain =
   | {
       gradient?: 'horn';
@@ -104,6 +110,27 @@ export type PostOperation =
       op: 'invert';
       channels?: 'r' | 'g' | 'b' | 'rg' | 'rb' | 'gb' | 'rgb';
     };
+export type Statistics =
+  | {
+      scope: 'dataset' | 'mosaic' | 'viewport';
+      accuracy: 'exact';
+      /**
+       * Immutable snapshot; scope and accuracy are required assertions. All data and execution dependencies must match.
+       */
+      ref?: string;
+    }
+  | {
+      scope: 'dataset' | 'mosaic' | 'viewport';
+      accuracy: 'sample';
+      /**
+       * Only with accuracy=sample; omitted sample_size resolves to 1000000 in the execution plan.
+       */
+      sample_size?: number;
+      /**
+       * Immutable snapshot; scope and accuracy are required assertions. All data and execution dependencies must match.
+       */
+      ref?: string;
+    };
 
 /**
  * Grouped raster style with structured color formulas and scalar opacity.
@@ -146,18 +173,7 @@ export interface RasterStyle {
     | {
         color?: never;
         color_mapping?: Continuous | Discrete;
-        colormap?:
-          | {
-              /**
-               * @minItems 4
-               * @maxItems 4
-               *
-               * This interface was referenced by `undefined`'s JSON-Schema definition
-               * via the `patternProperty` "^(0|-?[1-9][0-9]*)$".
-               */
-              [k: string]: [number, number, number, number, ...number[]];
-            }
-          | [never[], ...never[][]];
+        colormap?: NativeColormap;
         colormap_name?: string;
         renderer_invert?: never;
         strength?: never;
@@ -167,18 +183,7 @@ export interface RasterStyle {
     | {
         color?: never;
         color_mapping?: Continuous | Discrete;
-        colormap?:
-          | {
-              /**
-               * @minItems 4
-               * @maxItems 4
-               *
-               * This interface was referenced by `undefined`'s JSON-Schema definition
-               * via the `patternProperty` "^(0|-?[1-9][0-9]*)$".
-               */
-              [k: string]: [number, number, number, number, ...number[]];
-            }
-          | [never[], ...never[][]];
+        colormap?: NativeColormap;
         colormap_name?: string;
         renderer_invert?: never;
         strength?: number;
@@ -192,16 +197,7 @@ export interface RasterStyle {
           | {
               mode: 'source';
             };
-        colormap?: {
-          /**
-           * @minItems 4
-           * @maxItems 4
-           *
-           * This interface was referenced by `undefined`'s JSON-Schema definition
-           * via the `patternProperty` "^(0|-?[1-9][0-9]*)$".
-           */
-          [k: string]: [number, number, number, number, ...number[]];
-        };
+        colormap?: ExactColormap;
         colormap_name?: string;
         renderer_invert?: never;
         strength?: never;
@@ -327,6 +323,9 @@ export interface RasterStyle {
   mosaic?: {
     pixel_selection: 'first' | 'highest' | 'lowest' | 'mean' | 'median';
     stage: 'before_channels' | 'after_channels';
+    /**
+     * One-based position: before_channels uses distinct dependency bands sorted by source band number; after_channels uses renderer output order. Applies only to highest/lowest.
+     */
     rank_channel?: number;
   };
   extensions?: Extensions;
@@ -351,6 +350,16 @@ export interface Discrete {
   boundary?: 'left_closed' | 'right_closed';
   outside_color?: string;
 }
+export interface ExactColormap {
+  /**
+   * @minItems 4
+   * @maxItems 4
+   *
+   * This interface was referenced by `ExactColormap`'s JSON-Schema definition
+   * via the `patternProperty` "^(0|-?[1-9][0-9]*)$".
+   */
+  [k: string]: [number, number, number, number, ...number[]];
+}
 export interface Exact {
   mode: 'exact';
   /**
@@ -368,12 +377,6 @@ export interface Exact {
     }[]
   ];
   fallback_color?: string;
-}
-export interface Statistics {
-  scope: 'dataset' | 'mosaic' | 'viewport';
-  accuracy: 'exact' | 'sample';
-  sample_size?: number;
-  ref?: string;
 }
 export interface Extensions {
   /**

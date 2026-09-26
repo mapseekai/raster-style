@@ -36,6 +36,12 @@ JSON Schema 随包内嵌，使用固定定义编译并复用。Go/Fiber 和 Rust
 
 共享测试使用规范示例和独立参考查询向量。另有固定种子生成 200 个样式，三语言互相检查 Query 和规范 JSON 的字节一致性并反向解码。
 
+`testdata/rendering-vectors.json` 提供默认端点、数值域、预乘 Alpha、统计退化、地形分支和阶段顺序等输入及预期 RGBA。`scripts/rendering_reference.py` 检查这些参考计算；向量中的 style 同时参加三语言往返验证。表达式只在服务编译，`testdata/expression-vectors.json` 列出服务 AST 接受／拒绝及求值预期，参考检查器对其进行受限解析和求值。
+
+`scripts/rendering_reference_test.py` 验证参考检查器的重采样方式与阶段约束；全量检查同时运行这些回归测试。独立的均值极值向量检查有限输入的聚合结果，避免中间求和溢出。
+
+参考检查器覆盖有限的规范案例，不读取真实栅格、不执行后端重投影或图像编码。部署后端须独立运行相关向量并验证真实栅格，才能声明支持该能力；精度与验收边界见[执行语义 §7](../spec/v2/Raster-Style-Execution.md#7-验收)。
+
 Go 提供 race 测试、并发复用测试、BenchmarkDecodeRGB 和 FuzzDecodeQuery。Fiber 使用 app.Test 发出真实 HTTP 请求，覆盖数组顺序、中间件和错误状态；Rust 覆盖并行调用和 Serde 路径。完整运行报告写入 `.build/`，其中耗时供本地性能分析参考。
 
 ## 参考

@@ -81,6 +81,16 @@ pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
         )?;
     }
     let color_map = &renderer["color_mapping"];
+    if renderer.get("colormap").is_some()
+        && stretch["method"].as_str().unwrap_or("none") == "none"
+        && style["effects"].get("color_formula").is_none()
+    {
+        require(
+            stretch.get("range_policy").is_none(),
+            "stretch.range_policy",
+            "Native data colormaps use their own boundaries",
+        )?;
+    }
     let bypass = ["categorized", "single_color", "hillshade"].contains(&renderer_type)
         || color_map["domain"] == "data";
     if bypass {
@@ -89,6 +99,11 @@ pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
                 && style["effects"].get("color_formula").is_none(),
             "method",
             "Data-domain renderer must bypass stretch",
+        )?;
+        require(
+            stretch.get("range_policy").is_none(),
+            "stretch.range_policy",
+            "Range policy requires a display-domain stretch",
         )?;
     }
     match color_map["mode"].as_str() {
@@ -155,6 +170,22 @@ pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
             "Categorical rendering forbids arithmetic mosaic",
         )?;
     }
+    if color_map["mode"] == "source" {
+        require(
+            style["calibration"]["mode"].as_str().unwrap_or("none") == "none",
+            "calibration.mode",
+            "Source palettes require unmodified category values",
+        )?;
+        if let Some(extensions) = style["extensions"].as_object() {
+            require(
+                extensions
+                    .values()
+                    .all(|extension| extension["stage"] == "after_color"),
+                "extensions",
+                "Source palettes allow only after_color extensions",
+            )?;
+        }
+    }
     let mut bands: Vec<f64> = array(&style["calibration"]["coefficients"])
         .iter()
         .map(|item| number(&item["band"]))
@@ -176,6 +207,21 @@ pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
                 number(rank) <= channels as f64,
                 "rank_channel",
                 "Rank channel is out of bounds",
+            )?;
+        } else if renderer.get("bidx").is_some() || renderer.get("index").is_some() {
+            let mut inputs: Vec<u64> = array(&renderer["bidx"])
+                .iter()
+                .map(|band| number(band) as u64)
+                .collect();
+            if let Some(bindings) = renderer["index"]["bindings"].as_object() {
+                inputs.extend(bindings.values().map(|band| number(band) as u64));
+            }
+            inputs.sort_unstable();
+            inputs.dedup();
+            require(
+                number(rank) <= inputs.len() as f64,
+                "rank_channel",
+                "Rank channel exceeds the distinct input band count",
             )?;
         }
     }

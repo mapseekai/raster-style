@@ -4,6 +4,14 @@ import { fileURLToPath } from 'node:url';
 
 const schema = JSON.parse(
   await readFile(new URL('../spec/v2/raster-style-v2.schema.json', import.meta.url), 'utf8'),
+  (_key, value) => {
+    // This generator expects draft-07 tuples. Adapt only its in-memory schema.
+    if (value && typeof value === 'object' && Array.isArray(value.prefixItems)) {
+      const { prefixItems, items, ...rest } = value;
+      return { ...rest, items: prefixItems, additionalItems: items ?? true };
+    }
+    return value;
+  },
 );
 schema.title = 'RasterStyle';
 const output = await compile(schema, 'RasterStyle', {

@@ -9,3 +9,4 @@ target/
 .env.*
 !.env.example
 .pnpm-store/
+__pycache__/

@@ -58,12 +58,19 @@ func validateSemantics(style map[string]any) error {
 		}
 	}
 	colorMap := objectAt(renderer, "color_mapping")
+	_, preFormula := objectAt(style, "effects")["color_formula"]
+	if renderer["colormap"] != nil && (stretch["method"] == nil || stretch["method"] == "none") && !preFormula {
+		_, rangePolicy := stretch["range_policy"]
+		require(!rangePolicy, "stretch.range_policy", "Native data colormaps use their own boundaries")
+	}
 	bypass := renderer["type"] == "categorized" || renderer["type"] == "single_color" || renderer["type"] == "hillshade" || colorMap["domain"] == "data"
 	if bypass {
 		method, present := stretch["method"]
 		require(!present || method == "none", "method", "Data-domain renderer must bypass stretch")
 		_, formula := objectAt(style, "effects")["color_formula"]
 		require(!formula, "color_formula", "Data-domain renderer must bypass color formula")
+		_, rangePolicy := stretch["range_policy"]
+		require(!rangePolicy, "stretch.range_policy", "Range policy requires a display-domain stretch")
 	}
 	switch colorMap["mode"] {
 	case "continuous":
@@ -97,6 +104,12 @@ func validateSemantics(style map[string]any) error {
 		require(mosaic["pixel_selection"] != "mean" && mosaic["pixel_selection"] != "median", "pixel_selection", "Categorical rendering forbids arithmetic mosaic")
 	}
 	calibration := objectAt(style, "calibration")
+	if colorMap["mode"] == "source" {
+		require(calibration["mode"] == nil || calibration["mode"] == "none", "calibration.mode", "Source palettes require unmodified category values")
+		for _, extension := range objectAt(style, "extensions") {
+			require(extension.(map[string]any)["stage"] == "after_color", "extensions", "Source palettes allow only after_color extensions")
+		}
+	}
 	seenBands := make(map[float64]bool)
 	for _, item := range arrayAt(calibration, "coefficients") {
 		band := item.(map[string]any)["band"].(float64)
@@ -107,6 +120,15 @@ func validateSemantics(style map[string]any) error {
 		require(mosaic["pixel_selection"] == "highest" || mosaic["pixel_selection"] == "lowest", "rank_channel", "Rank applies only to highest/lowest")
 		if mosaic["stage"] == "after_channels" {
 			require(rank.(float64) <= float64(channels), "rank_channel", "Rank channel is out of bounds")
+		} else if renderer["bidx"] != nil || renderer["index"] != nil {
+			inputs := make(map[float64]bool)
+			for _, band := range arrayAt(renderer, "bidx") {
+				inputs[band.(float64)] = true
+			}
+			for _, band := range objectAt(objectAt(renderer, "index"), "bindings") {
+				inputs[band.(float64)] = true
+			}
+			require(rank.(float64) <= float64(len(inputs)), "rank_channel", "Rank channel exceeds the distinct input band count")
 		}
 	}
 	image := objectAt(style, "image")

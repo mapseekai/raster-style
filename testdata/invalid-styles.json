@@ -383,5 +383,90 @@
     "name": "opacity-object",
     "json": "{\"version\": \"2.0\", \"renderer\": {\"type\": \"gray\", \"bidx\": [1]}, \"opacity\": {\"value\": 1}}",
     "code": "E_SCHEMA"
+  },
+  {
+    "name": "source-palette-expression",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"source\"},\"expression\":\"b1+1\"}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "source-palette-index",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"source\"},\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":1,\"nir\":2}}}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "source-palette-metadata",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"calibration\":{\"mode\":\"metadata\"}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "source-palette-linear",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"calibration\":{\"mode\":\"linear\",\"coefficients\":[{\"band\":1,\"scale\":1,\"offset\":0}]}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "source-palette-before_channels",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"extensions\":{\"mapseek.test.identity\":{\"version\":\"1\",\"stage\":\"before_channels\",\"config\":{}}}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "source-palette-after_channels",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"extensions\":{\"mapseek.test.identity\":{\"version\":\"1\",\"stage\":\"after_channels\",\"config\":{}}}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "exact-rejects-sample-size",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"statistics\":{\"scope\":\"dataset\",\"accuracy\":\"exact\",\"sample_size\":1}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "snapshot-requires-assertions",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"statistics\":{\"ref\":\"stats-1\"}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "range-policy-on-categorized",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"transparent\"}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "range-policy-on-single_color",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"single_color\",\"bidx\":[1],\"color\":\"#ff0000\"},\"stretch\":{\"method\":\"none\",\"range_policy\":\"transparent\"}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "range-policy-on-hillshade",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"hillshade\",\"bidx\":[1],\"terrain\":{\"method\":\"single\"}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"transparent\"}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "range-policy-on-native-data",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"pseudocolor\",\"bidx\":[1],\"colormap\":{\"1\":[255,0,0,255]}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"clamp\"}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "range-policy-on-explicit-data",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"pseudocolor\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"stops\":[{\"value\":0,\"color\":\"#000000\"},{\"value\":1,\"color\":\"#ffffff\"}]}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"clamp\"}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "rank-before-bidx-bounds",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"before_channels\",\"rank_channel\":2}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "rank-before-deduplicates-bidx",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[1,1,1]},\"mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"before_channels\",\"rank_channel\":2}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "rank-before-index-bounds",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":8}}},\"mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"before_channels\",\"rank_channel\":3}}",
+    "code": "E_SEMANTIC"
+  },
+  {
+    "name": "rank-before-deduplicates-index",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":4}}},\"mosaic\":{\"pixel_selection\":\"lowest\",\"stage\":\"before_channels\",\"rank_channel\":2}}",
+    "code": "E_SEMANTIC"
   }
 ]

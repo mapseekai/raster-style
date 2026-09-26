@@ -6,7 +6,7 @@ Raster Style Spec v2 的 Rust JSON ↔ Q2 查询参数编解码工具，支持�
 
 ```toml
 [dependencies]
-raster-style = "0.2.0"
+raster-style = "0.3.0"
 ```
 
 ## 使用
@@ -23,7 +23,7 @@ fn main() -> Result<(), raster_style::Error> {
 }
 ```
 
-完整接口见 [SDK 使用说明](https://github.com/mapseekai/raster-style/blob/v0.2.0/docs/SDK.md)。
+完整接口见 [SDK 使用说明](https://github.com/mapseekai/raster-style/blob/v0.3.0/docs/SDK.md)。
 
 ## 许可证
 

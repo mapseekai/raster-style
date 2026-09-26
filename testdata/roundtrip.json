@@ -607,7 +607,7 @@
             "numbers": [
               0,
               1e+21,
-              1e-7,
+              1e-07,
               5e-324
             ],
             "text": "a+b & #50% 中文 / ? =",
@@ -1731,5 +1731,87 @@
       }
     },
     "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.1%2C%20saturation%201.2&format=png&method=linear&nodata=-9999&opacity=1&post_color_formula=brightness%20rgb%200.05&reproject=bilinear&resampling=bilinear&rescale=0%2C3000&tilesize=256&type=rgb&version=2.0"
+  },
+  {
+    "name": "snapshot-with-assertions",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "type": "gray",
+        "bidx": [
+          1
+        ]
+      },
+      "stretch": {
+        "method": "minmax"
+      },
+      "statistics": {
+        "scope": "dataset",
+        "accuracy": "exact",
+        "ref": "stats-1"
+      }
+    },
+    "query": "bidx=1&method=minmax&statistics=%7B%22accuracy%22%3A%22exact%22%2C%22ref%22%3A%22stats-1%22%2C%22scope%22%3A%22dataset%22%7D&type=gray&version=2.0"
+  },
+  {
+    "name": "source-palette-unmodified",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "type": "categorized",
+        "bidx": [
+          1
+        ],
+        "color_mapping": {
+          "mode": "source"
+        }
+      },
+      "calibration": {
+        "mode": "none"
+      }
+    },
+    "query": "bidx=1&calibration=%7B%22mode%22%3A%22none%22%7D&color_mapping=%7B%22mode%22%3A%22source%22%7D&type=categorized&version=2.0"
+  },
+  {
+    "name": "rank-before-deduplicated-valid",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "type": "rgb",
+        "bidx": [
+          3,
+          3,
+          1
+        ]
+      },
+      "mosaic": {
+        "pixel_selection": "highest",
+        "stage": "before_channels",
+        "rank_channel": 2
+      }
+    },
+    "query": "bidx=3&bidx=3&bidx=1&pixel_selection=highest&rank_channel=2&stage=before_channels&type=rgb&version=2.0"
+  },
+  {
+    "name": "rank-before-index-valid",
+    "raster_style": {
+      "version": "2.0",
+      "renderer": {
+        "type": "gray",
+        "index": {
+          "name": "ndvi",
+          "bindings": {
+            "red": 4,
+            "nir": 8
+          }
+        }
+      },
+      "mosaic": {
+        "pixel_selection": "highest",
+        "stage": "before_channels",
+        "rank_channel": 2
+      }
+    },
+    "query": "index=%7B%22bindings%22%3A%7B%22nir%22%3A8%2C%22red%22%3A4%7D%2C%22name%22%3A%22ndvi%22%7D&pixel_selection=highest&rank_channel=2&stage=before_channels&type=gray&version=2.0"
   }
 ]

@@ -10,7 +10,7 @@ import subprocess
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def load(name: str) -> list[dict]:
+def load(name: str) -> list[dict] | dict[str, dict]:
     return json.loads((ROOT / "testdata" / f"{name}.json").read_text())
 
 
@@ -32,6 +32,10 @@ def main() -> None:
         requests.append({"op": "encode", **fixture})
     for fixture in load("invalid-queries"):
         requests.append({"op": "decode", **fixture})
+    for fixture in load("rendering-vectors"):
+        requests.append({"op": "encode", "json": json.dumps(fixture["style"]), "name": "rendering-" + fixture["name"]})
+    for name, style in load("valid-styles").items():
+        requests.append({"op": "encode", "json": json.dumps(style), "name": "valid-" + name})
     generator = random.Random(20260921)
     for index in range(200):
         channels = 3 if index % 2 else 1

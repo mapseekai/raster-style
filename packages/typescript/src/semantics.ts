@@ -60,11 +60,26 @@ export function validateSemantics(style: JsonObject): void {
   const bypass =
     ['categorized', 'single_color', 'hillshade'].includes(type as string) ||
     colorMap.domain === 'data';
+  const nativeData =
+    'colormap' in renderer &&
+    (stretch.method ?? 'none') === 'none' &&
+    !('color_formula' in objectAt(style, 'effects'));
+  if (nativeData)
+    requireCondition(
+      !('range_policy' in stretch),
+      'stretch.range_policy',
+      'Native data colormaps use their own boundaries',
+    );
   if (bypass) {
     requireCondition(
       (stretch.method ?? 'none') === 'none' && !('color_formula' in objectAt(style, 'effects')),
       'method',
       'Data-domain renderer must bypass stretch',
+    );
+    requireCondition(
+      !('range_policy' in stretch),
+      'stretch.range_policy',
+      'Range policy requires a display-domain stretch',
     );
   }
   if (colorMap.mode === 'continuous' && 'stops' in colorMap) {
@@ -111,6 +126,20 @@ export function validateSemantics(style: JsonObject): void {
     );
   }
   const calibration = objectAt(style, 'calibration');
+  if (colorMap.mode === 'source') {
+    requireCondition(
+      (calibration.mode ?? 'none') === 'none',
+      'calibration.mode',
+      'Source palettes require unmodified category values',
+    );
+    requireCondition(
+      Object.values(objectAt(style, 'extensions')).every(
+        (extension) => (extension as JsonObject).stage === 'after_color',
+      ),
+      'extensions',
+      'Source palettes allow only after_color extensions',
+    );
+  }
   if (calibration.mode === 'linear') {
     const bands = (calibration.coefficients as JsonObject[]).map((coefficient) => coefficient.band);
     requireCondition(
@@ -131,6 +160,17 @@ export function validateSemantics(style: JsonObject): void {
         'rank_channel',
         'Rank channel is out of bounds',
       );
+    else if ('bidx' in renderer || 'index' in renderer) {
+      const inputs =
+        'bidx' in renderer
+          ? arrayAt(renderer, 'bidx')
+          : Object.values(objectAt(objectAt(renderer, 'index'), 'bindings'));
+      requireCondition(
+        (mosaic.rank_channel as number) <= new Set(inputs).size,
+        'rank_channel',
+        'Rank channel exceeds the distinct input band count',
+      );
+    }
   }
   const image = objectAt(style, 'image');
   const format = image.format ?? 'png';

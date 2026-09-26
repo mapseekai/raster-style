@@ -1,6 +1,6 @@
 # raster-style
 
-Raster Style Spec v2 的规范与多语言 Q2 编解码工具。当前协议为 `2.0`，SDK 版本为 `0.2.0`。
+Raster Style Spec v2 的规范与多语言 Q2 编解码工具。当前协议为 `2.0`，SDK 版本为 `0.3.0`。
 
 提供栅格像元渲染的样式规范，以及 TypeScript、Go、Rust 的 JSON ↔ Q2 查询参数转换、结构与语义校验、颜色规范化和 Fiber v3 适配层。
 
@@ -20,6 +20,8 @@ scripts/                    资源同步、类型生成、跨语言校验
 接口规范：[TiTiler 命名规范](spec/v2/Raster-Style-TiTiler-Profile.md)，包含统一字段、颜色公式和路由示例，Schema 与三语言 SDK 使用同一字段定义。
 
 规范入口：[Raster Style Spec v2](spec/v2/Raster-Style-Spec-v2.md)。接口细节见 [SDK 使用说明](docs/SDK.md)，校验规则见 [验证与安全](docs/VALIDATION.md)。
+
+像元规则见 [执行语义](spec/v2/Raster-Style-Execution.md)，表达式语法见 [raster-expr/1](spec/v2/Raster-Expression-v1.md)。渲染参考向量随工程检查运行；实际后端按 [TiTiler 适配档案](spec/v2/Raster-Style-TiTiler-Profile.md)独立验收。
 
 ## 开发
 
@@ -45,7 +47,7 @@ cargo fmt --all
 ## TypeScript
 
 ```sh
-npm install @mapseek/raster-style@0.2.0
+npm install @mapseek/raster-style@0.3.0
 ```
 
 ```ts
@@ -73,7 +75,7 @@ bidx=4&bidx=3&bidx=2&type=rgb&version=2.0
 ## Go
 
 ```sh
-go get github.com/mapseekai/raster-style/packages/go@v0.2.0
+go get github.com/mapseekai/raster-style/packages/go@v0.3.0
 ```
 
 ```go
@@ -130,7 +132,7 @@ let restored_json = query_to_json(&query)?;
 
 ```toml
 [dependencies]
-raster-style = "0.2.0"
+raster-style = "0.3.0"
 ```
 
 ## 分组样式
@@ -167,7 +169,7 @@ SDK 保留可选字段的省略状态，并在颜色操作中补全默认 channe
 
 ## 版本
 
-SDK 版本为 `0.2.0`。npm 包为 `@mapseek/raster-style`，Rust crate 为 `raster-style`；Go 核心包与 Fiber 适配层通过同一个 Go 模块发布。
+SDK 版本为 `0.3.0`。npm 包为 `@mapseek/raster-style`，Rust crate 为 `raster-style`；Go 核心包与 Fiber 适配层通过同一个 Go 模块发布。
 
 ## 许可证
 

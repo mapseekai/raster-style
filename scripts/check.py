@@ -18,6 +18,8 @@ def main() -> None:
         (["pnpm", "check:generated"], ROOT),
         (["pnpm", "format:check"], ROOT),
         (["pnpm", "test"], ROOT),
+        ([sys.executable, "scripts/rendering_reference.py"], ROOT),
+        ([sys.executable, "scripts/rendering_reference_test.py"], ROOT),
         (["go", "mod", "verify"], GO),
         (["go", "vet", "./..."], GO),
         (["go", "test", "-race", "-count=1", "./..."], GO),
