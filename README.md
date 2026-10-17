@@ -1,10 +1,71 @@
 # raster-style
 
-Raster Style v3 的规范、JSON Schema 与 TypeScript / Go / Rust SDK。当前核心协议为 **3.0**，Query 绑定为 **Q3**，仓库 SDK 版本为 **0.4.0**。
+Raster Style 用结构化 JSON 描述栅格样式，并通过 Q3 查询参数传递配置。项目包含样式规范、JSON Schema，以及 TypeScript、Go、Rust SDK，为样式编辑、配置存储和服务请求提供统一的校验与编解码接口。
 
-核心定义波段与表达式、指数、重采样、校准、统计、拉伸、颜色映射、地形、颜色效果和透明度。扩展采用声明与配置分离的设计：版本化 Schema URL 写入 extensions，业务字段直接位于样式对象，由对应 Schema 定义。
+当前核心协议为 **3.0**，查询绑定为 **Q3**，仓库 SDK 源码版本为 **0.4.0**。官方 Mosaic 与 Tile 扩展均采用 **1.0.0** 版本的独立 Schema。
 
-## 样式示例
+## 主要能力
+
+| 领域           | 能力                                                                                                             |
+| -------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 输入与渲染配置 | 波段选择、`raster-expr/1` 表达式和指数绑定；RGB、灰度、伪彩色、分类、单色、山体阴影和晕渲样式                    |
+| 数值处理语义   | 读取与重投影重采样、像元校准、NoData、统计范围与快照，以及线性、最小最大值、百分位、标准差、直方图均衡和曲线拉伸 |
+| 颜色与透明度   | 连续色带、离散分级、精确值色表、命名色表；有序颜色操作、RGBA 颜色规范化和全局透明度                              |
+| 扩展配置       | 通过版本化 Schema 声明扩展，由扩展 Schema 定义顶层业务字段；官方扩展描述多源镶嵌和瓦片输出参数                   |
+| 样式校验       | 严格 JSON 解析、JSON Schema 2020-12 组合校验、静态语义检查、校验完整性报告和精确扩展版本的执行能力检查           |
+| 配置传输       | JSON 与 Q3 双向转换、JCS 规范化序列化、确定性参数排序，以及重复参数顺序和扩展 JSON 语义保留                      |
+| 多语言集成     | TypeScript、Go、Rust 共用 Schema、Q3 绑定与测试向量；Go 另提供 Fiber v3 请求解码器和中间件                       |
+
+样式规范定义参数及其处理语义，SDK 提供解析、校验、规范化和传输接口。渲染服务可依据[执行语义](spec/v3/Raster-Style-Execution.md)和[适配档案](spec/v3/Raster-Style-TiTiler-Profile.md)完成数据绑定与像元处理集成。
+
+## 工具链
+
+TypeScript 快速开始使用 Node.js 和 pnpm；工作区全量验证同时使用 Go、Rust 和 Python。
+
+| 工具                               | 版本    | 用途                                     |
+| ---------------------------------- | ------- | ---------------------------------------- |
+| [Node.js](https://nodejs.org/)     | 22+     | TypeScript SDK、资源生成与站点构建       |
+| [pnpm](https://pnpm.io/)           | 11.15.1 | 工作区依赖安装、构建与验证命令           |
+| [Go](https://go.dev/)              | 1.25+   | Go SDK、Fiber 集成与并发测试             |
+| [Rust](https://www.rust-lang.org/) | 1.92.0  | Rust SDK、Clippy 与发布包验证            |
+| [Python](https://www.python.org/)  | 3.10+   | 全量检查、数值参考计算与跨语言一致性验证 |
+
+工具版本由 `package.json`、`packages/go/go.mod` 和 `rust-toolchain.toml` 等工作区配置约定。pnpm 使用锁文件安装依赖，Rust 工具链包含 `rustfmt` 和 `clippy`。
+
+## 快速开始
+
+获取仓库并构建 TypeScript SDK：
+
+```sh
+git clone https://github.com/mapseekai/raster-style.git
+cd raster-style
+pnpm install --frozen-lockfile
+pnpm build
+```
+
+在仓库根目录运行 JSON 与 Q3 转换示例：
+
+```sh
+node --input-type=module <<'JS'
+import { jsonToQuery, queryToJson } from './packages/typescript/dist/index.js';
+
+const json = '{"version":"3.0","renderer":{"type":"gray","bidx":[1]}}';
+const query = jsonToQuery(json);
+console.log(query);
+console.log(queryToJson(query));
+JS
+```
+
+输出：
+
+```text
+bidx=1&type=gray&version=3.0
+{"renderer":{"bidx":[1],"type":"gray"},"version":"3.0"}
+```
+
+## 样式配置
+
+下例描述第 4、3、2 波段组成的 RGB 样式，使用双线性重采样和固定范围拉伸，并声明多源镶嵌与 WebP 瓦片输出配置：
 
 ```json
 {
@@ -22,104 +83,81 @@ Raster Style v3 的规范、JSON Schema 与 TypeScript / Go / Rust SDK。当前�
 }
 ```
 
-Mosaic 承载多源像元选择、元组有效性、Alpha 与通道前后执行语义。Tile 的尺寸参与前置网格规划，格式、质量、无损和背景参数决定最终输出。核心样式可独立使用：
+`extensions` 保存扩展 Schema 的版本 URL；`raster:mosaic` 和 `raster:tile` 是相应 Schema 定义的业务字段。
 
-```json
-{ "version": "3.0", "renderer": { "type": "gray", "bidx": [1] } }
-```
+| 官方扩展                                                  | 配置内容                                                                                                   |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| [Mosaic 1.0.0](extensions/raster/mosaic/v1.0.0/README.md) | `first`、`highest`、`lowest`、`mean`、`median` 像元选择策略，通道计算前后镶嵌，以及元组有效性和 Alpha 语义 |
+| [Tile 1.0.0](extensions/raster/tile/v1.0.0/README.md)     | 瓦片尺寸，PNG、WebP、JPEG 输出格式，质量、无损 WebP 和 JPEG 背景合成参数                                   |
 
-## 规范与工程结构
+核心与官方扩展 Schema 内嵌于三个 SDK，支持本地离线校验。`SchemaRegistry` 提供第三方 Schema 注册和应用自定义解析函数，按 JSON Schema 2020-12 组合核心、扩展及引用资源。一个扩展 Schema 可定义多个顶层业务字段。
 
-| 入口                                                      | 内容                                              |
-| --------------------------------------------------------- | ------------------------------------------------- |
-| [核心规范](spec/v3/Raster-Style-Spec-v3.md)               | 核心渲染语义、扩展声明、组合校验与执行契约        |
-| [Mosaic 1.0.0](extensions/raster/mosaic/v1.0.0/README.md) | 多源像元选择及完整样式 Schema                     |
-| [Tile 1.0.0](extensions/raster/tile/v1.0.0/README.md)     | 前置网格、透明度、颜色空间和编码                  |
-| [Q3 绑定](spec/v3/Raster-Style-Query.md)                  | 核心短参数、通用扩展 JSON、确定性排序与百分号编码 |
-| [SDK](docs/SDK.md)                                        | 三语言接口、本地注册、完整性报告与执行能力检查    |
-| [执行语义](spec/v3/Raster-Style-Execution.md)             | 数值计算、统计、Alpha、地形与参考向量             |
-| [表达式档案](spec/v3/Raster-Expression-v1.md)             | raster-expr/1 语法与求值约定                      |
-| [适配档案](spec/v3/Raster-Style-TiTiler-Profile.md)       | 后端映射、精确版本和渲染验收                      |
-| [验证与安全](docs/VALIDATION.md)                          | 校验层次、错误码、预算和测试边界                  |
-| [Schema 发布](docs/PUBLISHING.md)                         | 静态产物、版本地址与部署验证                      |
+更多配置见[示例目录](examples/README.md)，包含指数、表达式、颜色映射、地形、拉伸、颜色操作和第三方扩展样式。
 
-spec/v3 和 extensions/raster 是规范来源；packages/typescript、packages/go、crates/raster-style 提供 SDK；[examples](examples/README.md) 和 testdata 保存示例、本地示例 Schema 及共享测试。scripts 负责生成、数值参考计算、跨语言检查和静态发布构建。
+## SDK 接口
 
-## SDK 使用
+三个 SDK 提供对应的样式解析、完整校验、查询编解码和 Schema 注册接口：
 
-### TypeScript
+| 接口用途       | TypeScript                    | Go                            | Rust                            |
+| -------------- | ----------------------------- | ----------------------------- | ------------------------------- |
+| 样式解析       | `parseStyle`                  | `ParseJSON`                   | `Style::from_json`              |
+| 完整校验       | `validateStyle`               | `ValidateJSON`                | `validate_json`                 |
+| JSON 转 Q3     | `jsonToQuery`                 | `JSONToQuery`                 | `json_to_query`                 |
+| Q3 转 JSON     | `queryToJson`                 | `QueryToJSON`                 | `query_to_json`                 |
+| 对象与 Q3 转换 | `encodeQuery` / `decodeQuery` | `EncodeQuery` / `DecodeQuery` | `encode_query` / `decode_query` |
+| Schema 注册    | `SchemaRegistry.register`     | `SchemaRegistry.Register`     | `SchemaRegistry::register`      |
 
-```ts
-import {
-  parseStyle,
-  validateStyle,
-  inspectStyle,
-  encodeQuery,
-  decodeQuery,
-} from '@mapseek/raster-style';
+校验报告提供完整性状态与待解析 Schema 列表。执行能力检查使用渲染端声明的精确扩展 URL 集合，为配置校验与执行端版本匹配提供接口。
 
-const style = parseStyle('{"version":"3.0","renderer":{"type":"gray","bidx":[1]}}');
-validateStyle(style);
-const report = inspectStyle(style);
-const query = encodeQuery(style);
-const restored = decodeQuery(query);
-```
+Go 的 Fiber v3 集成支持原始查询串解析、JSON 输入、请求中间件和上下文取值。可运行示例见 [Fiber 示例](packages/go/examples/fiber/main.go)。
 
-### Go
+完整调用示例和接口说明见 [SDK 文档](docs/SDK.md)，各语言入口为 [TypeScript](packages/typescript/README.md)、[Go](packages/go/README.md) 和 [Rust](crates/raster-style/README.md)。
 
-```go
-import rasterstyle "github.com/mapseekai/raster-style/packages/go"
+## 文档与代码结构
 
-if err := rasterstyle.ValidateJSON(styleJSON); err != nil {
-    return err
-}
-query, err := rasterstyle.JSONToQuery(styleJSON)
-if err != nil {
-    return err
-}
-restored, err := rasterstyle.QueryToJSON(query)
-```
-
-Fiber v3 提供可复用 Decoder 和中间件，可运行示例位于 packages/go/examples/fiber/main.go。
-
-### Rust
-
-```rust
-use raster_style::{validate_json, json_to_query, query_to_json};
-
-validate_json(style_json)?;
-let query = json_to_query(style_json)?;
-let restored = query_to_json(&query)?;
-```
-
-上述核心示例对应 `bidx=1&type=gray&version=3.0`。
-
-官方 Schema 内嵌并离线使用；第三方通过 SchemaRegistry 注册，可定义任意名称及多个业务字段。Query 使用 extensions 数组与 extension_fields 对象传输，无需为新增扩展修改绑定表。
-
-编解码保留未知扩展的 JSON 语义，并提供未解析 Schema 报告。完整校验要求取得全部 Schema；执行前另行检查真实执行端支持的精确扩展 URL。详细调用见 SDK 文档。
+| 入口                                                           | 内容                                          |
+| -------------------------------------------------------------- | --------------------------------------------- |
+| [核心规范](spec/v3/Raster-Style-Spec-v3.md)                    | 配置分组、字段、默认语义和组合校验契约        |
+| [Q3 绑定](spec/v3/Raster-Style-Query.md)                       | 查询参数、扩展字段传输、排序与百分号编码      |
+| [执行语义](spec/v3/Raster-Style-Execution.md)                  | 有效性、重采样、统计、颜色、地形和数值计算    |
+| [表达式档案](spec/v3/Raster-Expression-v1.md)                  | `raster-expr/1` 语法、函数与求值约定          |
+| [适配档案](spec/v3/Raster-Style-TiTiler-Profile.md)            | 渲染服务映射和验收契约                        |
+| [校验说明](docs/VALIDATION.md)                                 | 校验流程、错误码和输入预算                    |
+| [Schema 校验实现](docs/SCHEMA-VALIDATION.md)                   | 组合校验、数值与正则处理、缓存和回归用例      |
+| [Schema 发布](docs/PUBLISHING.md)                              | 站点构建、版本化资源和发布验证                |
+| `spec/v3/`、`extensions/raster/`                               | 核心规范、Q3 绑定和官方扩展的来源文件         |
+| `packages/typescript/`、`packages/go/`、`crates/raster-style/` | 三个语言 SDK 的源码与测试                     |
+| `examples/`、`testdata/`                                       | 样式示例、示例 Schema 和共享测试向量          |
+| `scripts/`、`.github/workflows/`                               | 资源生成、验证、参考计算及 CI 与 Pages 工作流 |
 
 ## 开发与验证
 
-工具链：Node.js 22+、pnpm 11.15.1、Go 1.25+、Rust 1.92.0、Python 3.10+。
+生成资源并运行全量验证：
 
 ```sh
-pnpm install --frozen-lockfile
 pnpm generate
+pnpm check:generated
 pnpm build
 pnpm test:all
 ```
 
-全量检查包含资源一致性、格式化、TypeScript 类型及单元测试、Go vet/race、Rust fmt/clippy/test、数值参考向量、三语言 Query/JCS 往返和静态 Schema 发布产物。完整日志与报告输出到 .build。
+全量验证覆盖生成资源一致性、格式检查、TypeScript 类型与单元测试、Go vet 和 race 测试、Rust fmt、Clippy、单元及文档测试、数值参考向量、三语言 JSON/Q3 与 JCS 一致性、独立 Rust 发布包测试和静态站点构建。验证报告写入 `.build/`。
+
+Schema 站点构建与线上内容核对：
 
 ```sh
-pnpm format
-gofmt -w packages/go
-cargo fmt --all
 pnpm build:site
+pnpm check:published
 ```
 
-协议版本、Query 绑定版本、SDK 版本和扩展版本分别管理。发布目录与校验资源使用显式版本；实际 npm、crates.io、Go tag 与 Pages 上线状态以发布记录为准，仓库版本号不代表已发布。
+[Schema 站点](https://mapseekai.github.io/raster-style/)发布核心与官方扩展的版本化资源，[资源索引](https://mapseekai.github.io/raster-style/schemas.json)记录各资源 URL 和 SHA-256。`main` 分支推送通过 CI 后，Pages 工作流构建并部署对应提交的站点内容。
+
+## 参与贡献
+
+开发与测试约定见 [CONTRIBUTING.md](CONTRIBUTING.md)。协议或 Schema 调整时，同步更新规范来源、共享测试、生成资源和相关文档，并运行全量验证。
+
+项目反馈和功能建议可提交至 [GitHub Issues](https://github.com/mapseekai/raster-style/issues)。
 
 ## 许可证
 
-[MIT](LICENSE)。
+项目采用 [MIT 许可证](LICENSE)。
