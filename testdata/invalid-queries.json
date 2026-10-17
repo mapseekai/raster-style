@@ -1,137 +1,137 @@
 [
   {
     "name": "duplicate-version",
-    "query": "version=2.0&bidx=1&type=gray&version=2.0",
+    "query": "version=3.0&bidx=1&type=gray&version=3.0",
     "code": "E_DUPLICATE_PARAMETER"
   },
   {
     "name": "duplicate-renderer",
-    "query": "version=2.0&bidx=1&type=gray&type=gray",
+    "query": "version=3.0&bidx=1&type=gray&type=gray",
     "code": "E_DUPLICATE_PARAMETER"
   },
   {
     "name": "unknown-key",
-    "query": "version=2.0&bidx=1&type=gray&foo=1",
+    "query": "version=3.0&bidx=1&type=gray&foo=1",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "legend-key",
-    "query": "version=2.0&bidx=1&type=gray&legend=%7B%7D",
+    "query": "version=3.0&bidx=1&type=gray&legend=%7B%7D",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "metadata-key",
-    "query": "version=2.0&bidx=1&type=gray&metadata=%7B%7D",
+    "query": "version=3.0&bidx=1&type=gray&metadata=%7B%7D",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "context-url",
-    "query": "version=2.0&bidx=1&type=gray&url=https%3A%2F%2Fexample.test",
+    "query": "version=3.0&bidx=1&type=gray&url=https%3A%2F%2Fexample.test",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "malformed-percent",
-    "query": "version=2.0&bidx=1&type=gray&opacity=%QZ",
+    "query": "version=3.0&bidx=1&type=gray&opacity=%QZ",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "bad-utf8",
-    "query": "version=2.0&bidx=1&type=gray&opacity=%FF",
+    "query": "version=3.0&bidx=1&type=gray&opacity=%FF",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "raw-plus",
-    "query": "version=2.0&bidx=1&type=gray&expression=b1+b2",
+    "query": "version=3.0&bidx=1&type=gray&expression=b1+b2",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "raw-space",
-    "query": "version=2.0&bidx=1&type=gray&expression=b1 b2",
+    "query": "version=3.0&bidx=1&type=gray&expression=b1 b2",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "raw-fragment",
-    "query": "version=2.0&bidx=1&type=gray&expression=b1#x",
+    "query": "version=3.0&bidx=1&type=gray&expression=b1#x",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "raw-unicode",
-    "query": "version=2.0&bidx=1&type=gray&expression=中文",
+    "query": "version=3.0&bidx=1&type=gray&expression=中文",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "unsafe-integer",
-    "query": "version=2.0&bidx=1&type=gray&tilesize=9007199254740992",
+    "query": "version=3.0&type=gray&bidx=9007199254740992",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "fractional-integer",
-    "query": "version=2.0&bidx=1&type=gray&tilesize=1.5",
+    "query": "version=3.0&type=gray&bidx=1.5",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "non-finite",
-    "query": "version=2.0&bidx=1&type=gray&opacity=1e999",
+    "query": "version=3.0&bidx=1&type=gray&opacity=1e999",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "nan",
-    "query": "version=2.0&bidx=1&type=gray&opacity=NaN",
+    "query": "version=3.0&bidx=1&type=gray&opacity=NaN",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "leading-zero",
-    "query": "version=2.0&bidx=1&type=gray&opacity=01",
+    "query": "version=3.0&bidx=1&type=gray&opacity=01",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "boolean-numeric",
-    "query": "version=2.0&bidx=1&type=gray&renderer_invert=1",
+    "query": "version=3.0&bidx=1&type=gray&renderer_invert=1",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "invalid-pair",
-    "query": "version=2.0&bidx=1&type=gray&rescale=0,1,2",
+    "query": "version=3.0&bidx=1&type=gray&rescale=0,1,2",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "short-rgba",
-    "query": "version=2.0&bidx=1&type=gray&background=AABBCC",
+    "query": "version=3.0&bidx=1&type=gray&color=AABBCC",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "json-duplicate",
-    "query": "version=2.0&bidx=1&type=gray&index=%7B%22mode%22%3A%22source%22%2C%22mode%22%3A%22ignore%22%7D",
+    "query": "version=3.0&bidx=1&type=gray&index=%7B%22mode%22%3A%22source%22%2C%22mode%22%3A%22ignore%22%7D",
     "code": "E_JSON"
   },
   {
     "name": "json-malformed",
-    "query": "version=2.0&bidx=1&type=gray&index=%7B%7D%7B%7D",
+    "query": "version=3.0&bidx=1&type=gray&index=%7B%7D%7B%7D",
     "code": "E_JSON"
   },
   {
     "name": "trailing-empty",
-    "query": "version=2.0&bidx=1&type=gray&",
+    "query": "version=3.0&bidx=1&type=gray&",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "no-equals",
-    "query": "version=2.0&bidx=1&type=gray&quality",
+    "query": "version=3.0&bidx=1&type=gray&quality",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "prototype-key",
-    "query": "version=2.0&bidx=1&type=gray&__proto__=1",
+    "query": "version=3.0&bidx=1&type=gray&__proto__=1",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "malformed-union",
-    "query": "version=2.0&bidx=1&type=gray&expression=b1",
+    "query": "version=3.0&bidx=1&type=gray&expression=b1",
     "code": "E_SCHEMA"
   },
   {
     "name": "missing-required",
-    "query": "version=2.0",
+    "query": "version=3.0",
     "code": "E_SCHEMA"
   },
   {
@@ -141,172 +141,277 @@
   },
   {
     "name": "full-url",
-    "query": "https://example.test/?rsv=2.0&bidx=1&type=gray",
+    "query": "https://example.test/?version=3.0&bidx=1&type=gray",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "duplicate-channels",
-    "query": "version=2.0&bidx=1&type=gray&type=gray",
+    "query": "version=3.0&bidx=1&type=gray&type=gray",
     "code": "E_DUPLICATE_PARAMETER"
   },
   {
     "name": "unregistered-selector",
-    "query": "version=2.0&selector=bands&bidx=1&type=gray",
+    "query": "version=3.0&selector=bands&bidx=1&type=gray",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "unregistered-bands-key",
-    "query": "version=2.0&bands=1&type=gray",
+    "query": "version=3.0&bands=1&type=gray",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "unregistered-nested-path",
-    "query": "version=2.0&bidx=1&type=gray&renderer.unknown=1",
+    "query": "version=3.0&bidx=1&type=gray&renderer.unknown=1",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "unregistered-prototype-path",
-    "query": "version=2.0&bidx=1&type=gray&channels.__proto__.polluted=true",
+    "query": "version=3.0&bidx=1&type=gray&channels.__proto__.polluted=true",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "unregistered-size",
-    "query": "version=2.0&bidx=1&type=gray&size=256",
+    "query": "version=3.0&bidx=1&type=gray&size=256",
     "code": "E_UNKNOWN_PARAMETER"
   },
   {
     "name": "operations-duplicate",
-    "query": "version=2.0&bidx=1&type=gray&post_color_formula=invert%20rgb&post_color_formula=invert%20rgb",
+    "query": "version=3.0&bidx=1&type=gray&post_color_formula=invert%20rgb&post_color_formula=invert%20rgb",
     "code": "E_DUPLICATE_PARAMETER"
   },
   {
     "name": "operations-not-array",
-    "query": "bidx=1&type=gray&version=2.0&post_color_formula=%7B%22op%22%3A%22invert%22%7D",
+    "query": "bidx=1&type=gray&version=3.0&post_color_formula=%7B%22op%22%3A%22invert%22%7D",
     "code": "E_SEMANTIC"
   },
   {
     "name": "query-color_formula-37",
-    "query": "version=2.0&bidx=1&type=gray&color_formula=gamma%20b%201",
+    "query": "version=3.0&bidx=1&type=gray&color_formula=gamma%20b%201",
     "code": "E_SEMANTIC"
   },
   {
     "name": "query-nodata-38",
-    "query": "version=2.0&bidx=1&type=gray&nodata=NaN",
+    "query": "version=3.0&bidx=1&type=gray&nodata=NaN",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "query-nodata-39",
-    "query": "version=2.0&bidx=1&type=gray&nodata=%22nan%22",
+    "query": "version=3.0&bidx=1&type=gray&nodata=%22nan%22",
     "code": "E_QUERY_SYNTAX"
   },
   {
     "name": "duplicate-formula",
-    "query": "version=2.0&bidx=1&type=gray&color_formula=gamma%20r%201&color_formula=gamma%20r%202",
+    "query": "version=3.0&bidx=1&type=gray&color_formula=gamma%20r%201&color_formula=gamma%20r%202",
     "code": "E_DUPLICATE_PARAMETER"
   },
   {
     "name": "formula-empty-step",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201%2C",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201%2C",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-unknown",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=brightness%20rgb%201",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=brightness%20rgb%201",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-missing-argument",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=sigmoidal%20rgb%206",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=sigmoidal%20rgb%206",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-extra-argument",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201%202",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201%202",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-zero-gamma",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%200",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%200",
     "code": "E_SCHEMA"
   },
   {
     "name": "formula-negative-gamma",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20-1",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20-1",
     "code": "E_SCHEMA"
   },
   {
     "name": "formula-bad-midpoint",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=sigmoidal%20rgb%206%201",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=sigmoidal%20rgb%206%201",
     "code": "E_SCHEMA"
   },
   {
     "name": "formula-zero-contrast",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=sigmoidal%20rgb%200%200.5",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=sigmoidal%20rgb%200%200.5",
     "code": "E_SCHEMA"
   },
   {
     "name": "formula-saturation-range",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=saturation%204.1",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=saturation%204.1",
     "code": "E_SCHEMA"
   },
   {
     "name": "formula-invalid-channel",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rr%201",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rr%201",
     "code": "E_SCHEMA"
   },
   {
     "name": "formula-invalid-number",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%2001",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%2001",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-plus-number",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20%2B1",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20%2B1",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-nonfinite",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201e999",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201e999",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-nan",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20NaN",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20NaN",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-unicode-whitespace",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%C2%A0rgb%201",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%C2%A0rgb%201",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-uppercase",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=Gamma%20rgb%201",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=Gamma%20rgb%201",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-too-many",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201%2Cgamma%20rgb%201",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-blank",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=%20%20%20",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=%20%20%20",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-fraction-shorthand",
-    "query": "version=2.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20.5",
+    "query": "version=3.0&type=rgb&bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%20.5",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-missing-gray-channel",
-    "query": "version=2.0&type=gray&bidx=1&color_formula=gamma%20b%201",
+    "query": "version=3.0&type=gray&bidx=1&color_formula=gamma%20b%201",
     "code": "E_SEMANTIC"
   },
   {
     "name": "formula-gray-saturation",
-    "query": "version=2.0&type=gray&bidx=1&color_formula=saturation%201",
+    "query": "version=3.0&type=gray&bidx=1&color_formula=saturation%201",
     "code": "E_SEMANTIC"
+  },
+  {
+    "name": "reject-old-query-format",
+    "query": "version=3.0&type=gray&bidx=1&format=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "reject-old-query-tilesize",
+    "query": "version=3.0&type=gray&bidx=1&tilesize=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "reject-old-query-quality",
+    "query": "version=3.0&type=gray&bidx=1&quality=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "reject-old-query-lossless",
+    "query": "version=3.0&type=gray&bidx=1&lossless=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "reject-old-query-background",
+    "query": "version=3.0&type=gray&bidx=1&background=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "reject-old-query-pixel_selection",
+    "query": "version=3.0&type=gray&bidx=1&pixel_selection=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "reject-old-query-stage",
+    "query": "version=3.0&type=gray&bidx=1&stage=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "reject-old-query-rank_channel",
+    "query": "version=3.0&type=gray&bidx=1&rank_channel=1",
+    "code": "E_UNKNOWN_PARAMETER"
+  },
+  {
+    "name": "reject-version-v2",
+    "query": "version=2.0&type=gray&bidx=1",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-missing-version",
+    "query": "type=gray&bidx=1",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-duplicate-extensions",
+    "query": "version=3.0&type=gray&bidx=1&extensions=%5B%5D&extensions=%5B%5D",
+    "code": "E_DUPLICATE_PARAMETER"
+  },
+  {
+    "name": "reject-duplicate-extension-fields",
+    "query": "version=3.0&type=gray&bidx=1&extension_fields=%7B%7D&extension_fields=%7B%7D",
+    "code": "E_DUPLICATE_PARAMETER"
+  },
+  {
+    "name": "reject-extension-fields-74",
+    "query": "version=3.0&type=gray&bidx=1&extension_fields=%5B%5D",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "reject-extension-fields-75",
+    "query": "version=3.0&type=gray&bidx=1&extension_fields=null",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "reject-extension-fields-76",
+    "query": "version=3.0&type=gray&bidx=1&extension_fields=true",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "reject-extension-fields-77",
+    "query": "version=3.0&type=gray&bidx=1&extension_fields=1",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "reject-extension-fields-78",
+    "query": "version=3.0&type=gray&bidx=1&extension_fields=%22x%22",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "reject-extension-fields-79",
+    "query": "version=3.0&type=gray&bidx=1&extension_fields=%7B%22version%22%3A%223.0%22%7D",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "reject-extension-fields-80",
+    "query": "version=3.0&type=gray&bidx=1&extension_fields=%7B%22renderer%22%3A%7B%7D%7D",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "reject-extension-fields-81",
+    "query": "version=3.0&type=gray&bidx=1&extension_fields=%7B%22extensions%22%3A%5B%5D%7D",
+    "code": "E_QUERY_SYNTAX"
+  },
+  {
+    "name": "reject-extension-fields-82",
+    "query": "version=3.0&type=gray&bidx=1&extension_fields=%7B%22opacity%22%3A1%7D",
+    "code": "E_QUERY_SYNTAX"
   }
 ]

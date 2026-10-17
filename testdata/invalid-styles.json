@@ -1,142 +1,142 @@
 [
   {
     "name": "rgb-two-bands",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000],[0,3000],[0,3000]]},\"image\":{\"format\":\"png\",\"tilesize\":256},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"r\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"g\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"b\",\"value\":1.1}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000],[0,3000],[0,3000]]},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"r\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"g\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"b\",\"value\":1.1}]},\"raster:tile\":{\"format\":\"png\",\"tilesize\":256},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "rescale-cardinality",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3,2]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,1],[0,2]]},\"image\":{\"format\":\"png\",\"tilesize\":256},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3,2]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,1],[0,2]]},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"raster:tile\":{\"format\":\"png\",\"tilesize\":256},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "reversed-range",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3,2]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[5,1]]},\"image\":{\"format\":\"png\",\"tilesize\":256},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"r\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"g\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"b\",\"value\":1.1}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3,2]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[5,1]]},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"r\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"g\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"b\",\"value\":1.1}]},\"raster:tile\":{\"format\":\"png\",\"tilesize\":256},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "reversed-percentiles",
-    "json": "{\"version\":\"2.0\",\"statistics\":{\"scope\":\"dataset\",\"accuracy\":\"sample\",\"sample_size\":1000000},\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3,2]},\"stretch\":{\"method\":\"percentile\",\"percentiles\":[98,2]},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"rgb\",\"value\":1.1}]}}",
+    "json": "{\"version\":\"3.0\",\"statistics\":{\"scope\":\"dataset\",\"accuracy\":\"sample\",\"sample_size\":1000000},\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3,2]},\"stretch\":{\"method\":\"percentile\",\"percentiles\":[98,2]},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"rgb\",\"value\":1.1}]}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "data-map-gamma",
-    "json": "{\"version\":\"2.0\",\"opacity\":1,\"calibration\":{\"mode\":\"metadata\"},\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":-1,\"color\":\"#313695ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":1,\"color\":\"#006837ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":8}}},\"stretch\":{\"method\":\"none\"},\"image\":{\"format\":\"png\",\"tilesize\":256},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"r\",\"value\":2}]}}",
+    "json": "{\"version\":\"3.0\",\"opacity\":1,\"calibration\":{\"mode\":\"metadata\"},\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":-1,\"color\":\"#313695ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":1,\"color\":\"#006837ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":8}}},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"r\",\"value\":2}]},\"raster:tile\":{\"format\":\"png\",\"tilesize\":256},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "data-map-stretch",
-    "json": "{\"version\":\"2.0\",\"opacity\":1,\"calibration\":{\"mode\":\"metadata\"},\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":-1,\"color\":\"#313695ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":1,\"color\":\"#006837ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":8}}},\"stretch\":{\"method\":\"linear\",\"rescale\":[[-1,1]]},\"image\":{\"format\":\"png\",\"tilesize\":256},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"}}",
+    "json": "{\"version\":\"3.0\",\"opacity\":1,\"calibration\":{\"mode\":\"metadata\"},\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":-1,\"color\":\"#313695ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":1,\"color\":\"#006837ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":8}}},\"stretch\":{\"method\":\"linear\",\"rescale\":[[-1,1]]},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"raster:tile\":{\"format\":\"png\",\"tilesize\":256},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "stops-unsorted",
-    "json": "{\"version\":\"2.0\",\"opacity\":1,\"calibration\":{\"mode\":\"metadata\"},\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":1,\"color\":\"#006837ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":-1,\"color\":\"#313695ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":8}}},\"stretch\":{\"method\":\"none\"},\"image\":{\"format\":\"png\",\"tilesize\":256},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"}}",
+    "json": "{\"version\":\"3.0\",\"opacity\":1,\"calibration\":{\"mode\":\"metadata\"},\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":1,\"color\":\"#006837ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":-1,\"color\":\"#313695ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":8}}},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"raster:tile\":{\"format\":\"png\",\"tilesize\":256},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "breaks-unsorted",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"discrete\",\"domain\":\"data\",\"breaks\":[1000,500,100,0],\"colors\":[\"#2c7bb6ff\",\"#ffffbfff\",\"#d7191cff\"],\"boundary\":\"left_closed\",\"outside_color\":\"#00000000\"},\"bidx\":[1]},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"nearest\",\"reproject\":\"nearest\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"discrete\",\"domain\":\"data\",\"breaks\":[1000,500,100,0],\"colors\":[\"#2c7bb6ff\",\"#ffffbfff\",\"#d7191cff\"],\"boundary\":\"left_closed\",\"outside_color\":\"#00000000\"},\"bidx\":[1]},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"nearest\",\"reproject\":\"nearest\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "colors-length",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"discrete\",\"domain\":\"data\",\"breaks\":[0,100,500,1000],\"colors\":[\"#2c7bb6ff\",\"#ffffbfff\"],\"boundary\":\"left_closed\",\"outside_color\":\"#00000000\"},\"bidx\":[1]},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"nearest\",\"reproject\":\"nearest\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"discrete\",\"domain\":\"data\",\"breaks\":[0,100,500,1000],\"colors\":[\"#2c7bb6ff\",\"#ffffbfff\"],\"boundary\":\"left_closed\",\"outside_color\":\"#00000000\"},\"bidx\":[1]},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"nearest\",\"reproject\":\"nearest\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "duplicate-exact-value",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"exact\",\"entries\":[{\"value\":1,\"color\":\"#228b22ff\"},{\"value\":2,\"color\":\"#4169e1ff\"},{\"value\":3,\"color\":\"#d2b48cff\"},{\"value\":1,\"color\":\"#228b22ff\"}],\"fallback_color\":\"#00000000\"},\"bidx\":[1]},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"nearest\",\"reproject\":\"nearest\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"exact\",\"entries\":[{\"value\":1,\"color\":\"#228b22ff\"},{\"value\":2,\"color\":\"#4169e1ff\"},{\"value\":3,\"color\":\"#d2b48cff\"},{\"value\":1,\"color\":\"#228b22ff\"}],\"fallback_color\":\"#00000000\"},\"bidx\":[1]},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"nearest\",\"reproject\":\"nearest\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "categorical-bilinear",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"exact\",\"entries\":[{\"value\":1,\"color\":\"#228b22ff\"},{\"value\":2,\"color\":\"#4169e1ff\"},{\"value\":3,\"color\":\"#d2b48cff\"}],\"fallback_color\":\"#00000000\"},\"bidx\":[1]},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"bilinear\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"exact\",\"entries\":[{\"value\":1,\"color\":\"#228b22ff\"},{\"value\":2,\"color\":\"#4169e1ff\"},{\"value\":3,\"color\":\"#d2b48cff\"}],\"fallback_color\":\"#00000000\"},\"bidx\":[1]},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"bilinear\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "categorical-median",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"exact\",\"entries\":[{\"value\":1,\"color\":\"#228b22ff\"},{\"value\":2,\"color\":\"#4169e1ff\"},{\"value\":3,\"color\":\"#d2b48cff\"}],\"fallback_color\":\"#00000000\"},\"bidx\":[1]},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"nearest\",\"reproject\":\"nearest\"},\"mosaic\":{\"pixel_selection\":\"median\",\"stage\":\"after_channels\"}}",
-    "code": "E_SEMANTIC"
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"exact\",\"entries\":[{\"value\":1,\"color\":\"#228b22ff\"},{\"value\":2,\"color\":\"#4169e1ff\"},{\"value\":3,\"color\":\"#d2b48cff\"}],\"fallback_color\":\"#00000000\"},\"bidx\":[1]},\"stretch\":{\"method\":\"none\"},\"resampling\":{\"read\":\"nearest\",\"reproject\":\"nearest\"},\"raster:mosaic\":{\"pixel_selection\":\"median\",\"stage\":\"after_channels\"},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json\"]}",
+    "code": "E_SCHEMA"
   },
   {
     "name": "background-transparent",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"renderer_invert\":false,\"bidx\":[1]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,255]]},\"image\":{\"format\":\"jpeg\",\"background\":\"#ffffff00\",\"quality\":85,\"tilesize\":256}}",
-    "code": "E_SEMANTIC"
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"renderer_invert\":false,\"bidx\":[1]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,255]]},\"raster:tile\":{\"format\":\"jpeg\",\"background\":\"#ffffff00\",\"quality\":85,\"tilesize\":256},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
+    "code": "E_SCHEMA"
   },
   {
     "name": "png-quality",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3,2]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000],[0,3000],[0,3000]]},\"image\":{\"format\":\"png\",\"quality\":80,\"tilesize\":256},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"r\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"g\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"b\",\"value\":1.1}]}}",
-    "code": "E_SEMANTIC"
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3,2]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000],[0,3000],[0,3000]]},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"r\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"g\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"b\",\"value\":1.1}]},\"raster:tile\":{\"format\":\"png\",\"quality\":80,\"tilesize\":256},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
+    "code": "E_SCHEMA"
   },
   {
     "name": "png-lossless",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3,2]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000],[0,3000],[0,3000]]},\"image\":{\"format\":\"png\",\"lossless\":false,\"tilesize\":256},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"r\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"g\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"b\",\"value\":1.1}]}}",
-    "code": "E_SEMANTIC"
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[4,3,2]},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000],[0,3000],[0,3000]]},\"resampling\":{\"read\":\"bilinear\",\"reproject\":\"bilinear\"},\"effects\":{\"color_formula\":[{\"op\":\"gamma\",\"channels\":\"r\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"g\",\"value\":1.1},{\"op\":\"gamma\",\"channels\":\"b\",\"value\":1.1}]},\"raster:tile\":{\"format\":\"png\",\"lossless\":false,\"tilesize\":256},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
+    "code": "E_SCHEMA"
   },
   {
     "name": "webp-lossless-quality",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":-1,\"color\":\"#313695ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":1,\"color\":\"#006837ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"language\":\"raster-expr/1\",\"expression\":\"(b8-b4)/(b8+b4)\"},\"stretch\":{\"method\":\"none\"},\"image\":{\"format\":\"webp\",\"lossless\":true,\"quality\":80,\"tilesize\":256},\"mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"after_channels\",\"rank_channel\":1}}",
-    "code": "E_SEMANTIC"
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":-1,\"color\":\"#313695ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":1,\"color\":\"#006837ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"language\":\"raster-expr/1\",\"expression\":\"(b8-b4)/(b8+b4)\"},\"stretch\":{\"method\":\"none\"},\"raster:mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"after_channels\",\"rank_channel\":1},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json\",\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"],\"raster:tile\":{\"format\":\"webp\",\"lossless\":true,\"quality\":80,\"tilesize\":256}}",
+    "code": "E_SCHEMA"
   },
   {
     "name": "calibration-band-duplicate",
-    "json": "{\"version\":\"2.0\",\"calibration\":{\"mode\":\"linear\",\"coefficients\":[{\"band\":1,\"scale\":1,\"offset\":0},{\"band\":1,\"scale\":2,\"offset\":0}]},\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
+    "json": "{\"version\":\"3.0\",\"calibration\":{\"mode\":\"linear\",\"coefficients\":[{\"band\":1,\"scale\":1,\"offset\":0},{\"band\":1,\"scale\":2,\"offset\":0}]},\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "rank-wrong-stage-channel",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":-1,\"color\":\"#313695ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":1,\"color\":\"#006837ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"language\":\"raster-expr/1\",\"expression\":\"(b8-b4)/(b8+b4)\"},\"stretch\":{\"method\":\"none\"},\"image\":{\"format\":\"webp\",\"lossless\":true,\"tilesize\":256},\"mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"after_channels\",\"rank_channel\":3}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":-1,\"color\":\"#313695ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":1,\"color\":\"#006837ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"language\":\"raster-expr/1\",\"expression\":\"(b8-b4)/(b8+b4)\"},\"stretch\":{\"method\":\"none\"},\"raster:mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"after_channels\",\"rank_channel\":3},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json\",\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"],\"raster:tile\":{\"format\":\"webp\",\"lossless\":true,\"tilesize\":256}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "rank-wrong-kind",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":-1,\"color\":\"#313695ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":1,\"color\":\"#006837ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"language\":\"raster-expr/1\",\"expression\":\"(b8-b4)/(b8+b4)\"},\"stretch\":{\"method\":\"none\"},\"image\":{\"format\":\"webp\",\"lossless\":true,\"tilesize\":256},\"mosaic\":{\"pixel_selection\":\"first\",\"stage\":\"after_channels\",\"rank_channel\":1}}",
-    "code": "E_SEMANTIC"
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"interpolation\":\"srgb\",\"stops\":[{\"value\":-1,\"color\":\"#313695ff\"},{\"value\":0,\"color\":\"#ffffbfff\"},{\"value\":1,\"color\":\"#006837ff\"}],\"under\":\"clamp\",\"over\":\"clamp\"},\"language\":\"raster-expr/1\",\"expression\":\"(b8-b4)/(b8+b4)\"},\"stretch\":{\"method\":\"none\"},\"raster:mosaic\":{\"pixel_selection\":\"first\",\"stage\":\"after_channels\",\"rank_channel\":1},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json\",\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"],\"raster:tile\":{\"format\":\"webp\",\"lossless\":true,\"tilesize\":256}}",
+    "code": "E_SCHEMA"
   },
   {
     "name": "nonmonotonic-curve",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"stretch\":{\"method\":\"curve\",\"curves\":[[[0,1],[10,0]]]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"stretch\":{\"method\":\"curve\",\"curves\":[[[0,1],[10,0]]]}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "curve-output-range",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"stretch\":{\"method\":\"curve\",\"curves\":[[[0,-1],[10,2]]]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"stretch\":{\"method\":\"curve\",\"curves\":[[[0,-1],[10,2]]]}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "normalized-stops-out-of-range",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"normalized\",\"stops\":[{\"value\":0,\"color\":\"#000000\"},{\"value\":2,\"color\":\"#ffffff\"}]},\"bidx\":[1]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"pseudocolor\",\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"normalized\",\"stops\":[{\"value\":0,\"color\":\"#000000\"},{\"value\":2,\"color\":\"#ffffff\"}]},\"bidx\":[1]}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "legend",
-    "json": "{\"version\":\"2.0\",\"legend\":{},\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
+    "json": "{\"version\":\"3.0\",\"legend\":{},\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "metadata",
-    "json": "{\"version\":\"2.0\",\"metadata\":{\"title\":\"No\"},\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
+    "json": "{\"version\":\"3.0\",\"metadata\":{\"title\":\"No\"},\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "unknown-root",
-    "json": "{\"version\":\"2.0\",\"wrong\":true,\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
+    "json": "{\"version\":\"3.0\",\"wrong\":true,\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "unknown-nested",
-    "json": "{\"version\":\"2.0\",\"wrong\":1,\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
+    "json": "{\"version\":\"3.0\",\"wrong\":1,\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "classification",
-    "json": "{\"version\":\"2.0\",\"classification\":{\"method\":\"quantile\"},\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
+    "json": "{\"version\":\"3.0\",\"classification\":{\"method\":\"quantile\"},\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "missing-renderer",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1]}}",
     "code": "E_SCHEMA"
   },
   {
@@ -151,322 +151,397 @@
   },
   {
     "name": "unknown-image-object",
-    "json": "{\"version\":\"2.0\",\"image\":{},\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"raster:tile\":{},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
     "code": "E_SCHEMA"
   },
   {
     "name": "channels-conflict",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1],\"index\":{\"name\":\"ndvi\"},\"expression\":\"b1\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1],\"index\":{\"name\":\"ndvi\"},\"expression\":\"b1\"}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "empty-bands",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "invalid-enum",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"resampling\":{\"read\":\"spline\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"resampling\":{\"read\":\"spline\"}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "invalid-color",
-    "json": "{\"version\": \"2.0\", \"renderer\": {\"type\": \"gray\", \"bidx\": [1]}, \"image\": {\"background\": \"red\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"raster:tile\":{\"background\":\"red\"},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
     "code": "E_SCHEMA"
   },
   {
     "name": "invalid-index-roles",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":1}}}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":1}}}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "unregistered-image-size",
-    "json": "{\"version\":\"2.0\",\"size\":256,\"renderer\":{\"bidx\":[1],\"type\":\"gray\"}}",
+    "json": "{\"version\":\"3.0\",\"size\":256,\"renderer\":{\"bidx\":[1],\"type\":\"gray\"}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "invalid-tilesize",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1],\"type\":\"gray\"},\"image\":{\"tilesize\":257}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1],\"type\":\"gray\"},\"raster:tile\":{\"tilesize\":257},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-empty",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-too-many",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"},{\"op\":\"invert\"}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-unknown",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"exposure\",\"value\":1}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"exposure\",\"value\":1}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-gamma-zero",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"gamma\",\"value\":0}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"gamma\",\"value\":0}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-gamma-missing",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"gamma\"}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"gamma\"}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-channels-empty",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"gamma\",\"value\":1,\"channels\":\"\"}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"gamma\",\"value\":1,\"channels\":\"\"}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-channels-duplicate",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"gamma\",\"value\":1,\"channels\":\"rr\"}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"gamma\",\"value\":1,\"channels\":\"rr\"}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-sigmoid-midpoint",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"sigmoidal\",\"contrast\":2,\"midpoint\":1}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"sigmoidal\",\"contrast\":2,\"midpoint\":1}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-sigmoid-contrast",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"sigmoidal\",\"contrast\":0,\"midpoint\":0.5}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"sigmoidal\",\"contrast\":0,\"midpoint\":0.5}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-brightness-range",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"brightness\",\"value\":1.1}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"brightness\",\"value\":1.1}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-contrast-range",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"contrast\",\"value\":-1}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"contrast\",\"value\":-1}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-saturation-range",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"saturation\",\"value\":5}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"saturation\",\"value\":5}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-saturation-channels",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"saturation\",\"value\":1,\"channels\":\"r\"}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"saturation\",\"value\":1,\"channels\":\"r\"}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-grayscale-method",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"grayscale\",\"method\":\"unknown\"}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"grayscale\",\"method\":\"unknown\"}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-invert-extra",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"invert\",\"value\":true}]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"invert\",\"value\":true}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-wrong-type",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":{\"op\":\"invert\"}}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":{\"op\":\"invert\"}}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "operations-mixed-shortcuts",
-    "json": "{\"version\":\"2.0\",\"brightness\":0,\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"saturation\",\"value\":1.2},{\"op\":\"gamma\",\"channels\":\"rb\",\"value\":1.1},{\"op\":\"sigmoidal\",\"channels\":\"rgb\",\"contrast\":6,\"midpoint\":0.5},{\"op\":\"gamma\",\"channels\":\"b\",\"value\":0.9}]}}",
+    "json": "{\"version\":\"3.0\",\"brightness\":0,\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]},\"effects\":{\"post_color_formula\":[{\"op\":\"saturation\",\"value\":1.2},{\"op\":\"gamma\",\"channels\":\"rb\",\"value\":1.1},{\"op\":\"sigmoidal\",\"channels\":\"rgb\",\"contrast\":6,\"midpoint\":0.5},{\"op\":\"gamma\",\"channels\":\"b\",\"value\":0.9}]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "expression-empty-output",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"language\":\"raster-expr/1\",\"expression\":\"b1;;b2\",\"type\":\"gray\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"language\":\"raster-expr/1\",\"expression\":\"b1;;b2\",\"type\":\"gray\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "expression-too-many",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"language\":\"raster-expr/1\",\"expression\":\"b1;b1;b1;b1\",\"type\":\"gray\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"language\":\"raster-expr/1\",\"expression\":\"b1;b1;b1;b1\",\"type\":\"gray\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "expression-whitespace",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"language\":\"raster-expr/1\",\"expression\":\"  \",\"type\":\"gray\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"language\":\"raster-expr/1\",\"expression\":\"  \",\"type\":\"gray\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "expression-too-long",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"language\":\"raster-expr/1\",\"expression\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"type\":\"gray\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"language\":\"raster-expr/1\",\"expression\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"type\":\"gray\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "mapping-conflict",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":{\"0\":[0,0,0,0],\"255\":[255,255,255,255]},\"colormap_name\":\"viridis\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":{\"0\":[0,0,0,0],\"255\":[255,255,255,255]},\"colormap_name\":\"viridis\"},\"stretch\":{\"method\":\"linear\",\"rescale\":[[0,3000]]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "calibration-conflict",
-    "json": "{\"version\":\"2.0\",\"unscale\":true,\"calibration\":{\"mode\":\"linear\",\"coefficients\":[{\"band\":1,\"scale\":1,\"offset\":0}]},\"renderer\":{\"bidx\":[1],\"type\":\"gray\"}}",
+    "json": "{\"version\":\"3.0\",\"unscale\":true,\"calibration\":{\"mode\":\"linear\",\"coefficients\":[{\"band\":1,\"scale\":1,\"offset\":0}]},\"renderer\":{\"bidx\":[1],\"type\":\"gray\"}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "nodata-conflict",
-    "json": "{\"version\":\"2.0\",\"nodata\":0,\"renderer\":{\"bidx\":[1],\"type\":\"gray\"},\"nodata_config\":{\"mode\":\"source\"}}",
+    "json": "{\"version\":\"3.0\",\"nodata\":0,\"renderer\":{\"bidx\":[1],\"type\":\"gray\"},\"nodata_config\":{\"mode\":\"source\"}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "native-map-overlap",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":[[[0,100],[1,2,3,255]],[[90,200],[3,2,1,255]]]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":[[[0,100],[1,2,3,255]],[[90,200],[3,2,1,255]]]}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "native-map-reversed",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":[[[100,0],[1,2,3,255]]]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":[[[100,0],[1,2,3,255]]]}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "native-map-unsafe-key",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":{\"9007199254740992\":[1,2,3,255]}}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":{\"9007199254740992\":[1,2,3,255]}}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "native-map-bad-color",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":{\"0\":[256,0,0,255]}}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":{\"0\":[256,0,0,255]}}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "native-map-float-key",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":{\"0.5\":[1,2,3,255]}}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\",\"colormap\":{\"0.5\":[1,2,3,255]}}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "no-colormap",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1],\"type\":\"pseudocolor\"}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "mosaic-stage-required",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1],\"type\":\"gray\"},\"mosaic\":{\"pixel_selection\":\"first\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1],\"type\":\"gray\"},\"raster:mosaic\":{\"pixel_selection\":\"first\"},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json\"]}",
     "code": "E_SCHEMA"
   },
   {
     "name": "unused-rescale",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[1],\"type\":\"gray\"},\"stretch\":{\"rescale\":[[0,1]]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[1],\"type\":\"gray\"},\"stretch\":{\"rescale\":[[0,1]]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "bidx-expression-conflict",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\",\"expression\":\"b1\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"bidx\":[4,3,2],\"type\":\"rgb\",\"expression\":\"b1\"}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "flat-style",
-    "json": "{\"version\":\"2.0\",\"type\":\"gray\",\"kind\":\"bands\",\"bidx\":[1]}",
+    "json": "{\"version\":\"3.0\",\"type\":\"gray\",\"kind\":\"bands\",\"bidx\":[1]}",
     "code": "E_SCHEMA"
   },
   {
     "name": "unregistered-alpha_band",
-    "json": "{\"version\": \"2.0\", \"renderer\": {\"type\": \"gray\", \"bidx\": [1]}, \"alpha_band\": {\"band\": 1, \"range\": [0, 255]}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"alpha_band\":{\"band\":1,\"range\":[0,255]}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "unregistered-rules",
-    "json": "{\"version\": \"2.0\", \"renderer\": {\"type\": \"gray\", \"bidx\": [1]}, \"rules\": []}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"rules\":[]}",
     "code": "E_SCHEMA"
   },
   {
     "name": "unregistered-nodata_color",
-    "json": "{\"version\": \"2.0\", \"renderer\": {\"type\": \"gray\", \"bidx\": [1]}, \"nodata_color\": \"#00000000\"}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"nodata_color\":\"#00000000\"}",
     "code": "E_SCHEMA"
   },
   {
     "name": "unregistered-nodata_config",
-    "json": "{\"version\": \"2.0\", \"renderer\": {\"type\": \"gray\", \"bidx\": [1]}, \"nodata_config\": {\"mode\": \"source\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"nodata_config\":{\"mode\":\"source\"}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "opacity-object",
-    "json": "{\"version\": \"2.0\", \"renderer\": {\"type\": \"gray\", \"bidx\": [1]}, \"opacity\": {\"value\": 1}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"opacity\":{\"value\":1}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "source-palette-expression",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"source\"},\"expression\":\"b1+1\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"source\"},\"expression\":\"b1+1\"}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "source-palette-index",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"source\"},\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":1,\"nir\":2}}}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"categorized\",\"color_mapping\":{\"mode\":\"source\"},\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":1,\"nir\":2}}}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "source-palette-metadata",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"calibration\":{\"mode\":\"metadata\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"calibration\":{\"mode\":\"metadata\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "source-palette-linear",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"calibration\":{\"mode\":\"linear\",\"coefficients\":[{\"band\":1,\"scale\":1,\"offset\":0}]}}",
-    "code": "E_SEMANTIC"
-  },
-  {
-    "name": "source-palette-before_channels",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"extensions\":{\"mapseek.test.identity\":{\"version\":\"1\",\"stage\":\"before_channels\",\"config\":{}}}}",
-    "code": "E_SEMANTIC"
-  },
-  {
-    "name": "source-palette-after_channels",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"extensions\":{\"mapseek.test.identity\":{\"version\":\"1\",\"stage\":\"after_channels\",\"config\":{}}}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"calibration\":{\"mode\":\"linear\",\"coefficients\":[{\"band\":1,\"scale\":1,\"offset\":0}]}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "exact-rejects-sample-size",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"statistics\":{\"scope\":\"dataset\",\"accuracy\":\"exact\",\"sample_size\":1}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"statistics\":{\"scope\":\"dataset\",\"accuracy\":\"exact\",\"sample_size\":1}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "snapshot-requires-assertions",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"statistics\":{\"ref\":\"stats-1\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"statistics\":{\"ref\":\"stats-1\"}}",
     "code": "E_SCHEMA"
   },
   {
     "name": "range-policy-on-categorized",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"transparent\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"categorized\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"source\"}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"transparent\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "range-policy-on-single_color",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"single_color\",\"bidx\":[1],\"color\":\"#ff0000\"},\"stretch\":{\"method\":\"none\",\"range_policy\":\"transparent\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"single_color\",\"bidx\":[1],\"color\":\"#ff0000\"},\"stretch\":{\"method\":\"none\",\"range_policy\":\"transparent\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "range-policy-on-hillshade",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"hillshade\",\"bidx\":[1],\"terrain\":{\"method\":\"single\"}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"transparent\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"hillshade\",\"bidx\":[1],\"terrain\":{\"method\":\"single\"}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"transparent\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "range-policy-on-native-data",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"pseudocolor\",\"bidx\":[1],\"colormap\":{\"1\":[255,0,0,255]}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"clamp\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"pseudocolor\",\"bidx\":[1],\"colormap\":{\"1\":[255,0,0,255]}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"clamp\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "range-policy-on-explicit-data",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"pseudocolor\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"stops\":[{\"value\":0,\"color\":\"#000000\"},{\"value\":1,\"color\":\"#ffffff\"}]}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"clamp\"}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"pseudocolor\",\"bidx\":[1],\"color_mapping\":{\"mode\":\"continuous\",\"domain\":\"data\",\"stops\":[{\"value\":0,\"color\":\"#000000\"},{\"value\":1,\"color\":\"#ffffff\"}]}},\"stretch\":{\"method\":\"none\",\"range_policy\":\"clamp\"}}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "rank-before-bidx-bounds",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"before_channels\",\"rank_channel\":2}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"raster:mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"before_channels\",\"rank_channel\":2},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json\"]}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "rank-before-deduplicates-bidx",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[1,1,1]},\"mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"before_channels\",\"rank_channel\":2}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"rgb\",\"bidx\":[1,1,1]},\"raster:mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"before_channels\",\"rank_channel\":2},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json\"]}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "rank-before-index-bounds",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":8}}},\"mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"before_channels\",\"rank_channel\":3}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":8}}},\"raster:mosaic\":{\"pixel_selection\":\"highest\",\"stage\":\"before_channels\",\"rank_channel\":3},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json\"]}",
     "code": "E_SEMANTIC"
   },
   {
     "name": "rank-before-deduplicates-index",
-    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":4}}},\"mosaic\":{\"pixel_selection\":\"lowest\",\"stage\":\"before_channels\",\"rank_channel\":2}}",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"index\":{\"name\":\"ndvi\",\"bindings\":{\"red\":4,\"nir\":4}}},\"raster:mosaic\":{\"pixel_selection\":\"lowest\",\"stage\":\"before_channels\",\"rank_channel\":2},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json\"]}",
     "code": "E_SEMANTIC"
+  },
+  {
+    "name": "reject-protocol-v2",
+    "json": "{\"version\":\"2.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-protocol-future",
+    "json": "{\"version\":\"4.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-old-mosaic",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"mosaic\":{\"pixel_selection\":\"first\",\"stage\":\"before_channels\"}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-old-image",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"image\":{\"format\":\"png\"}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-old-extension-object",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"extensions\":{\"legacy\":{\"version\":\"1\",\"config\":{}}}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-extension-versions",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"extension_versions\":{\"x\":\"1\"}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-top-level-typo",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"opactiy\":0.5}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-unannounced-mosaic",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"raster:mosaic\":{\"pixel_selection\":\"first\",\"stage\":\"before_channels\"}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-unannounced-tile",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"raster:tile\":{\"format\":\"png\"}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-empty-declarations-extra-field",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"extensions\":[],\"custom\":1}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-declared-tile-typo",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"],\"raster:tile\":{\"format\":\"png\"},\"opactiy\":0.5}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-duplicate-extension-urls",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\",\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"],\"raster:tile\":{\"format\":\"png\"}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-non-url-extension",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"extensions\":[\"raster:tile\"],\"raster:tile\":{\"format\":\"png\"}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-missing-declared-tile-field",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json\"]}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-missing-declared-mosaic-field",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"extensions\":[\"https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json\"]}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-legacy-even-with-unknown-schema",
+    "json": "{\"version\":\"3.0\",\"renderer\":{\"type\":\"gray\",\"bidx\":[1]},\"extensions\":[\"https://example.test/unresolved/v1.0.0/schema.json\"],\"image\":{\"format\":\"png\"}}",
+    "code": "E_SCHEMA"
+  },
+  {
+    "name": "reject-missing-version",
+    "json": "{\"renderer\": {\"type\": \"gray\", \"bidx\": [1]}}",
+    "code": "E_SCHEMA"
   }
 ]

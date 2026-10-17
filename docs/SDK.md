@@ -1,85 +1,166 @@
-# SDK 接口与工程约定
+# Raster Style v3 SDK
 
-三种语言共用分组 JSON 与 Q2 绑定。renderer、stretch、effects、image 等分组对应简短 Query 参数。完整字段见 [规范](../spec/v2/Raster-Style-Spec-v2.md)。
+TypeScript、Go、Rust 共用核心 3.0 Schema、官方 Mosaic/Tile Schema 和 Q3 绑定。配置保留、完整校验、执行能力是三个独立步骤。原始 JSON 使用严格解析接口，以检测重复键、非法 Unicode 和非有限数值。
 
 ## TypeScript
 
-| 接口                           | 行为                                          |
-| ------------------------------ | --------------------------------------------- |
-| `encodeQuery(style, options?)` | JSON 对象 → 规范 Q2 查询串                    |
-| `decodeQuery(query, options?)` | 原始查询串 → 已校验且规范化的 `RasterStyle`   |
-| `jsonToQuery(json, options?)`  | 原始 JSON 文本 → 查询串；拒绝重复 JSON 键     |
-| `queryToJson(query, options?)` | 原始查询串 → JCS JSON 文本                    |
-| `parseStyle(json)`             | 严格解析 JSON、结构与静态语义校验、颜色规范化 |
-| `normalizeStyle(value)`        | 返回校验后的副本并补全颜色操作通道            |
-| `validateStyle(value)`         | 校验失败时抛出 `RasterStyleError`             |
-| `new QueryCodec(options)`      | 复用不可变预算配置                            |
+```ts
+import {
+  parseStyle,
+  inspectStyle,
+  validateStyle,
+  requireExtensionSupport,
+  SchemaRegistry,
+  TILE_SCHEMA_URL,
+  encodeQuery,
+  decodeQuery,
+} from '@mapseek/raster-style';
 
-`options` 包含 `maxQueryBytes` 和 `maxParameters`，显式指定时必须为正整数。解析外部 JSON 文本时使用 `parseStyle` 或 `jsonToQuery`，以保留重复键检测。
+const style = parseStyle(
+  JSON.stringify({
+    version: '3.0',
+    extensions: [TILE_SCHEMA_URL],
+    renderer: { type: 'gray', bidx: [1] },
+    'raster:tile': { format: 'webp', tilesize: 256, quality: 85 },
+  }),
+);
+
+validateStyle(style); // 核心、所有扩展 Schema 和静态语义均须通过。
+const report = inspectStyle(style); // { complete: true, unresolvedSchemas: [] }
+const query = encodeQuery(style);
+const restored = decodeQuery(query);
+
+// 列表来自真实执行端的能力声明，不是从 extensions 自动复制。
+requireExtensionSupport(restored, [TILE_SCHEMA_URL]);
+```
+
+| 接口                                                | 契约                                                       |
+| --------------------------------------------------- | ---------------------------------------------------------- |
+| parseStyle(json, schemas?)                          | 严格解析、校验可用 Schema、静态语义和规范化；未知声明保留  |
+| normalizeStyle(value, schemas?)                     | 不修改调用方对象，返回规范化副本                           |
+| inspectStyle(value, schemas?)                       | 返回 complete 与 unresolvedSchemas，发现已知错误仍抛出异常 |
+| validateStyle(value, schemas?)                      | 完整校验；缺失声明或引用资源为 E_SCHEMA_UNRESOLVED         |
+| requireExtensionSupport(value, supported, schemas?) | 完整校验后逐项检查精确 URL，缺少执行支持报错               |
+| encodeQuery / decodeQuery                           | 对象与规范 Q3 查询串转换                                   |
+| jsonToQuery / queryToJson                           | 原始 JSON 与 Query 转换，输出 JCS 文本                     |
+| new QueryCodec(options)                             | 复用 maxQueryBytes、maxParameters 配置，两者须为正整数     |
+
+SchemaRegistry 默认含官方资源。register(schema) 注册完整 JSON Schema 对象，返回注册表以便链式调用；已注册的 `$id` 不可覆盖。TypeScript 核心与官方字段的类型由 Schema 生成，第三方顶层字段可直接携带，不要求修改核心类型。
 
 ## Go
 
-核心包接口：`ParseJSON([]byte)`、`EncodeQuery(*Style)`、`DecodeQuery(string)`、`JSONToQuery([]byte)`、`QueryToJSON(string)`。自定义预算通过 `NewCodec(Options)`，零字段表示使用默认预算，负数报配置错误。
+导入 `github.com/mapseekai/raster-style/packages/go`。完整校验使用包级 `ValidateJSON` 或注册表方法，查询转换保留未知扩展。
 
-`Style` 封装已校验的文档和 JCS 缓存。`Style.JSON()` 返回独立字节切片，`Style.Document()` 返回深拷贝。`json.Unmarshal` 校验成功后替换内容，失败时保留旧值。修改后的 map 需序列化为 JSON，再交给 `ParseJSON`。
+```go
+registry, err := rasterstyle.NewSchemaRegistry()
+if err != nil {
+    return err
+}
+// 第三方本地 Schema 可通过 registry.Register(schemaJSON) 注册。
+if err := registry.ValidateJSON(styleJSON); err != nil {
+    return err
+}
+style, err := registry.ParseJSON(styleJSON)
+if err != nil {
+    return err
+}
+if err := style.RequireExtensionSupport(supportedSchemaURLs); err != nil {
+    return err
+}
+query, err := rasterstyle.EncodeQuery(style)
+if err != nil {
+    return err
+}
+```
 
-文档封装保留可选字段的省略状态和可辨识联合类型（discriminated union）的结构。
+包级编解码接口：ParseJSON、EncodeQuery、DecodeQuery、JSONToQuery、QueryToJSON。自定义 Query 预算使用 NewCodec(Options)，零字段取默认值，负数报配置错误。
 
-Fiber v3 的 `Decoder` 复用核心 Codec，直接读取原始 `URI().QueryString()`，解析结果独立于请求生命周期。支持直接解析、JSON 字节输出和中间件。输入错误返回 HTTP 400，超限返回 414，内部配置失败返回 500。
+SchemaRegistry 提供 Register([]byte)、Resolve、ParseJSON、InspectJSON 和 ValidateJSON，支持并发使用。注册后用该注册表重新解析或校验既有配置，获得新的完整性结果；旧 Style 的报告是构造时快照，不会被后台改写。
+
+Style 的文档、JCS 缓存与报告受封装保护。JSON() 返回独立字节切片，Document() 返回深拷贝，Validation() 返回含独立未解析列表的报告。json.Unmarshal 成功后替换内容，失败时保留旧值；修改后的 map 需重新解析。
+
+Fiber v3 的 Decoder 直接读取原始 URI 查询串，保留重复 bidx/rescale 顺序；支持 Parse、JSON、Middleware 和 FromContext。其职责是请求解码，不表示具备执行扩展的能力。渲染路由还须完成完整校验和 RequireExtensionSupport 检查。可运行的解码示例见 packages/go/examples/fiber/main.go。
 
 ## Rust
 
-核心接口：`Style::from_json`、`Style::from_value`、`encode_query`、`decode_query`、`json_to_query`、`query_to_json`。自定义预算用 `Codec::new(Options)`。零预算为错误；`Options::default()` 提供默认值。
+```rust
+use raster_style::{SchemaRegistry, encode_query};
 
-`Style` 支持 `Clone`、`Serialize`、`Deserialize`；通过 `as_value()` 只读访问，或通过 `into_value()` 取得内部值的所有权。原始文本使用 `Style::from_json` 检测重复键；`Style::from_value` 校验已解析的值。
+let mut registry = SchemaRegistry::new()?;
+// registry.register(schema_value)?;
+registry.validate_json(style_json)?;
+let style = registry.parse_json(style_json)?;
+style.require_extension_support(&supported_schema_urls)?;
+let query = encode_query(&style)?;
+```
 
-签名或字节一致性比较使用 `Style::to_json()` 返回的 JCS 文本；普通 JSON 序列化可使用 `serde_json::to_string(&style)`。
+核心接口：Style::from_json、Style::from_value、encode_query、decode_query、json_to_query、query_to_json。自定义预算使用 Codec::new(Options)，Options::default() 提供默认值，零预算是配置错误。
 
-## 生成与版本
+SchemaRegistry 提供 new、register(Value)、resolve、parse_json、inspect_json 和 validate_json；包级 validate_json 使用内置注册表。Style::validation() 返回只读报告，require_extension_support 检查精确执行版本。注册需要可变借用，解析与校验可并发只读调用。
 
-`spec/v2/` 是唯一规范来源。`pnpm generate` 将 Schema 与绑定表同步为包内资源，并生成 TypeScript 类型。Go 使用 embed、Rust 使用 include_str、TypeScript 使用构建时导入，运行时直接读取内嵌资源。
+Style 支持 Clone、Serialize、Deserialize。as_value() 只读访问，into_value() 转移文档所有权。签名或字节比较使用 to_json() 的 JCS 文本；普通序列化使用 serde_json。Style::from_json 保留原始重复键检测；from_value 检查已解析值。
 
-`pnpm check:generated` 检查副本和类型与规范的一致性。规范版本、Query 绑定版本和 SDK 版本分开维护。新增字段时先修改 Schema 与绑定表，再同步三种语言的实现和测试。
+## 第三方扩展：字段由 Schema 定义
 
-命名和格式遵循语言习惯：TypeScript camelCase，Go PascalCase/camelCase，Rust snake_case；JSON 和 Q2 字段继续使用规范名称。
-
-## 颜色操作的双向转换
-
-JSON 中 effects.color_formula 与 effects.post_color_formula 均为 1–64 项对象数组。编码时转换为同名 Query 公式；解码时还原操作对象，保留顺序及重复操作。
+下列 Schema 的 URL 路径与业务字段完全不同，同时定义两个字段，其中一个没有命名空间前缀。
 
 ```json
 {
-  "effects": {
-    "color_formula": [{ "op": "gamma", "channels": "rb", "value": 1.1 }],
-    "post_color_formula": [{ "op": "brightness", "channels": "rgb", "value": 0.05 }]
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.test/not-a-field-name/v1.0.0/schema.json",
+  "type": "object",
+  "required": ["extensions", "unrelated_gain", "vendor:annotation"],
+  "properties": {
+    "extensions": {
+      "type": "array",
+      "contains": { "const": "https://example.test/not-a-field-name/v1.0.0/schema.json" }
+    },
+    "unrelated_gain": { "type": "number", "minimum": 0 },
+    "vendor:annotation": { "type": "string" }
   }
 }
 ```
 
-对应可读查询：
+对应样式：
 
-```text
-color_formula=gamma rb 1.1
-post_color_formula=brightness rgb 0.05
+```json
+{
+  "version": "3.0",
+  "extensions": ["https://example.test/not-a-field-name/v1.0.0/schema.json"],
+  "renderer": { "type": "gray", "bidx": [1] },
+  "unrelated_gain": 2,
+  "vendor:annotation": "示例"
+}
 ```
 
-归一化会补全支持通道选择的操作：映射前单输出默认 r、三输出默认 rgb；映射后默认 rgb。其他可选字段保留省略状态。规范化后的样式满足 JSON → Query → JSON 往返一致。
+TypeScript 使用 new SchemaRegistry().register(schema)，Go 使用 registry.Register(schemaJSON)，Rust 使用 registry.register(schemaValue)。完整校验组合核心和声明的 Schema，最后关闭未被评价的顶层属性。条件字段、allOf 和本地引用按 JSON Schema 2020-12 求值；引用资源也须注册。扩展根应只评价实际定义的字段，不用 additionalProperties=true 吞掉全部未知字段。
 
-Schema 的 default 仅描述渲染语义，SDK 不把它们写入样式。渲染服务按[默认值表](../spec/v2/Raster-Style-Spec-v2.md#2-配置分组)解析执行计划；样式的字节规范化与执行默认值解析是两个独立步骤。
+本例只是配置契约，不意味着 SDK 执行 gain 或 annotation。真实执行端另行实现并声明对该 URL 的支持。
 
-## 配置要点
+## 离线、显式解析与完整性
 
-- renderer 在 bidx、expression、index 中选择一种输入，type 决定渲染方式。
-- stretch.rescale 一组范围广播到所有通道，RGB 可配置三组。
-- nodata 是有限数值或 nan，opacity 是 0–1 数值。
-- calibration 支持 none、metadata、linear；统计拉伸可配置 statistics，多源样式可配置 mosaic。
-- renderer 的 colormap、colormap_name、color_mapping 选择一种颜色来源。
-- expression 通过分号分隔输出，SDK 检查长度、非空与数量，服务负责 AST 编译。
-- source 调色板仅接受 bidx，calibration 省略或 none，扩展仅允许 after_color；服务验证多源调色板一致。
-- statistics 的 ref 与 scope/accuracy 一起提供，作为不可变快照的匹配断言；exact 不接受 sample_size。
-- before_channels 的 rank_channel 按输入依赖波段去重、升序后的列表编号；SDK 检查 bidx/index，服务编译表达式后检查其依赖表。
-- 数据路径不接受 range_policy；原生 colormap 在 none 且无 color_formula 时为直接数据路径，其余按显示路径计算字节索引。
+官方核心、Mosaic 和 Tile Schema 随三个 SDK 内置，无需联网。未注册的声明可由核心编解码保留，但完整校验和执行支持检查都会拒绝未验证状态。已注册 Schema 若引用缺失资源，返回 E_SCHEMA_UNRESOLVED，不联网补取，也不宣称通过。
 
-像元计算、后端适配与部署能力由渲染服务执行。SDK 通过 Schema、静态语义及三语言一致性检查保证配置传输。
+TypeScript 的 await registry.resolve(url, resolver)、Go 的 registry.Resolve(url, resolver)、Rust 的 registry.resolve(url, resolver) 才会调用应用显式提供的解析函数。返回 Schema 的 `$id` 必须与请求完全一致。解析函数负责允许域名、重定向策略、鉴权、超时、响应大小与缓存；SDK 不附带隐式远程下载器。
 
-算法与像元规则见[执行语义](../spec/v2/Raster-Style-Execution.md)、[raster-expr/1](../spec/v2/Raster-Expression-v1.md)与[TiTiler 适配档案](../spec/v2/Raster-Style-TiTiler-Profile.md)。
+URL 是版本标识，不是动态查找字段的规则。注册资源不可覆盖，发布后的版本内容应保持稳定。新增版本使用新 URL，并重新校验配置和执行支持。
+
+## Q3 与规范化
+
+核心分组继续使用专用短参数，扩展声明写入 extensions，所有非核心顶层字段写入 extension_fields 的单个 JCS 对象。新增扩展无需改核心绑定表；任意字段名均按完整名称往返。未知扩展中的颜色字符串、数组、标量和嵌套结构不会被猜测性转换。
+
+Query 按键排序，重复 bidx/rescale 保留顺序；空格为 %20，加号为 %2B。默认预算为 8192 字节、256 个参数，JSON 为 2 MiB、深度 64。详细词法见 [Q3 绑定](../spec/v3/Raster-Style-Query.md)。
+
+核心颜色及已声明官方 Tile.background 规范化为小写八位 RGBA。颜色操作补全 channels：映射前单输出默认 r、三输出默认 rgb，映射后默认 rgb；其他可选字段保留省略状态。expression 去除各输出两端的 ASCII 空白，内部内容保留。规范化后再次检查组合 Schema，避免规范化破坏扩展对核心字段施加的约束。
+
+Schema 的 default 是语义注释，不自动填入样式。执行端解析渲染默认值，与传输字节规范化分开。
+
+## 资源生成与执行边界
+
+spec/v3 与 extensions/raster 下的版本目录是规范来源。pnpm generate 同步所有 Schema、Q3 绑定并生成 TypeScript 类型；pnpm check:generated 检查副本一致性。Go 用 embed，Rust 用 include_str，TypeScript 构建时导入。构建前清理 TypeScript dist，避免已删除资源残留在发布包。
+
+核心数值算法见[执行语义](../spec/v3/Raster-Style-Execution.md)、[表达式档案](../spec/v3/Raster-Expression-v1.md)和[适配档案](../spec/v3/Raster-Style-TiTiler-Profile.md)。SDK 执行配置与静态语义校验，渲染服务负责数据绑定、表达式求值、统计、像元计算、扩展业务与编码输出。
+
+## Schema 校验实现与回归
+
+数值关键字、ECMAScript 正则、特殊字段的组合评价、声明集合缓存和包内测试资源见 [Schema 校验实现](SCHEMA-VALIDATION.md)。缓存排序只用于内部身份，JSON 与 Query 保留样式声明顺序。

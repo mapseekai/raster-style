@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.test/not-a-field-name/v1.0.0/schema.json",
+  "type": "object",
+  "required": ["extensions", "unrelated_gain", "vendor:annotation"],
+  "properties": {
+    "extensions": {
+      "type": "array",
+      "contains": {
+        "const": "https://example.test/not-a-field-name/v1.0.0/schema.json"
+      }
+    },
+    "unrelated_gain": {
+      "type": "number",
+      "minimum": 0
+    },
+    "vendor:annotation": {
+      "type": "string"
+    }
+  }
+}

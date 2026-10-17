@@ -19,15 +19,15 @@ const intervals: NativeColormap = [
   ],
 ];
 const intervalColormap: RasterStyle = {
-  version: '2.0',
+  version: '3.0',
   renderer: { type: 'pseudocolor', bidx: [1], colormap: intervals },
 };
 const exactColormap: RasterStyle = {
-  version: '2.0',
+  version: '3.0',
   renderer: { type: 'categorized', bidx: [1], colormap: { '1': [255, 0, 0, 255] } },
 };
 const invalidCategoricalIntervals: RasterStyle = {
-  version: '2.0',
+  version: '3.0',
   // @ts-expect-error Categorized colormaps require exact values, not intervals.
   renderer: { type: 'categorized', bidx: [1], colormap: intervals },
 };
@@ -43,3 +43,24 @@ void [
   exactColormap,
   invalidCategoricalIntervals,
 ];
+
+const extended: RasterStyle = {
+  version: '3.0',
+  extensions: ['https://example.test/custom/v1.0.0/schema.json'],
+  renderer: { type: 'gray', bidx: [1] },
+  unrelated: { arbitrary: [null, true, 3] },
+};
+const official: RasterStyle = {
+  version: '3.0',
+  extensions: [
+    'https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json',
+  ],
+  renderer: { type: 'gray', bidx: [1] },
+  'raster:tile': { format: 'webp', tilesize: 512, quality: 85 },
+};
+const rejectedVersion: RasterStyle = {
+  // @ts-expect-error Only protocol 3.0 is accepted.
+  version: '2.0',
+  renderer: { type: 'gray', bidx: [1] },
+};
+void [extended, official, rejectedVersion];

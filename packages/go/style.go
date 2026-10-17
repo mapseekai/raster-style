@@ -1,75 +1,30 @@
 package rasterstyle
 
-import (
-	"encoding/json"
-	"strings"
-	"sync"
+import "strings"
 
-	"github.com/mapseekai/raster-style/packages/go/internal/assets"
-	"github.com/santhosh-tekuri/jsonschema/v6"
-)
-
-// Style is a validated, normalized document. Its fields are intentionally private:
-// preserving omitted fields and union variants is part of the wire contract.
-// A successfully constructed Style is immutable and safe for concurrent readers.
+// Style preserves a normalized v3 document. Check Validation or ValidateJSON before execution.
+// Fields are private, and successful construction is immutable for concurrent readers.
 type Style struct {
-	document  map[string]any
-	canonical []byte
-}
-
-var schemaOnce sync.Once
-var schemaValidator *jsonschema.Schema
-var schemaError error
-
-func loadSchema() (*jsonschema.Schema, error) {
-	schemaOnce.Do(func() {
-		var document any
-		if schemaError = json.Unmarshal(assets.Schema, &document); schemaError != nil {
-			return
-		}
-		compiler := jsonschema.NewCompiler()
-		schemaError = compiler.AddResource("urn:mapseek:raster-style:2.0", document)
-		if schemaError != nil {
-			return
-		}
-		schemaValidator, schemaError = compiler.Compile("urn:mapseek:raster-style:2.0")
-	})
-	if schemaError != nil {
-		return nil, failure("E_CONFIG", "Embedded schema could not be compiled", "")
-	}
-	return schemaValidator, nil
+	document   map[string]any
+	canonical  []byte
+	validation ValidationReport
 }
 
 func newStyle(value any) (*Style, error) {
-	validator, err := loadSchema()
+	registry, err := schemaDefaults()
 	if err != nil {
 		return nil, err
 	}
-	if err := validator.Validate(value); err != nil {
-		return nil, failure("E_SCHEMA", "Raster style does not match the schema", "")
-	}
-	document := value.(map[string]any)
-	if err := normalizeProfile(document); err != nil {
-		return nil, err
-	}
-	if err := validateSemantics(document); err != nil {
-		return nil, err
-	}
-	normalizeColors(document)
-	canonical, err := canonicalJSON(document)
-	if err != nil {
-		return nil, err
-	}
-	return &Style{document: document, canonical: canonical}, nil
+	return registry.newStyle(value)
 }
 
-// ParseJSON validates the complete JSON style; it never inserts renderer defaults.
+// ParseJSON preserves unknown declared extensions without claiming complete validation.
 func ParseJSON(data []byte) (*Style, error) {
-	value, err := parseJSONStrict(data)
+	registry, err := schemaDefaults()
 	if err != nil {
 		return nil, err
 	}
-	return newStyle(value)
+	return registry.ParseJSON(data)
 }
 
 // MarshalJSON enables json.Marshal(style) and Fiber's c.JSON(style).
@@ -163,7 +118,7 @@ func normalizeColor(color string) string {
 	return color
 }
 func normalizeColors(style map[string]any) {
-	for _, path := range []string{"renderer.color", "image.background"} {
+	for _, path := range colorPaths(style) {
 		if color, found := getPath(style, path); found {
 			setPath(style, path, normalizeColor(color.(string)))
 		}
@@ -183,4 +138,12 @@ func normalizeColors(style map[string]any) {
 	for index, color := range arrayAt(colorMap, "colors") {
 		colorMap["colors"].([]any)[index] = normalizeColor(color.(string))
 	}
+}
+
+func colorPaths(style map[string]any) []string {
+	paths := []string{"renderer.color"}
+	if hasExtension(style, TileSchemaURL) {
+		paths = append(paths, "raster:tile.background")
+	}
+	return paths
 }

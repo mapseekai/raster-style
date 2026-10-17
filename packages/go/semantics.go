@@ -95,7 +95,10 @@ func validateSemantics(style map[string]any) error {
 			seen[value] = true
 		}
 	}
-	mosaic := objectAt(style, "mosaic")
+	var mosaic map[string]any
+	if hasExtension(style, MosaicSchemaURL) {
+		mosaic = objectAt(style, "raster:mosaic")
+	}
 	if renderer["type"] == "categorized" {
 		for _, key := range []string{"read", "reproject"} {
 			value := objectAt(style, "resampling")[key]
@@ -106,9 +109,7 @@ func validateSemantics(style map[string]any) error {
 	calibration := objectAt(style, "calibration")
 	if colorMap["mode"] == "source" {
 		require(calibration["mode"] == nil || calibration["mode"] == "none", "calibration.mode", "Source palettes require unmodified category values")
-		for _, extension := range objectAt(style, "extensions") {
-			require(extension.(map[string]any)["stage"] == "after_color", "extensions", "Source palettes allow only after_color extensions")
-		}
+
 	}
 	seenBands := make(map[float64]bool)
 	for _, item := range arrayAt(calibration, "coefficients") {
@@ -130,24 +131,6 @@ func validateSemantics(style map[string]any) error {
 			}
 			require(rank.(float64) <= float64(len(inputs)), "rank_channel", "Rank channel exceeds the distinct input band count")
 		}
-	}
-	image := objectAt(style, "image")
-	format := image["format"]
-	if format == nil {
-		format = "png"
-	}
-	if color, exists := image["background"].(string); exists {
-		require(len(color) == 7 || strings.HasSuffix(strings.ToLower(color), "ff"), "background", "Background must be opaque")
-	}
-	_, quality := image["quality"]
-	if format == "png" {
-		require(!quality, "quality", "PNG does not accept lossy quality")
-	}
-	if _, lossless := image["lossless"]; lossless {
-		require(format == "webp", "lossless", "Lossless is a WebP option")
-	}
-	if image["lossless"] == true {
-		require(!quality, "quality", "Lossless output does not accept lossy quality")
 	}
 	return firstError
 }

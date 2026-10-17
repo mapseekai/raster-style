@@ -1,3 +1,4 @@
+use crate::schema::{has_extension, MOSAIC_SCHEMA_URL};
 use serde_json::Value;
 
 use crate::error::{Error, Result};
@@ -153,7 +154,11 @@ pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
         }
         _ => {}
     }
-    let mosaic = &style["mosaic"];
+    let mosaic = if has_extension(style, MOSAIC_SCHEMA_URL) {
+        &style["raster:mosaic"]
+    } else {
+        &Value::Null
+    };
     if renderer_type == "categorized" {
         for key in ["read", "reproject"] {
             if let Some(value) = style["resampling"].get(key) {
@@ -176,15 +181,6 @@ pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
             "calibration.mode",
             "Source palettes require unmodified category values",
         )?;
-        if let Some(extensions) = style["extensions"].as_object() {
-            require(
-                extensions
-                    .values()
-                    .all(|extension| extension["stage"] == "after_color"),
-                "extensions",
-                "Source palettes allow only after_color extensions",
-            )?;
-        }
     }
     let mut bands: Vec<f64> = array(&style["calibration"]["coefficients"])
         .iter()
@@ -224,32 +220,6 @@ pub(crate) fn validate_semantics(style: &Value) -> Result<()> {
                 "Rank channel exceeds the distinct input band count",
             )?;
         }
-    }
-    let image = &style["image"];
-    let format = image["format"].as_str().unwrap_or("png");
-    if let Some(color) = image["background"].as_str() {
-        require(
-            color.len() == 7 || color.to_ascii_lowercase().ends_with("ff"),
-            "background",
-            "Background must be opaque",
-        )?;
-    }
-    if format == "png" {
-        require(
-            image.get("quality").is_none(),
-            "quality",
-            "PNG does not accept lossy quality",
-        )?;
-    }
-    if image.get("lossless").is_some() {
-        require(format == "webp", "lossless", "Lossless is a WebP option")?;
-    }
-    if image["lossless"] == true {
-        require(
-            image.get("quality").is_none(),
-            "quality",
-            "Lossless output does not accept lossy quality",
-        )?;
     }
     Ok(())
 }

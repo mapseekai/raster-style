@@ -11,6 +11,16 @@ class ResamplingContractTest(unittest.TestCase):
         cases = json.loads((ROOT / "testdata/rendering-vectors.json").read_text())
         self.case = next(case for case in cases if case["name"] == "alpha-weighted-resampling")
 
+    def test_rejects_unknown_extension_version(self):
+        self.case["style"]["extensions"] = ["https://example.test/unknown/v1.0.0/schema.json"]
+        with self.assertRaisesRegex(ValueError, "Unsupported extension version"):
+            render_case(self.case)
+
+    def test_rejects_old_protocol(self):
+        self.case["style"]["version"] = "2.0"
+        with self.assertRaisesRegex(ValueError, "requires Raster Style 3.0"):
+            render_case(self.case)
+
     def test_rejects_implicit_nearest(self):
         self.case["style"].pop("resampling", None)
         with self.assertRaisesRegex(ValueError, "only bilinear"):

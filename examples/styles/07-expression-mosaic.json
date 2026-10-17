@@ -1,5 +1,5 @@
 {
-  "version": "2.0",
+  "version": "3.0",
   "renderer": {
     "type": "pseudocolor",
     "color_mapping": {
@@ -29,14 +29,18 @@
   "stretch": {
     "method": "none"
   },
-  "image": {
-    "format": "webp",
-    "lossless": true,
-    "tilesize": 256
-  },
-  "mosaic": {
+  "raster:mosaic": {
     "pixel_selection": "highest",
     "stage": "after_channels",
     "rank_channel": 1
+  },
+  "extensions": [
+    "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json",
+    "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+  ],
+  "raster:tile": {
+    "format": "webp",
+    "lossless": true,
+    "tilesize": 256
   }
 }

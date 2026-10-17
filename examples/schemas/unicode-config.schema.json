@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.test/extensions/mapseek.test.config/v1.0.0/schema.json",
+  "type": "object",
+  "required": ["extensions", "test:config"],
+  "properties": {
+    "extensions": {
+      "type": "array",
+      "contains": {
+        "const": "https://example.test/extensions/mapseek.test.config/v1.0.0/schema.json"
+      }
+    },
+    "test:config": {
+      "type": "object"
+    }
+  }
+}

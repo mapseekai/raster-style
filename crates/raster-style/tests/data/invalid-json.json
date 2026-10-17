@@ -1,0 +1,62 @@
+[
+  {
+    "name": "duplicate-root",
+    "json": "{\"a\":1,\"a\":2}",
+    "code": "E_JSON"
+  },
+  {
+    "name": "duplicate-nested",
+    "json": "{\"a\":{\"x\":1,\"x\":2}}",
+    "code": "E_JSON"
+  },
+  {
+    "name": "duplicate-unescaped-key",
+    "json": "{\"a\":1,\"\\u0061\":2}",
+    "code": "E_JSON"
+  },
+  {
+    "name": "unpaired-high",
+    "json": "\"\\ud800\"",
+    "code": "E_JSON"
+  },
+  {
+    "name": "unpaired-low",
+    "json": "\"\\udfff\"",
+    "code": "E_JSON"
+  },
+  {
+    "name": "bad-pair",
+    "json": "\"\\ud800\\u0041\"",
+    "code": "E_JSON"
+  },
+  {
+    "name": "trailing-comma",
+    "json": "[1,]",
+    "code": "E_JSON"
+  },
+  {
+    "name": "trailing-data",
+    "json": "{}{}",
+    "code": "E_JSON"
+  },
+  {
+    "name": "overflow",
+    "json": "1e999",
+    "code": "E_JSON"
+  },
+  {
+    "name": "unterminated",
+    "json": "\"oops",
+    "code": "E_JSON"
+  },
+  {
+    "name": "bad-number",
+    "json": "01",
+    "code": "E_JSON"
+  },
+  {
+    "name": "depth-limit",
+    "json": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[0]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]",
+    "code": "E_LIMIT"
+  }
+]

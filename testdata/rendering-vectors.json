@@ -3,7 +3,7 @@
     "name": "discrete-None",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -42,7 +42,7 @@
     "name": "discrete-right_closed",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -82,7 +82,7 @@
     "name": "continuous-None",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -122,7 +122,7 @@
     "name": "continuous-linear_rgb",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -163,7 +163,7 @@
     "name": "premultiplied-alpha",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -203,7 +203,7 @@
     "name": "reverse-keeps-stop-positions",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -249,7 +249,7 @@
     "name": "reverse-keeps-under-color",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -295,7 +295,7 @@
     "name": "normalized-none-byte-range",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -335,7 +335,7 @@
     "name": "native-data-domain",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -387,7 +387,7 @@
     "name": "native-display-domain",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -448,7 +448,7 @@
     "name": "native-final-upper-exclusive",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -500,7 +500,7 @@
     "name": "named-none-index",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -2065,7 +2065,7 @@
     "name": "range-transparent-precedes-over",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -2117,7 +2117,7 @@
     "name": "range-clamp-precedes-over",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "pseudocolor",
         "bidx": [
@@ -2168,7 +2168,7 @@
     "name": "constant-minmax",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2202,7 +2202,7 @@
     "name": "constant-percentile",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2240,7 +2240,7 @@
     "name": "constant-stddev",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2275,7 +2275,7 @@
     "name": "constant-histogram_equalization",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2309,7 +2309,7 @@
     "name": "empty-statistics",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2342,7 +2342,7 @@
     "name": "constant-clamp-above",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2375,7 +2375,7 @@
     "name": "constant-transparent-above",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2409,7 +2409,7 @@
     "name": "cdf-counts-and-interpolation",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2444,7 +2444,7 @@
     "name": "curve-clamp-actual-endpoint",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2485,7 +2485,7 @@
     "name": "finite-extreme-range",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2520,7 +2520,7 @@
     "name": "sigmoid-tiny-contrast",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2555,7 +2555,7 @@
     "name": "sigmoid-huge-contrast",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2590,7 +2590,7 @@
     "name": "invert-after-gamma",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2634,7 +2634,7 @@
     "name": "rgb-one-invalid",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "rgb",
         "bidx": [
@@ -2664,7 +2664,7 @@
     "name": "single-color-valid-zero",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "single_color",
         "bidx": [
@@ -2691,7 +2691,7 @@
     "name": "alpha-multiplied-once",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "single_color",
         "bidx": [
@@ -2720,7 +2720,7 @@
     "name": "zero-alpha-canonical-rgb",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "single_color",
         "bidx": [
@@ -2748,7 +2748,7 @@
     "name": "jpeg-linear-composite",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "single_color",
         "bidx": [
@@ -2757,9 +2757,12 @@
         "color": "#ffffff"
       },
       "opacity": 0.5,
-      "image": {
+      "raster:tile": {
         "format": "jpeg"
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "values": [
@@ -2779,7 +2782,7 @@
     "name": "palette-source",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "categorized",
         "bidx": [
@@ -2816,7 +2819,7 @@
     "name": "alpha-weighted-resampling",
     "kind": "resample",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2856,7 +2859,7 @@
     "name": "resample-skips-invalid",
     "kind": "resample",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2894,7 +2897,7 @@
     "name": "resample-empty",
     "kind": "resample",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -2928,17 +2931,20 @@
     "name": "mosaic-mean",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
           1
         ]
       },
-      "mosaic": {
+      "raster:mosaic": {
         "pixel_selection": "mean",
         "stage": "before_channels"
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "dependency_bands": [
@@ -2976,17 +2982,20 @@
     "name": "mosaic-median",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
           1
         ]
       },
-      "mosaic": {
+      "raster:mosaic": {
         "pixel_selection": "median",
         "stage": "before_channels"
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "dependency_bands": [
@@ -3024,17 +3033,20 @@
     "name": "mosaic-first",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
           1
         ]
       },
-      "mosaic": {
+      "raster:mosaic": {
         "pixel_selection": "first",
         "stage": "before_channels"
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "dependency_bands": [
@@ -3072,7 +3084,7 @@
     "name": "mosaic-whole-tuples",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "rgb",
         "bidx": [
@@ -3081,10 +3093,13 @@
           3
         ]
       },
-      "mosaic": {
+      "raster:mosaic": {
         "pixel_selection": "first",
         "stage": "before_channels"
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "dependency_bands": [
@@ -3128,7 +3143,7 @@
     "name": "rank-before-uses-sorted-dependencies",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "rgb",
         "bidx": [
@@ -3137,11 +3152,14 @@
           2
         ]
       },
-      "mosaic": {
+      "raster:mosaic": {
         "pixel_selection": "highest",
         "stage": "before_channels",
         "rank_channel": 1
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "dependency_bands": [
@@ -3185,7 +3203,7 @@
     "name": "rank-after-uses-output-order",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "rgb",
         "bidx": [
@@ -3194,11 +3212,14 @@
           2
         ]
       },
-      "mosaic": {
+      "raster:mosaic": {
         "pixel_selection": "highest",
         "stage": "after_channels",
         "rank_channel": 1
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "dependency_bands": [
@@ -3242,23 +3263,23 @@
     "name": "extension-order-before_channels",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
           1
         ]
       },
-      "mosaic": {
+      "extensions": [
+        "https://example.test/extensions/mapseek.test.square/v1.0.0/schema.json",
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ],
+      "test:square": {
+        "stage": "after_channels"
+      },
+      "raster:mosaic": {
         "pixel_selection": "mean",
         "stage": "before_channels"
-      },
-      "extensions": {
-        "mapseek.test.square": {
-          "version": "1",
-          "stage": "after_channels",
-          "config": {}
-        }
       }
     },
     "input": {
@@ -3295,23 +3316,23 @@
     "name": "extension-order-after_channels",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
           1
         ]
       },
-      "mosaic": {
-        "pixel_selection": "mean",
+      "extensions": [
+        "https://example.test/extensions/mapseek.test.square/v1.0.0/schema.json",
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ],
+      "test:square": {
         "stage": "after_channels"
       },
-      "extensions": {
-        "mapseek.test.square": {
-          "version": "1",
-          "stage": "after_channels",
-          "config": {}
-        }
+      "raster:mosaic": {
+        "pixel_selection": "mean",
+        "stage": "after_channels"
       }
     },
     "input": {
@@ -3348,7 +3369,7 @@
     "name": "flat-hillshade",
     "kind": "terrain",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "hillshade",
         "bidx": [
@@ -3392,7 +3413,7 @@
     "name": "north-light-on-east-slope",
     "kind": "terrain",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "hillshade",
         "bidx": [
@@ -3437,7 +3458,7 @@
     "name": "terrain-invalid-neighbor",
     "kind": "terrain",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "hillshade",
         "bidx": [
@@ -3481,7 +3502,7 @@
     "name": "relief-preserves-height-gamma-1",
     "kind": "terrain",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "shaded_relief",
         "bidx": [
@@ -3558,7 +3579,7 @@
     "name": "relief-preserves-height-gamma-2",
     "kind": "terrain",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "shaded_relief",
         "bidx": [
@@ -3635,7 +3656,7 @@
     "name": "post-saturation-red-zero",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "rgb",
         "bidx": [
@@ -3673,7 +3694,7 @@
     "name": "pre-lab-saturation-red-zero",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "rgb",
         "bidx": [
@@ -3711,7 +3732,7 @@
     "name": "sample-uniform-discard-invalid",
     "kind": "sample",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -3762,7 +3783,7 @@
     "name": "sample-one-center-no-replacement",
     "kind": "sample",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -3808,7 +3829,7 @@
     "name": "sample-default-limit",
     "kind": "sample",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -3856,7 +3877,7 @@
     "name": "statistics-exact-full-grid",
     "kind": "sample",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -3906,7 +3927,7 @@
     "name": "foot-elevation-in-metric-grid",
     "kind": "terrain",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "hillshade",
         "bidx": [
@@ -3953,7 +3974,7 @@
     "name": "multidirectional-per-light-average",
     "kind": "terrain",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "hillshade",
         "bidx": [
@@ -3997,7 +4018,7 @@
     "name": "post-each-step-clips",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -4035,7 +4056,7 @@
     "name": "source-noninteger-no-rounding",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "categorized",
         "bidx": [
@@ -4072,7 +4093,7 @@
     "name": "mosaic-tie-stable-source-order",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "rgb",
         "bidx": [
@@ -4081,10 +4102,13 @@
           3
         ]
       },
-      "mosaic": {
+      "raster:mosaic": {
         "pixel_selection": "highest",
         "stage": "after_channels"
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "dependency_bands": [
@@ -4130,17 +4154,20 @@
     "name": "jpeg-invalid-pixel-background",
     "kind": "pixel",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
           1
         ]
       },
-      "image": {
+      "raster:tile": {
         "format": "jpeg",
         "background": "#ffffff"
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "values": [
@@ -4160,16 +4187,12 @@
     "name": "mosaic-mean-large-positive",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
           1
         ]
-      },
-      "mosaic": {
-        "pixel_selection": "mean",
-        "stage": "before_channels"
       },
       "stretch": {
         "method": "linear",
@@ -4179,7 +4202,14 @@
             1e+308
           ]
         ]
-      }
+      },
+      "raster:mosaic": {
+        "pixel_selection": "mean",
+        "stage": "before_channels"
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "dependency_bands": [
@@ -4215,16 +4245,12 @@
     "name": "mosaic-mean-large-negative",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
           1
         ]
-      },
-      "mosaic": {
-        "pixel_selection": "mean",
-        "stage": "after_channels"
       },
       "stretch": {
         "method": "linear",
@@ -4234,7 +4260,14 @@
             1e+308
           ]
         ]
-      }
+      },
+      "raster:mosaic": {
+        "pixel_selection": "mean",
+        "stage": "after_channels"
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "dependency_bands": [
@@ -4270,16 +4303,12 @@
     "name": "mosaic-mean-large-mixed",
     "kind": "mosaic",
     "style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
           1
         ]
-      },
-      "mosaic": {
-        "pixel_selection": "mean",
-        "stage": "before_channels"
       },
       "stretch": {
         "method": "linear",
@@ -4289,7 +4318,14 @@
             1e+308
           ]
         ]
-      }
+      },
+      "raster:mosaic": {
+        "pixel_selection": "mean",
+        "stage": "before_channels"
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
     "input": {
       "dependency_bands": [

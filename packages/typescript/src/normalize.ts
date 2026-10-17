@@ -1,3 +1,4 @@
+import { TILE_SCHEMA_URL } from './schema.js';
 import type { JsonObject } from './json.js';
 import { getPath, setPath } from './paths.js';
 
@@ -7,7 +8,9 @@ export function normalizeColor(color: string): string {
 
 /** Normalize only declared color fields. Extension configuration remains opaque. */
 export function normalizeColors(style: JsonObject): void {
-  const scalarPaths = ['renderer.color', 'image.background'];
+  const scalarPaths = ['renderer.color'];
+  if ((style.extensions as string[] | undefined)?.includes(TILE_SCHEMA_URL))
+    scalarPaths.push('raster:tile.background');
   for (const path of scalarPaths) {
     const color = getPath(style, path);
     if (typeof color === 'string') setPath(style, path, normalizeColor(color));

@@ -1,9 +1,10 @@
 import { encodeFormula, decodeFormula } from './profile.js';
-import registry from './generated/query-bindings-v2.js';
+import registry from './generated/query-bindings-v3.js';
 import type { RasterStyle } from './generated/types.js';
 import { fail } from './errors.js';
 import { assertUnicode, byteLength, canonicalJson, parseJsonStrict } from './json.js';
 import type { JsonObject, JsonValue } from './json.js';
+import { coreFields } from './schema.js';
 import { getPath, setPath } from './paths.js';
 import { normalizeStyle, parseStyle } from './style.js';
 
@@ -30,7 +31,7 @@ function escapeComponent(value: string): string {
 function unescapeComponent(value: string): string {
   // Reject rather than reinterpret form-urlencoded plus signs as spaces.
   if (value.includes('+') || /%(?![0-9a-fA-F]{2})/.test(value))
-    fail('E_QUERY_SYNTAX', 'Invalid Q2 percent encoding');
+    fail('E_QUERY_SYNTAX', 'Invalid Q3 percent encoding');
   if (/[^\x21-\x7e]|[#]/.test(value))
     fail('E_QUERY_SYNTAX', 'Query components must be URI-encoded ASCII');
   try {
@@ -127,7 +128,15 @@ export class QueryCodec {
     const document = normalizeStyle(style) as unknown as JsonObject;
     const pairs: [string, string][] = [];
     for (const binding of bindings) {
-      const value = getPath(document, binding.path);
+      const fields =
+        binding.path === '*'
+          ? Object.fromEntries(Object.entries(document).filter(([key]) => !coreFields.has(key)))
+          : undefined;
+      const value = fields
+        ? Object.keys(fields).length
+          ? fields
+          : undefined
+        : getPath(document, binding.path);
       if (value === undefined) continue;
       const repeated = binding.codec.startsWith('repeat_');
       const values = repeated ? (value as JsonValue[]) : [value];
@@ -158,13 +167,21 @@ export class QueryCodec {
       const key = unescapeComponent(part.slice(0, equals));
       const value = unescapeComponent(part.slice(equals + 1));
       const binding = byKey.get(key);
-      if (!binding) fail('E_UNKNOWN_PARAMETER', 'Unknown Q2 query parameter', key);
+      if (!binding) fail('E_UNKNOWN_PARAMETER', 'Unknown Q3 query parameter', key);
       const repeated = binding.codec.startsWith('repeat_');
       if (!repeated && seen.has(key))
         fail('E_DUPLICATE_PARAMETER', 'Duplicate singleton parameter', key);
       seen.add(key);
       const decoded = decodeValue(value, binding.codec.replace(/^repeat_/, ''));
-      if (repeated) {
+      if (binding.path === '*') {
+        if (!decoded || typeof decoded !== 'object' || Array.isArray(decoded))
+          fail('E_QUERY_SYNTAX', 'extension_fields must be a JSON object');
+        for (const [field, item] of Object.entries(decoded)) {
+          if (coreFields.has(field))
+            fail('E_QUERY_SYNTAX', 'extension_fields cannot contain core fields', field);
+          document[field] = item;
+        }
+      } else if (repeated) {
         let array = getPath(document, binding.path) as JsonValue[] | undefined;
         if (!array) {
           array = [];

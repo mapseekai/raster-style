@@ -1,20 +1,25 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
 const registry = JSON.parse(
-  await readFile(resolve(root, 'spec/v2/query-bindings-v2.json'), 'utf8'),
+  await readFile(resolve(root, 'spec/v3/query-bindings-v3.json'), 'utf8'),
 );
 const schema = JSON.parse(
-  await readFile(resolve(root, 'spec/v2/raster-style-v2.schema.json'), 'utf8'),
+  await readFile(resolve(root, 'spec/v3/raster-style-v3.schema.json'), 'utf8'),
 );
 const keys = new Set();
 const paths = new Set();
 for (const binding of registry.bindings) {
   if (!/^[a-z][a-z0-9_]*$/.test(binding.key) || keys.has(binding.key) || paths.has(binding.path))
     throw new Error(`Duplicate or invalid binding: ${binding.key}`);
+  if (binding.path === '*') {
+    keys.add(binding.key);
+    paths.add(binding.path);
+    continue;
+  }
   let node = schema;
   for (const part of binding.path.split('.')) {
     const candidates = node.oneOf ?? [node];
@@ -38,16 +43,21 @@ function checkBindingCoverage(node, path = '') {
   throw new Error(`Missing query binding: ${path}`);
 }
 checkBindingCoverage(schema);
-const assets = ['raster-style-v2.schema.json', 'query-bindings-v2.json'];
-for (const name of assets) {
-  const source = await readFile(resolve(root, 'spec/v2', name), 'utf8');
+const assets = [
+  ['spec/v3/raster-style-v3.schema.json', 'raster-style-v3.schema.json'],
+  ['spec/v3/query-bindings-v3.json', 'query-bindings-v3.json'],
+  ['extensions/raster/mosaic/v1.0.0/schema.json', 'mosaic-v1.0.0.schema.json'],
+  ['extensions/raster/tile/v1.0.0/schema.json', 'tile-v1.0.0.schema.json'],
+];
+for (const [sourcePath, name] of assets) {
+  const source = await readFile(resolve(root, sourcePath), 'utf8');
   const targets = [
     ['packages/go/internal/assets', name, source],
     ['crates/raster-style/assets', name, source],
     [
       'packages/typescript/src/generated',
       name.replace('.json', '.ts'),
-      `// Generated from spec/v2/${name}. Do not edit.\nexport default ${source.trim()} as const;\n`,
+      `// Generated from ${sourcePath}. Do not edit.\nexport default ${source.trim()} as const;\n`,
     ],
   ];
   for (const [directory, filename, content] of targets) {
@@ -62,3 +72,18 @@ for (const name of assets) {
   }
 }
 console.log(check ? 'Generated assets are current.' : 'Generated assets synchronized.');
+
+// Crate tests are self-contained; shared testdata remains the source of truth.
+for (const name of (await readdir(resolve(root, 'testdata')))
+  .filter((name) => name.endsWith('.json'))
+  .sort()) {
+  const source = await readFile(resolve(root, 'testdata', name), 'utf8');
+  const target = resolve(root, 'crates/raster-style/tests/data', name);
+  if (check) {
+    if ((await readFile(target, 'utf8')) !== source)
+      throw new Error(`Stale Rust test fixture: ${target}`);
+  } else {
+    await mkdir(dirname(target), { recursive: true });
+    await writeFile(target, source);
+  }
+}

@@ -3,7 +3,7 @@ use serde_json::Value;
 
 fn fixtures(name: &str) -> Vec<Value> {
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../../testdata")
+        .join("tests/data")
         .join(format!("{name}.json"));
     serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap()
 }
@@ -81,7 +81,7 @@ fn budgets_and_serde() {
     .unwrap();
     assert_eq!(
         codec
-            .decode_query("version=2.0&type=gray")
+            .decode_query("version=3.0&type=gray")
             .unwrap_err()
             .code,
         "E_LIMIT"
@@ -98,7 +98,7 @@ fn budgets_and_serde() {
         encode_query(&style).unwrap(),
         fixture["query"].as_str().unwrap()
     );
-    assert!(serde_json::from_str::<Style>(r#"{"version":"2.0","version":"2.0"}"#).is_err());
+    assert!(serde_json::from_str::<Style>(r#"{"version":"3.0","version":"3.0"}"#).is_err());
 }
 #[test]
 fn parallel_roundtrip() {

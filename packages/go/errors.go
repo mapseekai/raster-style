@@ -1,4 +1,4 @@
-// Package rasterstyle implements Raster Style Spec v2's Q2 transport binding.
+// Package rasterstyle implements Raster Style Spec v3's Q3 transport binding.
 // It validates rendering configuration, but does not render raster pixels.
 package rasterstyle
 

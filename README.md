@@ -1,31 +1,106 @@
 # raster-style
 
-Raster Style Spec v2 的规范与多语言 Q2 编解码工具。当前协议为 `2.0`，SDK 版本为 `0.3.0`。
+Raster Style v3 的规范、JSON Schema 与 TypeScript / Go / Rust SDK。当前核心协议为 **3.0**，Query 绑定为 **Q3**，仓库 SDK 版本为 **0.4.0**。
 
-提供栅格像元渲染的样式规范，以及 TypeScript、Go、Rust 的 JSON ↔ Q2 查询参数转换、结构与语义校验、颜色规范化和 Fiber v3 适配层。
+核心定义波段与表达式、指数、重采样、校准、统计、拉伸、颜色映射、地形、颜色效果和透明度。扩展采用声明与配置分离的设计：版本化 Schema URL 写入 extensions，业务字段直接位于样式对象，由对应 Schema 定义。
 
-## 项目结构
+## 样式示例
 
-```text
-spec/v2/                    规范原文、JSON Schema、36 项 Query 绑定
-examples/styles/            23 份完整配置示例
-testdata/                   三种语言共用的正例、反例与 JCS 测试向量
-packages/typescript/        浏览器 / Node.js 的严格 TypeScript 实现
-packages/go/                Go 核心包
-packages/go/fiber/          Fiber v3 便捷解析与中间件
-crates/raster-style/        Rust 编解码核心库
-scripts/                    资源同步、类型生成、跨语言校验
+```json
+{
+  "version": "3.0",
+  "extensions": [
+    "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json",
+    "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+  ],
+  "renderer": { "type": "rgb", "bidx": [4, 3, 2] },
+  "resampling": { "read": "bilinear", "reproject": "bilinear" },
+  "stretch": { "method": "linear", "rescale": [[0, 3000]] },
+  "opacity": 1,
+  "raster:mosaic": { "pixel_selection": "first", "stage": "before_channels" },
+  "raster:tile": { "format": "webp", "tilesize": 256, "quality": 85 }
+}
 ```
 
-接口规范：[TiTiler 命名规范](spec/v2/Raster-Style-TiTiler-Profile.md)，包含统一字段、颜色公式和路由示例，Schema 与三语言 SDK 使用同一字段定义。
+Mosaic 承载多源像元选择、元组有效性、Alpha 与通道前后执行语义。Tile 的尺寸参与前置网格规划，格式、质量、无损和背景参数决定最终输出。核心样式可独立使用：
 
-规范入口：[Raster Style Spec v2](spec/v2/Raster-Style-Spec-v2.md)。接口细节见 [SDK 使用说明](docs/SDK.md)，校验规则见 [验证与安全](docs/VALIDATION.md)。
+```json
+{ "version": "3.0", "renderer": { "type": "gray", "bidx": [1] } }
+```
 
-像元规则见 [执行语义](spec/v2/Raster-Style-Execution.md)，表达式语法见 [raster-expr/1](spec/v2/Raster-Expression-v1.md)。渲染参考向量随工程检查运行；实际后端按 [TiTiler 适配档案](spec/v2/Raster-Style-TiTiler-Profile.md)独立验收。
+## 规范与工程结构
 
-## 开发
+| 入口                                                      | 内容                                              |
+| --------------------------------------------------------- | ------------------------------------------------- |
+| [核心规范](spec/v3/Raster-Style-Spec-v3.md)               | 核心渲染语义、扩展声明、组合校验与执行契约        |
+| [Mosaic 1.0.0](extensions/raster/mosaic/v1.0.0/README.md) | 多源像元选择及完整样式 Schema                     |
+| [Tile 1.0.0](extensions/raster/tile/v1.0.0/README.md)     | 前置网格、透明度、颜色空间和编码                  |
+| [Q3 绑定](spec/v3/Raster-Style-Query.md)                  | 核心短参数、通用扩展 JSON、确定性排序与百分号编码 |
+| [SDK](docs/SDK.md)                                        | 三语言接口、本地注册、完整性报告与执行能力检查    |
+| [执行语义](spec/v3/Raster-Style-Execution.md)             | 数值计算、统计、Alpha、地形与参考向量             |
+| [表达式档案](spec/v3/Raster-Expression-v1.md)             | raster-expr/1 语法与求值约定                      |
+| [适配档案](spec/v3/Raster-Style-TiTiler-Profile.md)       | 后端映射、精确版本和渲染验收                      |
+| [验证与安全](docs/VALIDATION.md)                          | 校验层次、错误码、预算和测试边界                  |
+| [Schema 发布](docs/PUBLISHING.md)                         | 静态产物、版本地址与部署验证                      |
 
-环境：Node.js 22+、pnpm 11.15.1、Go 1.25+、Rust 1.92.0（本项目验证工具链）、Python 3.10+。
+spec/v3 和 extensions/raster 是规范来源；packages/typescript、packages/go、crates/raster-style 提供 SDK；[examples](examples/README.md) 和 testdata 保存示例、本地示例 Schema 及共享测试。scripts 负责生成、数值参考计算、跨语言检查和静态发布构建。
+
+## SDK 使用
+
+### TypeScript
+
+```ts
+import {
+  parseStyle,
+  validateStyle,
+  inspectStyle,
+  encodeQuery,
+  decodeQuery,
+} from '@mapseek/raster-style';
+
+const style = parseStyle('{"version":"3.0","renderer":{"type":"gray","bidx":[1]}}');
+validateStyle(style);
+const report = inspectStyle(style);
+const query = encodeQuery(style);
+const restored = decodeQuery(query);
+```
+
+### Go
+
+```go
+import rasterstyle "github.com/mapseekai/raster-style/packages/go"
+
+if err := rasterstyle.ValidateJSON(styleJSON); err != nil {
+    return err
+}
+query, err := rasterstyle.JSONToQuery(styleJSON)
+if err != nil {
+    return err
+}
+restored, err := rasterstyle.QueryToJSON(query)
+```
+
+Fiber v3 提供可复用 Decoder 和中间件，可运行示例位于 packages/go/examples/fiber/main.go。
+
+### Rust
+
+```rust
+use raster_style::{validate_json, json_to_query, query_to_json};
+
+validate_json(style_json)?;
+let query = json_to_query(style_json)?;
+let restored = query_to_json(&query)?;
+```
+
+上述核心示例对应 `bidx=1&type=gray&version=3.0`。
+
+官方 Schema 内嵌并离线使用；第三方通过 SchemaRegistry 注册，可定义任意名称及多个业务字段。Query 使用 extensions 数组与 extension_fields 对象传输，无需为新增扩展修改绑定表。
+
+编解码保留未知扩展的 JSON 语义，并提供未解析 Schema 报告。完整校验要求取得全部 Schema；执行前另行检查真实执行端支持的精确扩展 URL。详细调用见 SDK 文档。
+
+## 开发与验证
+
+工具链：Node.js 22+、pnpm 11.15.1、Go 1.25+、Rust 1.92.0、Python 3.10+。
 
 ```sh
 pnpm install --frozen-lockfile
@@ -34,143 +109,17 @@ pnpm build
 pnpm test:all
 ```
 
-`pnpm test:all` 检查生成资源、格式化、TypeScript 单元测试、Go vet/race、Rust fmt/clippy/test，并运行三语言交叉往返校验。首次构建会下载 Go/Rust 依赖。
-
-格式化使用 Prettier、gofmt 和 rustfmt；规范文档和共享测试向量单独维护。
+全量检查包含资源一致性、格式化、TypeScript 类型及单元测试、Go vet/race、Rust fmt/clippy/test、数值参考向量、三语言 Query/JCS 往返和静态 Schema 发布产物。完整日志与报告输出到 .build。
 
 ```sh
 pnpm format
 gofmt -w packages/go
 cargo fmt --all
+pnpm build:site
 ```
 
-## TypeScript
-
-```sh
-npm install @mapseek/raster-style@0.3.0
-```
-
-```ts
-import { encodeQuery, decodeQuery, jsonToQuery, queryToJson } from '@mapseek/raster-style';
-
-const style = {
-  version: '2.0',
-  renderer: { type: 'rgb', bidx: [4, 3, 2] },
-};
-
-const query = encodeQuery(style);
-const restored = decodeQuery(query);
-const fromText = jsonToQuery(JSON.stringify(style));
-const jsonText = queryToJson(fromText);
-```
-
-输出：
-
-```text
-bidx=4&bidx=3&bidx=2&type=rgb&version=2.0
-```
-
-支持浏览器和 Node.js，Schema 在构建时内嵌。TypeScript 类型从规范生成，运行时执行完整结构校验。
-
-## Go
-
-```sh
-go get github.com/mapseekai/raster-style/packages/go@v0.3.0
-```
-
-```go
-query, err := rasterstyle.JSONToQuery(styleJSON)
-if err != nil {
-    return err
-}
-
-jsonBytes, err := rasterstyle.QueryToJSON(query)
-if err != nil {
-    return err
-}
-```
-
-导入路径：`github.com/mapseekai/raster-style/packages/go`。本地项目可通过 `go work use` 或 `replace` 引用。
-
-## Fiber v3
-
-```go
-import (
-    "github.com/gofiber/fiber/v3"
-    rasterstyle "github.com/mapseekai/raster-style/packages/go"
-    stylefiber "github.com/mapseekai/raster-style/packages/go/fiber"
-)
-
-decoder, err := stylefiber.NewDecoder(rasterstyle.Options{})
-if err != nil {
-    return err
-}
-
-app.Get("/raster-style", func(c fiber.Ctx) error {
-    style, err := decoder.Parse(c)
-    if err != nil {
-        return err
-    }
-    return c.JSON(style)
-})
-```
-
-原始 JSON 输出使用 `decoder.JSON(c)`。多个处理步骤可通过 `decoder.Middleware()` 和 `stylefiber.FromContext(c)` 共享解析结果。Decoder 直接读取原始查询串，保留重复波段参数及其顺序。
-
-完整可运行示例：`packages/go/examples/fiber/main.go`。
-
-## Rust
-
-```rust
-use raster_style::{json_to_query, query_to_json};
-
-let query = json_to_query(style_json)?;
-let restored_json = query_to_json(&query)?;
-```
-
-依赖配置：
-
-```toml
-[dependencies]
-raster-style = "0.3.0"
-```
-
-## 分组样式
-
-JSON 按 renderer、resampling、stretch、effects、image 分组。opacity 是 0–1 的全局透明度，nodata 指定统一无效值。
-
-```json
-{
-  "version": "2.0",
-  "renderer": { "type": "rgb", "bidx": [4, 3, 2] },
-  "resampling": { "read": "bilinear", "reproject": "bilinear" },
-  "stretch": { "method": "linear", "rescale": [[0, 3000]] },
-  "nodata": -9999,
-  "effects": {
-    "color_formula": [{ "op": "gamma", "channels": "rgb", "value": 1.1 }],
-    "post_color_formula": [{ "op": "brightness", "channels": "rgb", "value": 0.05 }]
-  },
-  "opacity": 1,
-  "image": { "format": "png", "tilesize": 256 }
-}
-```
-
-color_formula 在颜色映射前执行，post_color_formula 调整渲染后的颜色。两组数组均保留操作顺序及重复操作，Query 使用同名公式字符串。完整参数见 [规范](spec/v2/Raster-Style-Spec-v2.md)。
-
-## 传输契约
-
-JSON 分组路径对应简短 Query 名称：renderer.bidx → bidx、stretch.rescale → rescale、resampling.read → resampling。SDK 在对象数组与公式字符串之间转换，并校验参数范围和通道选择。
-
-Query 按键排序，重复 bidx/rescale 保留数组顺序。空格编码为 %20，加号为 %2B。默认预算为 8192 字节、256 个参数，JSON 为 2 MiB、深度 64。
-
-SDK 保留可选字段的省略状态，并在颜色操作中补全默认 channels：映射前单通道为 r，其他情况为 rgb。颜色规范化为小写八位 RGBA；数值使用 RFC 8785。expression 保留内部原文并去除各输出两端的 ASCII 空白。
-
-渲染服务执行数据绑定、统计、表达式、颜色计算和图像输出，管理 url、授权、TMS、bbox 等请求上下文。
-
-## 版本
-
-SDK 版本为 `0.3.0`。npm 包为 `@mapseek/raster-style`，Rust crate 为 `raster-style`；Go 核心包与 Fiber 适配层通过同一个 Go 模块发布。
+协议版本、Query 绑定版本、SDK 版本和扩展版本分别管理。发布目录与校验资源使用显式版本；实际 npm、crates.io、Go tag 与 Pages 上线状态以发布记录为准，仓库版本号不代表已发布。
 
 ## 许可证
 
-本项目采用 [MIT 许可证](LICENSE)。
+[MIT](LICENSE)。

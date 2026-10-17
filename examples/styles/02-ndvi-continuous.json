@@ -1,5 +1,5 @@
 {
-  "version": "2.0",
+  "version": "3.0",
   "opacity": 1,
   "calibration": {
     "mode": "metadata"
@@ -38,12 +38,15 @@
   "stretch": {
     "method": "none"
   },
-  "image": {
-    "format": "png",
-    "tilesize": 256
-  },
   "resampling": {
     "read": "bilinear",
     "reproject": "bilinear"
-  }
+  },
+  "raster:tile": {
+    "format": "png",
+    "tilesize": 256
+  },
+  "extensions": [
+    "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+  ]
 }

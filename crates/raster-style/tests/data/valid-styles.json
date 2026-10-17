@@ -1,0 +1,45 @@
+{
+  "16-unicode-extension": {
+    "version": "3.0",
+    "extensions": [
+      "https://example.test/extensions/mapseek.test.config/v1.0.0/schema.json"
+    ],
+    "renderer": {
+      "type": "gray",
+      "bidx": [
+        1
+      ]
+    },
+    "test:config": {
+      "text": "a+b & #50% 中文 / ? =",
+      "numbers": [
+        -0.0,
+        1e+21,
+        1e-07,
+        5e-324
+      ],
+      "😀": 2,
+      "": 1,
+      "__proto__": {
+        "safe": true
+      },
+      "color": "#ABCDEF"
+    }
+  },
+  "source-after-color": {
+    "version": "3.0",
+    "renderer": {
+      "type": "categorized",
+      "bidx": [
+        1
+      ],
+      "color_mapping": {
+        "mode": "source"
+      }
+    },
+    "extensions": [
+      "https://example.test/extensions/mapseek.test.identity/v1.0.0/schema.json"
+    ],
+    "test:identity": {}
+  }
+}

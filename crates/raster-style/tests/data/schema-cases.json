@@ -1,0 +1,6337 @@
+{
+  "resources": {
+    "multi": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/not-a-field-name/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions",
+        "unrelated_gain",
+        "vendor:annotation"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/not-a-field-name/v1.0.0/schema.json"
+          }
+        },
+        "unrelated_gain": {
+          "type": "number",
+          "minimum": 0
+        },
+        "vendor:annotation": {
+          "type": "string"
+        }
+      }
+    },
+    "reference": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/references/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/references/v1.0.0/schema.json"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "parts.json#/$defs/fields"
+        }
+      ]
+    },
+    "parts": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/references/v1.0.0/parts.json",
+      "$defs": {
+        "fields": {
+          "type": "object",
+          "properties": {
+            "sample:flag": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "sample:flag"
+          ]
+        }
+      }
+    },
+    "branch": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/branches/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions",
+        "choice"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/branches/v1.0.0/schema.json"
+          }
+        },
+        "choice": {
+          "enum": [
+            "a",
+            "b"
+          ]
+        }
+      },
+      "if": {
+        "properties": {
+          "choice": {
+            "const": "a"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "branch:a": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "branch:a"
+        ]
+      },
+      "else": {
+        "properties": {
+          "branch:b": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "branch:b"
+        ]
+      }
+    },
+    "constraint": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/limits/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/limits/v1.0.0/schema.json"
+          }
+        },
+        "opacity": {
+          "maximum": 0.5
+        }
+      }
+    },
+    "square": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/extensions/mapseek.test.square/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions",
+        "test:square"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/extensions/mapseek.test.square/v1.0.0/schema.json"
+          }
+        },
+        "test:square": {
+          "type": "object",
+          "required": [
+            "stage"
+          ],
+          "properties": {
+            "stage": {
+              "enum": [
+                "before_channels",
+                "after_channels"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "not": {
+        "properties": {
+          "renderer": {
+            "properties": {
+              "type": {
+                "const": "categorized"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        },
+        "required": [
+          "renderer"
+        ]
+      }
+    },
+    "invalid": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/invalid/v1/schema.json",
+      "type": "not-a-json-type"
+    },
+    "wrong-draft": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "$id": "https://example.test/old-draft/v1/schema.json",
+      "type": "object"
+    },
+    "foreign": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/foreign/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions",
+        "raster:mosaic",
+        "raster:tile"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/foreign/v1.0.0/schema.json"
+          }
+        },
+        "raster:mosaic": {
+          "type": "string"
+        },
+        "raster:tile": {
+          "type": "string"
+        }
+      }
+    },
+    "one-of": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/one-of/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/one-of/v1.0.0/schema.json"
+          }
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "left_value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "left_value"
+          ]
+        },
+        {
+          "properties": {
+            "right_value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "right_value"
+          ]
+        }
+      ]
+    },
+    "any-of": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/any-of/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/any-of/v1.0.0/schema.json"
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "a": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "a"
+          ]
+        },
+        {
+          "properties": {
+            "b": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "b"
+          ]
+        }
+      ]
+    },
+    "sensor-rules": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/sensor-rules/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/sensor-rules/v1.0.0/schema.json"
+          }
+        }
+      },
+      "patternProperties": {
+        "^sensor:[0-9]+$": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "literal-properties": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/literal-properties/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions",
+        "a.b/c~d",
+        "constructor",
+        "toString"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/literal-properties/v1.0.0/schema.json"
+          }
+        },
+        "a.b/c~d": {
+          "type": "boolean"
+        },
+        "constructor": {
+          "type": "null"
+        },
+        "toString": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "normalized-color": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "https://example.test/normalized-color/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions"
+      ],
+      "properties": {
+        "extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://example.test/normalized-color/v1.0.0/schema.json"
+          }
+        },
+        "renderer": {
+          "properties": {
+            "color": {
+              "const": "#ABCDEF"
+            }
+          }
+        }
+      }
+    },
+    "regression-multiple-0": {
+      "$id": "https://example.test/regression/multiple-0/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.1
+        }
+      }
+    },
+    "regression-multiple-1": {
+      "$id": "https://example.test/regression/multiple-1/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.01
+        }
+      }
+    },
+    "regression-multiple-2": {
+      "$id": "https://example.test/regression/multiple-2/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.1
+        }
+      }
+    },
+    "regression-multiple-3": {
+      "$id": "https://example.test/regression/multiple-3/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.25
+        }
+      }
+    },
+    "regression-multiple-4": {
+      "$id": "https://example.test/regression/multiple-4/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.1
+        }
+      }
+    },
+    "regression-multiple-5": {
+      "$id": "https://example.test/regression/multiple-5/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.01
+        }
+      }
+    },
+    "regression-multiple-6": {
+      "$id": "https://example.test/regression/multiple-6/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.1
+        }
+      }
+    },
+    "regression-multiple-7": {
+      "$id": "https://example.test/regression/multiple-7/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.1
+        }
+      }
+    },
+    "regression-multiple-8": {
+      "$id": "https://example.test/regression/multiple-8/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.1
+        }
+      }
+    },
+    "regression-multiple-9": {
+      "$id": "https://example.test/regression/multiple-9/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.01
+        }
+      }
+    },
+    "regression-multiple-10": {
+      "$id": "https://example.test/regression/multiple-10/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.01
+        }
+      }
+    },
+    "regression-multiple-11": {
+      "$id": "https://example.test/regression/multiple-11/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 1e-07
+        }
+      }
+    },
+    "regression-multiple-12": {
+      "$id": "https://example.test/regression/multiple-12/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 1e-07
+        }
+      }
+    },
+    "regression-multiple-13": {
+      "$id": "https://example.test/regression/multiple-13/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 1e+21
+        }
+      }
+    },
+    "regression-multiple-14": {
+      "$id": "https://example.test/regression/multiple-14/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 5e-324
+        }
+      }
+    },
+    "regression-multiple-15": {
+      "$id": "https://example.test/regression/multiple-15/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 5e-324
+        }
+      }
+    },
+    "regression-multiple-16": {
+      "$id": "https://example.test/regression/multiple-16/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 1e-323
+        }
+      }
+    },
+    "regression-multiple-17": {
+      "$id": "https://example.test/regression/multiple-17/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 1e+308
+        }
+      }
+    },
+    "regression-multiple-18": {
+      "$id": "https://example.test/regression/multiple-18/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 1e+308
+        }
+      }
+    },
+    "regression-multiple-19": {
+      "$id": "https://example.test/regression/multiple-19/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "number",
+          "multipleOf": 0.01
+        }
+      }
+    },
+    "regression-number-composition-0": {
+      "$id": "https://example.test/regression/number-composition-0/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "anyOf": [
+            {
+              "type": "number",
+              "multipleOf": 0.1
+            },
+            {
+              "const": "auto"
+            }
+          ]
+        }
+      }
+    },
+    "regression-number-composition-1": {
+      "$id": "https://example.test/regression/number-composition-1/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "anyOf": [
+            {
+              "type": "number",
+              "multipleOf": 0.1
+            },
+            {
+              "const": "auto"
+            }
+          ]
+        }
+      }
+    },
+    "regression-number-composition-2": {
+      "$id": "https://example.test/regression/number-composition-2/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "anyOf": [
+            {
+              "type": "number",
+              "multipleOf": 0.1
+            },
+            {
+              "const": "auto"
+            }
+          ]
+        }
+      }
+    },
+    "regression-number-composition-3": {
+      "$id": "https://example.test/regression/number-composition-3/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "not": {
+            "multipleOf": 0.1
+          }
+        }
+      }
+    },
+    "regression-number-composition-4": {
+      "$id": "https://example.test/regression/number-composition-4/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "not": {
+            "multipleOf": 0.1
+          }
+        }
+      }
+    },
+    "regression-number-composition-5": {
+      "$id": "https://example.test/regression/number-composition-5/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "multipleOf": 0.1
+        }
+      }
+    },
+    "regression-number-composition-6": {
+      "$id": "https://example.test/regression/number-composition-6/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "array",
+          "contains": {
+            "type": "number",
+            "multipleOf": 0.1
+          },
+          "minContains": 2
+        }
+      }
+    },
+    "regression-number-composition-7": {
+      "$id": "https://example.test/regression/number-composition-7/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "array",
+          "contains": {
+            "type": "number",
+            "multipleOf": 0.1
+          },
+          "minContains": 2
+        }
+      }
+    },
+    "regression-regex-0": {
+      "$id": "https://example.test/regression/regex-0/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^(?=a)a$"
+        }
+      }
+    },
+    "regression-regex-1": {
+      "$id": "https://example.test/regression/regex-1/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^(?=a)a$"
+        }
+      }
+    },
+    "regression-regex-2": {
+      "$id": "https://example.test/regression/regex-2/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^(?!b)a$"
+        }
+      }
+    },
+    "regression-regex-3": {
+      "$id": "https://example.test/regression/regex-3/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^(?!b)a$"
+        }
+      }
+    },
+    "regression-regex-4": {
+      "$id": "https://example.test/regression/regex-4/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "(?<=a)b"
+        }
+      }
+    },
+    "regression-regex-5": {
+      "$id": "https://example.test/regression/regex-5/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "(?<=a)b"
+        }
+      }
+    },
+    "regression-regex-6": {
+      "$id": "https://example.test/regression/regex-6/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "(?<!a)b"
+        }
+      }
+    },
+    "regression-regex-7": {
+      "$id": "https://example.test/regression/regex-7/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "(?<!a)b"
+        }
+      }
+    },
+    "regression-regex-8": {
+      "$id": "https://example.test/regression/regex-8/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^(a|b)\\1$"
+        }
+      }
+    },
+    "regression-regex-9": {
+      "$id": "https://example.test/regression/regex-9/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^(a|b)\\1$"
+        }
+      }
+    },
+    "regression-regex-10": {
+      "$id": "https://example.test/regression/regex-10/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\d+$"
+        }
+      }
+    },
+    "regression-regex-11": {
+      "$id": "https://example.test/regression/regex-11/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\d+$"
+        }
+      }
+    },
+    "regression-regex-12": {
+      "$id": "https://example.test/regression/regex-12/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\w+$"
+        }
+      }
+    },
+    "regression-regex-13": {
+      "$id": "https://example.test/regression/regex-13/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\w+$"
+        }
+      }
+    },
+    "regression-regex-14": {
+      "$id": "https://example.test/regression/regex-14/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^.$"
+        }
+      }
+    },
+    "regression-regex-15": {
+      "$id": "https://example.test/regression/regex-15/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-16": {
+      "$id": "https://example.test/regression/regex-16/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-17": {
+      "$id": "https://example.test/regression/regex-17/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-18": {
+      "$id": "https://example.test/regression/regex-18/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-19": {
+      "$id": "https://example.test/regression/regex-19/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-20": {
+      "$id": "https://example.test/regression/regex-20/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-21": {
+      "$id": "https://example.test/regression/regex-21/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-22": {
+      "$id": "https://example.test/regression/regex-22/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-23": {
+      "$id": "https://example.test/regression/regex-23/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-24": {
+      "$id": "https://example.test/regression/regex-24/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-25": {
+      "$id": "https://example.test/regression/regex-25/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-26": {
+      "$id": "https://example.test/regression/regex-26/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-27": {
+      "$id": "https://example.test/regression/regex-27/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-28": {
+      "$id": "https://example.test/regression/regex-28/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-29": {
+      "$id": "https://example.test/regression/regex-29/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-30": {
+      "$id": "https://example.test/regression/regex-30/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-31": {
+      "$id": "https://example.test/regression/regex-31/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-32": {
+      "$id": "https://example.test/regression/regex-32/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-33": {
+      "$id": "https://example.test/regression/regex-33/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-34": {
+      "$id": "https://example.test/regression/regex-34/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-35": {
+      "$id": "https://example.test/regression/regex-35/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-36": {
+      "$id": "https://example.test/regression/regex-36/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-37": {
+      "$id": "https://example.test/regression/regex-37/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-38": {
+      "$id": "https://example.test/regression/regex-38/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-39": {
+      "$id": "https://example.test/regression/regex-39/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-40": {
+      "$id": "https://example.test/regression/regex-40/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-41": {
+      "$id": "https://example.test/regression/regex-41/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-regex-42": {
+      "$id": "https://example.test/regression/regex-42/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "string",
+          "pattern": "^\\s$"
+        }
+      }
+    },
+    "regression-pattern-properties-lookahead": {
+      "$id": "https://example.test/regression/pattern-properties-lookahead/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^(?=custom)custom$": {
+          "multipleOf": 0.01
+        }
+      }
+    },
+    "regression-pattern-properties-invalid-number": {
+      "$id": "https://example.test/regression/pattern-properties-invalid-number/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^(?=custom)custom$": {
+          "multipleOf": 0.01
+        }
+      }
+    },
+    "regression-property-0": {
+      "$id": "https://example.test/regression/property-0/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "__proto__": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "__proto__"
+      ]
+    },
+    "regression-property-invalid-0": {
+      "$id": "https://example.test/regression/property-invalid-0/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "__proto__": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "__proto__"
+      ]
+    },
+    "regression-property-missing-0": {
+      "$id": "https://example.test/regression/property-missing-0/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "__proto__": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "__proto__"
+      ]
+    },
+    "regression-property-undeclared-0": {
+      "$id": "https://example.test/regression/property-undeclared-0/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^custom$": {
+          "type": "number"
+        }
+      }
+    },
+    "regression-property-1": {
+      "$id": "https://example.test/regression/property-1/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "constructor": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "constructor"
+      ]
+    },
+    "regression-property-invalid-1": {
+      "$id": "https://example.test/regression/property-invalid-1/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "constructor": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "constructor"
+      ]
+    },
+    "regression-property-missing-1": {
+      "$id": "https://example.test/regression/property-missing-1/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "constructor": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "constructor"
+      ]
+    },
+    "regression-property-undeclared-1": {
+      "$id": "https://example.test/regression/property-undeclared-1/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^custom$": {
+          "type": "number"
+        }
+      }
+    },
+    "regression-property-2": {
+      "$id": "https://example.test/regression/property-2/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "toString": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "toString"
+      ]
+    },
+    "regression-property-invalid-2": {
+      "$id": "https://example.test/regression/property-invalid-2/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "toString": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "toString"
+      ]
+    },
+    "regression-property-missing-2": {
+      "$id": "https://example.test/regression/property-missing-2/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "toString": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "toString"
+      ]
+    },
+    "regression-property-undeclared-2": {
+      "$id": "https://example.test/regression/property-undeclared-2/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^custom$": {
+          "type": "number"
+        }
+      }
+    },
+    "regression-property-3": {
+      "$id": "https://example.test/regression/property-3/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "hasOwnProperty": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "hasOwnProperty"
+      ]
+    },
+    "regression-property-invalid-3": {
+      "$id": "https://example.test/regression/property-invalid-3/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "hasOwnProperty": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "hasOwnProperty"
+      ]
+    },
+    "regression-property-missing-3": {
+      "$id": "https://example.test/regression/property-missing-3/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "hasOwnProperty": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "hasOwnProperty"
+      ]
+    },
+    "regression-property-undeclared-3": {
+      "$id": "https://example.test/regression/property-undeclared-3/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^custom$": {
+          "type": "number"
+        }
+      }
+    },
+    "regression-property-4": {
+      "$id": "https://example.test/regression/property-4/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "$__proto__": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "$__proto__"
+      ]
+    },
+    "regression-property-invalid-4": {
+      "$id": "https://example.test/regression/property-invalid-4/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "$__proto__": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "$__proto__"
+      ]
+    },
+    "regression-property-missing-4": {
+      "$id": "https://example.test/regression/property-missing-4/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "$__proto__": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "$__proto__"
+      ]
+    },
+    "regression-property-undeclared-4": {
+      "$id": "https://example.test/regression/property-undeclared-4/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^custom$": {
+          "type": "number"
+        }
+      }
+    },
+    "regression-property-5": {
+      "$id": "https://example.test/regression/property-5/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "$$__proto__": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "$$__proto__"
+      ]
+    },
+    "regression-property-invalid-5": {
+      "$id": "https://example.test/regression/property-invalid-5/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "$$__proto__": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "$$__proto__"
+      ]
+    },
+    "regression-property-missing-5": {
+      "$id": "https://example.test/regression/property-missing-5/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "$$__proto__": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "$$__proto__"
+      ]
+    },
+    "regression-property-undeclared-5": {
+      "$id": "https://example.test/regression/property-undeclared-5/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^custom$": {
+          "type": "number"
+        }
+      }
+    },
+    "regression-property-6": {
+      "$id": "https://example.test/regression/property-6/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a.b/c~x": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "a.b/c~x"
+      ]
+    },
+    "regression-property-invalid-6": {
+      "$id": "https://example.test/regression/property-invalid-6/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a.b/c~x": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "a.b/c~x"
+      ]
+    },
+    "regression-property-missing-6": {
+      "$id": "https://example.test/regression/property-missing-6/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a.b/c~x": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "a.b/c~x"
+      ]
+    },
+    "regression-property-undeclared-6": {
+      "$id": "https://example.test/regression/property-undeclared-6/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^custom$": {
+          "type": "number"
+        }
+      }
+    },
+    "regression-property-7": {
+      "$id": "https://example.test/regression/property-7/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "😀": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "😀"
+      ]
+    },
+    "regression-property-invalid-7": {
+      "$id": "https://example.test/regression/property-invalid-7/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "😀": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "😀"
+      ]
+    },
+    "regression-property-missing-7": {
+      "$id": "https://example.test/regression/property-missing-7/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "😀": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "😀"
+      ]
+    },
+    "regression-property-undeclared-7": {
+      "$id": "https://example.test/regression/property-undeclared-7/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^custom$": {
+          "type": "number"
+        }
+      }
+    },
+    "regression-property-8": {
+      "$id": "https://example.test/regression/property-8/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "\u0000": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "\u0000"
+      ]
+    },
+    "regression-property-invalid-8": {
+      "$id": "https://example.test/regression/property-invalid-8/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "\u0000": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "\u0000"
+      ]
+    },
+    "regression-property-missing-8": {
+      "$id": "https://example.test/regression/property-missing-8/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "\u0000": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "\u0000"
+      ]
+    },
+    "regression-property-undeclared-8": {
+      "$id": "https://example.test/regression/property-undeclared-8/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^custom$": {
+          "type": "number"
+        }
+      }
+    },
+    "regression-proto-nested-closed": {
+      "$id": "https://example.test/regression/proto-nested-closed/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "object",
+          "properties": {
+            "__proto__": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "__proto__"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "regression-proto-nested-extra": {
+      "$id": "https://example.test/regression/proto-nested-extra/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "custom": {
+          "type": "object",
+          "properties": {
+            "__proto__": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "__proto__"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "regression-proto-ref": {
+      "$id": "https://example.test/regression/proto-ref/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "$defs": {
+        "props": {
+          "properties": {
+            "__proto__": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "__proto__"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/props"
+        }
+      ]
+    },
+    "regression-proto-ref-invalid": {
+      "$id": "https://example.test/regression/proto-ref-invalid/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "$defs": {
+        "props": {
+          "properties": {
+            "__proto__": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "__proto__"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/props"
+        }
+      ]
+    },
+    "regression-proto-pattern": {
+      "$id": "https://example.test/regression/proto-pattern/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^__proto__$": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "regression-proto-pattern-invalid": {
+      "$id": "https://example.test/regression/proto-pattern-invalid/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "patternProperties": {
+        "^__proto__$": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "regression-proto-condition-true": {
+      "$id": "https://example.test/regression/proto-condition-true/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "choice": {
+          "enum": [
+            "a",
+            "b"
+          ]
+        }
+      },
+      "required": [
+        "choice"
+      ],
+      "if": {
+        "properties": {
+          "choice": {
+            "const": "a"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "__proto__": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "__proto__"
+        ]
+      },
+      "else": {
+        "properties": {
+          "other": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "other"
+        ]
+      }
+    },
+    "regression-proto-condition-inactive": {
+      "$id": "https://example.test/regression/proto-condition-inactive/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "choice": {
+          "enum": [
+            "a",
+            "b"
+          ]
+        }
+      },
+      "required": [
+        "choice"
+      ],
+      "if": {
+        "properties": {
+          "choice": {
+            "const": "a"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "__proto__": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "__proto__"
+        ]
+      },
+      "else": {
+        "properties": {
+          "other": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "other"
+        ]
+      }
+    },
+    "regression-proto-condition-invalid": {
+      "$id": "https://example.test/regression/proto-condition-invalid/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "choice": {
+          "enum": [
+            "a",
+            "b"
+          ]
+        }
+      },
+      "required": [
+        "choice"
+      ],
+      "if": {
+        "properties": {
+          "choice": {
+            "const": "a"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "__proto__": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "__proto__"
+        ]
+      },
+      "else": {
+        "properties": {
+          "other": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "other"
+        ]
+      }
+    },
+    "regression-proto-anyof": {
+      "$id": "https://example.test/regression/proto-anyof/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "anyOf": [
+        {
+          "properties": {
+            "__proto__": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "__proto__"
+          ]
+        },
+        {
+          "properties": {
+            "other": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "other"
+          ]
+        }
+      ]
+    },
+    "regression-proto-anyof-invalid": {
+      "$id": "https://example.test/regression/proto-anyof-invalid/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "anyOf": [
+        {
+          "properties": {
+            "__proto__": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "__proto__"
+          ]
+        },
+        {
+          "properties": {
+            "other": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "other"
+          ]
+        }
+      ]
+    },
+    "regression-proto-dependent-active": {
+      "$id": "https://example.test/regression/proto-dependent-active/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "trigger": {
+          "type": "boolean"
+        }
+      },
+      "dependentSchemas": {
+        "trigger": {
+          "properties": {
+            "__proto__": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "__proto__"
+          ]
+        }
+      }
+    },
+    "regression-proto-dependent-inactive": {
+      "$id": "https://example.test/regression/proto-dependent-inactive/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "trigger": {
+          "type": "boolean"
+        }
+      },
+      "dependentSchemas": {
+        "trigger": {
+          "properties": {
+            "__proto__": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "__proto__"
+          ]
+        }
+      }
+    },
+    "regression-proto-false": {
+      "$id": "https://example.test/regression/proto-false/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "__proto__": false
+      }
+    },
+    "regression-proto-true": {
+      "$id": "https://example.test/regression/proto-true/v1.0.0/schema.json",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "__proto__": true
+      }
+    },
+    "review-unused-unresolved": {
+      "$id": "https://example.test/review-unused/v1.0.0/schema.json",
+      "$ref": "https://example.test/review-missing/v1.0.0/schema.json"
+    },
+    "review-named": {
+      "$id": "https://example.test/review-named/v1.0.0/schema.json",
+      "type": "object",
+      "required": [
+        "extensions",
+        "vendor:token"
+      ],
+      "properties": {
+        "extensions": {
+          "contains": {
+            "const": "https://example.test/review-named/v1.0.0/schema.json"
+          }
+        },
+        "vendor:token": {
+          "type": "string",
+          "pattern": "^(?<pair>a)\\k<pair>$"
+        }
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "core-alone",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        }
+      },
+      "schemas": [],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "empty-declarations",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": []
+      },
+      "schemas": [],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "mosaic-alone",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+        ],
+        "raster:mosaic": {
+          "pixel_selection": "first",
+          "stage": "before_channels"
+        }
+      },
+      "schemas": [],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "tile-png",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+        ],
+        "raster:tile": {
+          "format": "png"
+        }
+      },
+      "schemas": [],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "tile-webp",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+        ],
+        "raster:tile": {
+          "format": "webp"
+        }
+      },
+      "schemas": [],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "tile-jpeg",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+        ],
+        "raster:tile": {
+          "format": "jpeg"
+        }
+      },
+      "schemas": [],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "tile-webp-lossless",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+        ],
+        "raster:tile": {
+          "format": "webp",
+          "lossless": true
+        }
+      },
+      "schemas": [],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "tile-grid-only",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+        ],
+        "raster:tile": {
+          "tilesize": 512
+        }
+      },
+      "schemas": [],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "official-combined",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json",
+          "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+        ],
+        "raster:mosaic": {
+          "pixel_selection": "highest",
+          "stage": "after_channels",
+          "rank_channel": 1
+        },
+        "raster:tile": {
+          "format": "jpeg",
+          "quality": 90,
+          "background": "#FFFFFF"
+        }
+      },
+      "schemas": [],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "schema-defines-unprefixed-and-multiple-fields",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json"
+        ],
+        "unrelated_gain": 2,
+        "vendor:annotation": "图层 + #ABCDEF"
+      },
+      "schemas": [
+        "multi"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "url-name-does-not-define-field",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json"
+        ],
+        "not-a-field-name": {
+          "gain": 2
+        }
+      },
+      "schemas": [
+        "multi"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "prefix-does-not-authorize-fields",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json"
+        ],
+        "unrelated_gain": 2,
+        "vendor:annotation": "图层 + #ABCDEF",
+        "vendor:typo": true
+      },
+      "schemas": [
+        "multi"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "third-party-invalid-value",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json"
+        ],
+        "unrelated_gain": -1,
+        "vendor:annotation": "图层 + #ABCDEF"
+      },
+      "schemas": [
+        "multi"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "registered-but-undeclared",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [],
+        "unrelated_gain": 2,
+        "vendor:annotation": "图层 + #ABCDEF"
+      },
+      "schemas": [
+        "multi"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "declared-but-field-missing",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json"
+        ],
+        "unrelated_gain": 1
+      },
+      "schemas": [
+        "multi"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "local-relative-ref",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/references/v1.0.0/schema.json"
+        ],
+        "sample:flag": true
+      },
+      "schemas": [
+        "reference",
+        "parts"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "local-relative-ref-reverse-order",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/references/v1.0.0/schema.json"
+        ],
+        "sample:flag": true
+      },
+      "schemas": [
+        "parts",
+        "reference"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "referenced-field-invalid",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/references/v1.0.0/schema.json"
+        ],
+        "sample:flag": 1
+      },
+      "schemas": [
+        "reference",
+        "parts"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "offline-missing-ref",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/references/v1.0.0/schema.json"
+        ],
+        "sample:flag": true
+      },
+      "schemas": [
+        "reference"
+      ],
+      "code": "E_SCHEMA_UNRESOLVED"
+    },
+    {
+      "name": "conditional-a",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/branches/v1.0.0/schema.json"
+        ],
+        "choice": "a",
+        "branch:a": 1
+      },
+      "schemas": [
+        "branch"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "conditional-b",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/branches/v1.0.0/schema.json"
+        ],
+        "choice": "b",
+        "branch:b": true
+      },
+      "schemas": [
+        "branch"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "inactive-branch-is-not-evaluated",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/branches/v1.0.0/schema.json"
+        ],
+        "choice": "a",
+        "branch:a": 1,
+        "branch:b": true
+      },
+      "schemas": [
+        "branch"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "independent-extension-composition",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json",
+          "https://example.test/references/v1.0.0/schema.json"
+        ],
+        "unrelated_gain": 2,
+        "vendor:annotation": "图层 + #ABCDEF",
+        "sample:flag": true
+      },
+      "schemas": [
+        "multi",
+        "reference",
+        "parts"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "extension-constrains-core-field",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/limits/v1.0.0/schema.json"
+        ],
+        "opacity": 0.4
+      },
+      "schemas": [
+        "constraint"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "extension-core-constraint-fails",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/limits/v1.0.0/schema.json"
+        ],
+        "opacity": 0.8
+      },
+      "schemas": [
+        "constraint"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "unknown-is-preserved-not-validated",
+      "op": "inspect",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/unknown/v9.8.7/schema.json"
+        ],
+        "whatever": {
+          "color": "#ABCDEF",
+          "list": [
+            null,
+            true,
+            1,
+            "中+文"
+          ],
+          "__proto__": {
+            "safe": true
+          }
+        },
+        "other_field": [
+          1,
+          2,
+          3
+        ]
+      },
+      "schemas": [],
+      "expected": {
+        "complete": false,
+        "unresolvedSchemas": [
+          "https://example.test/unknown/v9.8.7/schema.json"
+        ]
+      }
+    },
+    {
+      "name": "unknown-full-validation-rejected",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/unknown/v9.8.7/schema.json"
+        ],
+        "whatever": {
+          "color": "#ABCDEF",
+          "list": [
+            null,
+            true,
+            1,
+            "中+文"
+          ],
+          "__proto__": {
+            "safe": true
+          }
+        },
+        "other_field": [
+          1,
+          2,
+          3
+        ]
+      },
+      "schemas": [],
+      "code": "E_SCHEMA_UNRESOLVED"
+    },
+    {
+      "name": "unknown-execution-rejected",
+      "op": "support",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/unknown/v9.8.7/schema.json"
+        ],
+        "whatever": {
+          "color": "#ABCDEF",
+          "list": [
+            null,
+            true,
+            1,
+            "中+文"
+          ],
+          "__proto__": {
+            "safe": true
+          }
+        },
+        "other_field": [
+          1,
+          2,
+          3
+        ]
+      },
+      "schemas": [],
+      "code": "E_SCHEMA_UNRESOLVED",
+      "supported": [
+        "https://example.test/unknown/v9.8.7/schema.json"
+      ]
+    },
+    {
+      "name": "different-extension-version-is-unresolved",
+      "op": "inspect",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.1/schema.json"
+        ],
+        "unrelated_gain": 2,
+        "vendor:annotation": "图层 + #ABCDEF"
+      },
+      "schemas": [
+        "multi"
+      ],
+      "expected": {
+        "complete": false,
+        "unresolvedSchemas": [
+          "https://example.test/not-a-field-name/v1.0.1/schema.json"
+        ]
+      }
+    },
+    {
+      "name": "known-and-unknown-partial",
+      "op": "inspect",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json",
+          "https://example.test/unknown/v9.8.7/schema.json"
+        ],
+        "whatever": {
+          "color": "#ABCDEF",
+          "list": [
+            null,
+            true,
+            1,
+            "中+文"
+          ],
+          "__proto__": {
+            "safe": true
+          }
+        },
+        "other_field": [
+          1,
+          2,
+          3
+        ],
+        "raster:tile": {
+          "format": "png"
+        }
+      },
+      "schemas": [],
+      "expected": {
+        "complete": false,
+        "unresolvedSchemas": [
+          "https://example.test/unknown/v9.8.7/schema.json"
+        ]
+      }
+    },
+    {
+      "name": "known-failure-even-with-unknown",
+      "op": "inspect",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json",
+          "https://example.test/unknown/v9.8.7/schema.json"
+        ],
+        "whatever": {
+          "color": "#ABCDEF",
+          "list": [
+            null,
+            true,
+            1,
+            "中+文"
+          ],
+          "__proto__": {
+            "safe": true
+          }
+        },
+        "other_field": [
+          1,
+          2,
+          3
+        ],
+        "raster:tile": {
+          "format": "png",
+          "quality": 85
+        }
+      },
+      "schemas": [],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "core-nested-typo-even-with-unknown",
+      "op": "inspect",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ],
+          "unrecognised": 1
+        },
+        "extensions": [
+          "https://example.test/unknown/v9.8.7/schema.json"
+        ],
+        "whatever": {
+          "color": "#ABCDEF",
+          "list": [
+            null,
+            true,
+            1,
+            "中+文"
+          ],
+          "__proto__": {
+            "safe": true
+          }
+        },
+        "other_field": [
+          1,
+          2,
+          3
+        ]
+      },
+      "schemas": [],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "extension-schema-does-not-imply-execution",
+      "op": "support",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json"
+        ],
+        "unrelated_gain": 2,
+        "vendor:annotation": "图层 + #ABCDEF"
+      },
+      "schemas": [
+        "multi"
+      ],
+      "code": "E_UNSUPPORTED_EXTENSION",
+      "supported": []
+    },
+    {
+      "name": "executor-version-must-match",
+      "op": "support",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json"
+        ],
+        "unrelated_gain": 2,
+        "vendor:annotation": "图层 + #ABCDEF"
+      },
+      "schemas": [
+        "multi"
+      ],
+      "code": "E_UNSUPPORTED_EXTENSION",
+      "supported": [
+        "https://example.test/not-a-field-name/v2.0.0/schema.json"
+      ]
+    },
+    {
+      "name": "execution-explicitly-supported",
+      "op": "support",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json"
+        ],
+        "unrelated_gain": 2,
+        "vendor:annotation": "图层 + #ABCDEF"
+      },
+      "schemas": [
+        "multi"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      },
+      "supported": [
+        "https://example.test/not-a-field-name/v1.0.0/schema.json"
+      ]
+    },
+    {
+      "name": "core-execution-needs-no-extension",
+      "op": "support",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        }
+      },
+      "schemas": [],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      },
+      "supported": []
+    },
+    {
+      "name": "schema-registration-is-immutable",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json"
+        ],
+        "unrelated_gain": 2,
+        "vendor:annotation": "图层 + #ABCDEF"
+      },
+      "schemas": [
+        "multi",
+        "multi"
+      ],
+      "code": "E_CONFIG"
+    },
+    {
+      "name": "invalid-schema-resource",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        }
+      },
+      "schemas": [
+        "invalid"
+      ],
+      "code": "E_CONFIG"
+    },
+    {
+      "name": "composition-rejects-other-draft",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        }
+      },
+      "schemas": [
+        "wrong-draft"
+      ],
+      "code": "E_CONFIG"
+    },
+    {
+      "name": "stage-is-square-business-parameter",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/extensions/mapseek.test.square/v1.0.0/schema.json"
+        ],
+        "test:square": {
+          "stage": "before_channels"
+        }
+      },
+      "schemas": [
+        "square"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "square-rejects-incompatible-category-by-own-schema",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "categorized",
+          "bidx": [
+            1
+          ],
+          "color_mapping": {
+            "mode": "source"
+          }
+        },
+        "extensions": [
+          "https://example.test/extensions/mapseek.test.square/v1.0.0/schema.json"
+        ],
+        "test:square": {
+          "stage": "before_channels"
+        }
+      },
+      "schemas": [
+        "square"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "mosaic-rank-after-bounds",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+        ],
+        "raster:mosaic": {
+          "pixel_selection": "highest",
+          "stage": "after_channels",
+          "rank_channel": 2
+        }
+      },
+      "schemas": [],
+      "code": "E_SEMANTIC"
+    },
+    {
+      "name": "mosaic-rank-before-distinct-bounds",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "rgb",
+          "bidx": [
+            1,
+            1,
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+        ],
+        "raster:mosaic": {
+          "pixel_selection": "highest",
+          "stage": "before_channels",
+          "rank_channel": 2
+        }
+      },
+      "schemas": [],
+      "code": "E_SEMANTIC"
+    },
+    {
+      "name": "mosaic-stage-is-not-generic",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+        ],
+        "raster:tile": {
+          "format": "png",
+          "stage": "after_color"
+        }
+      },
+      "schemas": [],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "official-handlers-keyed-by-schema-not-field-spelling",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/foreign/v1.0.0/schema.json"
+        ],
+        "raster:mosaic": "opaque",
+        "raster:tile": "opaque"
+      },
+      "schemas": [
+        "foreign"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "oneof-left-field",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/one-of/v1.0.0/schema.json"
+        ],
+        "left_value": 2
+      },
+      "schemas": [
+        "one-of"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "oneof-both-branches-rejected",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/one-of/v1.0.0/schema.json"
+        ],
+        "left_value": 2,
+        "right_value": "x"
+      },
+      "schemas": [
+        "one-of"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "anyof-evaluates-both-successful-branches",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/any-of/v1.0.0/schema.json"
+        ],
+        "a": 1,
+        "b": true
+      },
+      "schemas": [
+        "any-of"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "anyof-failed-branch-cannot-authorize-field",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/any-of/v1.0.0/schema.json"
+        ],
+        "a": 1,
+        "b": 3
+      },
+      "schemas": [
+        "any-of"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "pattern-defines-multiple-fields",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/sensor-rules/v1.0.0/schema.json"
+        ],
+        "sensor:1": 1,
+        "sensor:2": 2
+      },
+      "schemas": [
+        "sensor-rules"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "pattern-does-not-authorize-prefix-typo",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/sensor-rules/v1.0.0/schema.json"
+        ],
+        "sensor:wrong": 2
+      },
+      "schemas": [
+        "sensor-rules"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "literal-field-names-and-scalar-config",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/literal-properties/v1.0.0/schema.json"
+        ],
+        "a.b/c~d": true,
+        "constructor": null,
+        "toString": [
+          1,
+          2
+        ]
+      },
+      "schemas": [
+        "literal-properties"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "literal-field-name-not-a-path",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/literal-properties/v1.0.0/schema.json"
+        ],
+        "a": {
+          "b": true
+        },
+        "constructor": null,
+        "toString": [
+          1,
+          2
+        ]
+      },
+      "schemas": [
+        "literal-properties"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "normalization-cannot-evade-extension-constraints",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "single_color",
+          "bidx": [
+            1
+          ],
+          "color": "#ABCDEF"
+        },
+        "extensions": [
+          "https://example.test/normalized-color/v1.0.0/schema.json"
+        ]
+      },
+      "schemas": [
+        "normalized-color"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "source-palette-has-no-universal-extension-stage",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "categorized",
+          "bidx": [
+            1
+          ],
+          "color_mapping": {
+            "mode": "source"
+          }
+        },
+        "extensions": [
+          "https://example.test/not-a-field-name/v1.0.0/schema.json"
+        ],
+        "unrelated_gain": 1,
+        "vendor:annotation": "metadata only"
+      },
+      "schemas": [
+        "multi"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-0",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-0/v1.0.0/schema.json"
+        ],
+        "custom": 0.3
+      },
+      "schemas": [
+        "regression-multiple-0"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-1",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-1/v1.0.0/schema.json"
+        ],
+        "custom": 4.02
+      },
+      "schemas": [
+        "regression-multiple-1"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-2",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-2/v1.0.0/schema.json"
+        ],
+        "custom": 0.31
+      },
+      "schemas": [
+        "regression-multiple-2"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-multiple-3",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-3/v1.0.0/schema.json"
+        ],
+        "custom": 0.5
+      },
+      "schemas": [
+        "regression-multiple-3"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-4",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-4/v1.0.0/schema.json"
+        ],
+        "custom": -0.3
+      },
+      "schemas": [
+        "regression-multiple-4"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-5",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-5/v1.0.0/schema.json"
+        ],
+        "custom": -4.02
+      },
+      "schemas": [
+        "regression-multiple-5"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-6",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-6/v1.0.0/schema.json"
+        ],
+        "custom": 0
+      },
+      "schemas": [
+        "regression-multiple-6"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-7",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-7/v1.0.0/schema.json"
+        ],
+        "custom": 0.29999999999999993
+      },
+      "schemas": [
+        "regression-multiple-7"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-multiple-8",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-8/v1.0.0/schema.json"
+        ],
+        "custom": 0.30000000000000004
+      },
+      "schemas": [
+        "regression-multiple-8"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-multiple-9",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-9/v1.0.0/schema.json"
+        ],
+        "custom": 4.019999999999999
+      },
+      "schemas": [
+        "regression-multiple-9"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-multiple-10",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-10/v1.0.0/schema.json"
+        ],
+        "custom": 4.0200000000000005
+      },
+      "schemas": [
+        "regression-multiple-10"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-multiple-11",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-11/v1.0.0/schema.json"
+        ],
+        "custom": 3e-07
+      },
+      "schemas": [
+        "regression-multiple-11"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-12",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-12/v1.0.0/schema.json"
+        ],
+        "custom": 3.0000000000000004e-07
+      },
+      "schemas": [
+        "regression-multiple-12"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-multiple-13",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-13/v1.0.0/schema.json"
+        ],
+        "custom": 3e+21
+      },
+      "schemas": [
+        "regression-multiple-13"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-14",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-14/v1.0.0/schema.json"
+        ],
+        "custom": 1e-323
+      },
+      "schemas": [
+        "regression-multiple-14"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-15",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-15/v1.0.0/schema.json"
+        ],
+        "custom": 1
+      },
+      "schemas": [
+        "regression-multiple-15"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-16",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-16/v1.0.0/schema.json"
+        ],
+        "custom": 5e-324
+      },
+      "schemas": [
+        "regression-multiple-16"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-multiple-17",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-17/v1.0.0/schema.json"
+        ],
+        "custom": 1.7e+308
+      },
+      "schemas": [
+        "regression-multiple-17"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-multiple-18",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-18/v1.0.0/schema.json"
+        ],
+        "custom": -1e+308
+      },
+      "schemas": [
+        "regression-multiple-18"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-multiple-19",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/multiple-19/v1.0.0/schema.json"
+        ],
+        "custom": 1.7976931348623157e+308
+      },
+      "schemas": [
+        "regression-multiple-19"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-number-composition-0",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/number-composition-0/v1.0.0/schema.json"
+        ],
+        "custom": 0.3
+      },
+      "schemas": [
+        "regression-number-composition-0"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-number-composition-1",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/number-composition-1/v1.0.0/schema.json"
+        ],
+        "custom": 0.31
+      },
+      "schemas": [
+        "regression-number-composition-1"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-number-composition-2",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/number-composition-2/v1.0.0/schema.json"
+        ],
+        "custom": "auto"
+      },
+      "schemas": [
+        "regression-number-composition-2"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-number-composition-3",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/number-composition-3/v1.0.0/schema.json"
+        ],
+        "custom": 0.31
+      },
+      "schemas": [
+        "regression-number-composition-3"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-number-composition-4",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/number-composition-4/v1.0.0/schema.json"
+        ],
+        "custom": 0.3
+      },
+      "schemas": [
+        "regression-number-composition-4"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-number-composition-5",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/number-composition-5/v1.0.0/schema.json"
+        ],
+        "custom": "annotation"
+      },
+      "schemas": [
+        "regression-number-composition-5"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-number-composition-6",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/number-composition-6/v1.0.0/schema.json"
+        ],
+        "custom": [
+          0.3,
+          0.5,
+          0.31
+        ]
+      },
+      "schemas": [
+        "regression-number-composition-6"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-number-composition-7",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/number-composition-7/v1.0.0/schema.json"
+        ],
+        "custom": [
+          0.3,
+          0.31
+        ]
+      },
+      "schemas": [
+        "regression-number-composition-7"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-regex-0",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-0/v1.0.0/schema.json"
+        ],
+        "custom": "a"
+      },
+      "schemas": [
+        "regression-regex-0"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-1",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-1/v1.0.0/schema.json"
+        ],
+        "custom": "b"
+      },
+      "schemas": [
+        "regression-regex-1"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-regex-2",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-2/v1.0.0/schema.json"
+        ],
+        "custom": "a"
+      },
+      "schemas": [
+        "regression-regex-2"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-3",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-3/v1.0.0/schema.json"
+        ],
+        "custom": "b"
+      },
+      "schemas": [
+        "regression-regex-3"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-regex-4",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-4/v1.0.0/schema.json"
+        ],
+        "custom": "ab"
+      },
+      "schemas": [
+        "regression-regex-4"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-5",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-5/v1.0.0/schema.json"
+        ],
+        "custom": "cb"
+      },
+      "schemas": [
+        "regression-regex-5"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-regex-6",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-6/v1.0.0/schema.json"
+        ],
+        "custom": "cb"
+      },
+      "schemas": [
+        "regression-regex-6"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-7",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-7/v1.0.0/schema.json"
+        ],
+        "custom": "ab"
+      },
+      "schemas": [
+        "regression-regex-7"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-regex-8",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-8/v1.0.0/schema.json"
+        ],
+        "custom": "aa"
+      },
+      "schemas": [
+        "regression-regex-8"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-9",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-9/v1.0.0/schema.json"
+        ],
+        "custom": "ab"
+      },
+      "schemas": [
+        "regression-regex-9"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-regex-10",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-10/v1.0.0/schema.json"
+        ],
+        "custom": "123"
+      },
+      "schemas": [
+        "regression-regex-10"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-11",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-11/v1.0.0/schema.json"
+        ],
+        "custom": "１２３"
+      },
+      "schemas": [
+        "regression-regex-11"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-regex-12",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-12/v1.0.0/schema.json"
+        ],
+        "custom": "a_9"
+      },
+      "schemas": [
+        "regression-regex-12"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-13",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-13/v1.0.0/schema.json"
+        ],
+        "custom": "中文"
+      },
+      "schemas": [
+        "regression-regex-13"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-regex-14",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-14/v1.0.0/schema.json"
+        ],
+        "custom": "😀"
+      },
+      "schemas": [
+        "regression-regex-14"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-15",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-15/v1.0.0/schema.json"
+        ],
+        "custom": "\t"
+      },
+      "schemas": [
+        "regression-regex-15"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-16",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-16/v1.0.0/schema.json"
+        ],
+        "custom": "\n"
+      },
+      "schemas": [
+        "regression-regex-16"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-17",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-17/v1.0.0/schema.json"
+        ],
+        "custom": "\u000b"
+      },
+      "schemas": [
+        "regression-regex-17"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-18",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-18/v1.0.0/schema.json"
+        ],
+        "custom": "\f"
+      },
+      "schemas": [
+        "regression-regex-18"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-19",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-19/v1.0.0/schema.json"
+        ],
+        "custom": "\r"
+      },
+      "schemas": [
+        "regression-regex-19"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-20",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-20/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-20"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-21",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-21/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-21"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-22",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-22/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-22"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-23",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-23/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-23"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-24",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-24/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-24"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-25",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-25/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-25"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-26",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-26/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-26"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-27",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-27/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-27"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-28",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-28/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-28"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-29",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-29/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-29"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-30",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-30/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-30"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-31",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-31/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-31"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-32",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-32/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-32"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-33",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-33/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-33"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-34",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-34/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-34"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-35",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-35/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-35"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-36",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-36/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-36"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-37",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-37/v1.0.0/schema.json"
+        ],
+        "custom": " "
+      },
+      "schemas": [
+        "regression-regex-37"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-38",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-38/v1.0.0/schema.json"
+        ],
+        "custom": "　"
+      },
+      "schemas": [
+        "regression-regex-38"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-39",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-39/v1.0.0/schema.json"
+        ],
+        "custom": "﻿"
+      },
+      "schemas": [
+        "regression-regex-39"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-regex-40",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-40/v1.0.0/schema.json"
+        ],
+        "custom": ""
+      },
+      "schemas": [
+        "regression-regex-40"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-regex-41",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-41/v1.0.0/schema.json"
+        ],
+        "custom": "᠎"
+      },
+      "schemas": [
+        "regression-regex-41"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-regex-42",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/regex-42/v1.0.0/schema.json"
+        ],
+        "custom": "​"
+      },
+      "schemas": [
+        "regression-regex-42"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-pattern-properties-lookahead",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/pattern-properties-lookahead/v1.0.0/schema.json"
+        ],
+        "custom": 4.02
+      },
+      "schemas": [
+        "regression-pattern-properties-lookahead"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-pattern-properties-invalid-number",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/pattern-properties-invalid-number/v1.0.0/schema.json"
+        ],
+        "custom": 4.021
+      },
+      "schemas": [
+        "regression-pattern-properties-invalid-number"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-0",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-0/v1.0.0/schema.json"
+        ],
+        "__proto__": 1
+      },
+      "schemas": [
+        "regression-property-0"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-property-invalid-0",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-invalid-0/v1.0.0/schema.json"
+        ],
+        "__proto__": -1
+      },
+      "schemas": [
+        "regression-property-invalid-0"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-missing-0",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-missing-0/v1.0.0/schema.json"
+        ]
+      },
+      "schemas": [
+        "regression-property-missing-0"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-undeclared-0",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-undeclared-0/v1.0.0/schema.json"
+        ],
+        "custom": 1,
+        "__proto__": 1
+      },
+      "schemas": [
+        "regression-property-undeclared-0"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-1",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-1/v1.0.0/schema.json"
+        ],
+        "constructor": 1
+      },
+      "schemas": [
+        "regression-property-1"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-property-invalid-1",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-invalid-1/v1.0.0/schema.json"
+        ],
+        "constructor": -1
+      },
+      "schemas": [
+        "regression-property-invalid-1"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-missing-1",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-missing-1/v1.0.0/schema.json"
+        ]
+      },
+      "schemas": [
+        "regression-property-missing-1"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-undeclared-1",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-undeclared-1/v1.0.0/schema.json"
+        ],
+        "custom": 1,
+        "constructor": 1
+      },
+      "schemas": [
+        "regression-property-undeclared-1"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-2",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-2/v1.0.0/schema.json"
+        ],
+        "toString": 1
+      },
+      "schemas": [
+        "regression-property-2"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-property-invalid-2",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-invalid-2/v1.0.0/schema.json"
+        ],
+        "toString": -1
+      },
+      "schemas": [
+        "regression-property-invalid-2"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-missing-2",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-missing-2/v1.0.0/schema.json"
+        ]
+      },
+      "schemas": [
+        "regression-property-missing-2"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-undeclared-2",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-undeclared-2/v1.0.0/schema.json"
+        ],
+        "custom": 1,
+        "toString": 1
+      },
+      "schemas": [
+        "regression-property-undeclared-2"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-3",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-3/v1.0.0/schema.json"
+        ],
+        "hasOwnProperty": 1
+      },
+      "schemas": [
+        "regression-property-3"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-property-invalid-3",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-invalid-3/v1.0.0/schema.json"
+        ],
+        "hasOwnProperty": -1
+      },
+      "schemas": [
+        "regression-property-invalid-3"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-missing-3",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-missing-3/v1.0.0/schema.json"
+        ]
+      },
+      "schemas": [
+        "regression-property-missing-3"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-undeclared-3",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-undeclared-3/v1.0.0/schema.json"
+        ],
+        "custom": 1,
+        "hasOwnProperty": 1
+      },
+      "schemas": [
+        "regression-property-undeclared-3"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-4",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-4/v1.0.0/schema.json"
+        ],
+        "$__proto__": 1
+      },
+      "schemas": [
+        "regression-property-4"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-property-invalid-4",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-invalid-4/v1.0.0/schema.json"
+        ],
+        "$__proto__": -1
+      },
+      "schemas": [
+        "regression-property-invalid-4"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-missing-4",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-missing-4/v1.0.0/schema.json"
+        ]
+      },
+      "schemas": [
+        "regression-property-missing-4"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-undeclared-4",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-undeclared-4/v1.0.0/schema.json"
+        ],
+        "custom": 1,
+        "$__proto__": 1
+      },
+      "schemas": [
+        "regression-property-undeclared-4"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-5",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-5/v1.0.0/schema.json"
+        ],
+        "$$__proto__": 1
+      },
+      "schemas": [
+        "regression-property-5"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-property-invalid-5",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-invalid-5/v1.0.0/schema.json"
+        ],
+        "$$__proto__": -1
+      },
+      "schemas": [
+        "regression-property-invalid-5"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-missing-5",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-missing-5/v1.0.0/schema.json"
+        ]
+      },
+      "schemas": [
+        "regression-property-missing-5"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-undeclared-5",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-undeclared-5/v1.0.0/schema.json"
+        ],
+        "custom": 1,
+        "$$__proto__": 1
+      },
+      "schemas": [
+        "regression-property-undeclared-5"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-6",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-6/v1.0.0/schema.json"
+        ],
+        "a.b/c~x": 1
+      },
+      "schemas": [
+        "regression-property-6"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-property-invalid-6",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-invalid-6/v1.0.0/schema.json"
+        ],
+        "a.b/c~x": -1
+      },
+      "schemas": [
+        "regression-property-invalid-6"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-missing-6",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-missing-6/v1.0.0/schema.json"
+        ]
+      },
+      "schemas": [
+        "regression-property-missing-6"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-undeclared-6",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-undeclared-6/v1.0.0/schema.json"
+        ],
+        "custom": 1,
+        "a.b/c~x": 1
+      },
+      "schemas": [
+        "regression-property-undeclared-6"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-7",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-7/v1.0.0/schema.json"
+        ],
+        "😀": 1
+      },
+      "schemas": [
+        "regression-property-7"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-property-invalid-7",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-invalid-7/v1.0.0/schema.json"
+        ],
+        "😀": -1
+      },
+      "schemas": [
+        "regression-property-invalid-7"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-missing-7",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-missing-7/v1.0.0/schema.json"
+        ]
+      },
+      "schemas": [
+        "regression-property-missing-7"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-undeclared-7",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-undeclared-7/v1.0.0/schema.json"
+        ],
+        "custom": 1,
+        "😀": 1
+      },
+      "schemas": [
+        "regression-property-undeclared-7"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-8",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-8/v1.0.0/schema.json"
+        ],
+        "\u0000": 1
+      },
+      "schemas": [
+        "regression-property-8"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-property-invalid-8",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-invalid-8/v1.0.0/schema.json"
+        ],
+        "\u0000": -1
+      },
+      "schemas": [
+        "regression-property-invalid-8"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-missing-8",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-missing-8/v1.0.0/schema.json"
+        ]
+      },
+      "schemas": [
+        "regression-property-missing-8"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-property-undeclared-8",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/property-undeclared-8/v1.0.0/schema.json"
+        ],
+        "custom": 1,
+        "\u0000": 1
+      },
+      "schemas": [
+        "regression-property-undeclared-8"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-proto-nested-closed",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-nested-closed/v1.0.0/schema.json"
+        ],
+        "custom": {
+          "__proto__": 1
+        }
+      },
+      "schemas": [
+        "regression-proto-nested-closed"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-proto-nested-extra",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-nested-extra/v1.0.0/schema.json"
+        ],
+        "custom": {
+          "__proto__": 1,
+          "toString": 2
+        }
+      },
+      "schemas": [
+        "regression-proto-nested-extra"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-proto-ref",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-ref/v1.0.0/schema.json"
+        ],
+        "__proto__": 1
+      },
+      "schemas": [
+        "regression-proto-ref"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-proto-ref-invalid",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-ref-invalid/v1.0.0/schema.json"
+        ],
+        "__proto__": -1
+      },
+      "schemas": [
+        "regression-proto-ref-invalid"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-proto-pattern",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-pattern/v1.0.0/schema.json"
+        ],
+        "__proto__": 1
+      },
+      "schemas": [
+        "regression-proto-pattern"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-proto-pattern-invalid",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-pattern-invalid/v1.0.0/schema.json"
+        ],
+        "__proto__": -1
+      },
+      "schemas": [
+        "regression-proto-pattern-invalid"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-proto-condition-true",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-condition-true/v1.0.0/schema.json"
+        ],
+        "choice": "a",
+        "__proto__": 1
+      },
+      "schemas": [
+        "regression-proto-condition-true"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-proto-condition-inactive",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-condition-inactive/v1.0.0/schema.json"
+        ],
+        "choice": "b",
+        "other": true,
+        "__proto__": 1
+      },
+      "schemas": [
+        "regression-proto-condition-inactive"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-proto-condition-invalid",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-condition-invalid/v1.0.0/schema.json"
+        ],
+        "choice": "a",
+        "__proto__": -1
+      },
+      "schemas": [
+        "regression-proto-condition-invalid"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-proto-anyof",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-anyof/v1.0.0/schema.json"
+        ],
+        "__proto__": 1,
+        "other": true
+      },
+      "schemas": [
+        "regression-proto-anyof"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-proto-anyof-invalid",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-anyof-invalid/v1.0.0/schema.json"
+        ],
+        "__proto__": -1,
+        "other": true
+      },
+      "schemas": [
+        "regression-proto-anyof-invalid"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-proto-dependent-active",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-dependent-active/v1.0.0/schema.json"
+        ],
+        "trigger": true,
+        "__proto__": 1
+      },
+      "schemas": [
+        "regression-proto-dependent-active"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "regression-proto-dependent-inactive",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-dependent-inactive/v1.0.0/schema.json"
+        ],
+        "__proto__": 1
+      },
+      "schemas": [
+        "regression-proto-dependent-inactive"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-proto-false",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-false/v1.0.0/schema.json"
+        ],
+        "__proto__": 1
+      },
+      "schemas": [
+        "regression-proto-false"
+      ],
+      "code": "E_SCHEMA"
+    },
+    {
+      "name": "regression-proto-true",
+      "op": "validate",
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/regression/proto-true/v1.0.0/schema.json"
+        ],
+        "__proto__": {
+          "a": 1
+        }
+      },
+      "schemas": [
+        "regression-proto-true"
+      ],
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "unused-unresolved-schema-does-not-break-core",
+      "op": "validate",
+      "schemas": [
+        "review-unused-unresolved"
+      ],
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        }
+      },
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "ecmascript-named-backreference-matches",
+      "op": "validate",
+      "schemas": [
+        "review-named"
+      ],
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/review-named/v1.0.0/schema.json"
+        ],
+        "vendor:token": "aa"
+      },
+      "expected": {
+        "complete": true,
+        "unresolvedSchemas": []
+      }
+    },
+    {
+      "name": "ecmascript-named-backreference-rejects-nonmatch",
+      "op": "validate",
+      "schemas": [
+        "review-named"
+      ],
+      "style": {
+        "version": "3.0",
+        "renderer": {
+          "type": "gray",
+          "bidx": [
+            1
+          ]
+        },
+        "extensions": [
+          "https://example.test/review-named/v1.0.0/schema.json"
+        ],
+        "vendor:token": "ab"
+      },
+      "code": "E_SCHEMA"
+    }
+  ]
+}

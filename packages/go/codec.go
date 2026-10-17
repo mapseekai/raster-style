@@ -24,6 +24,7 @@ type Options struct {
 type Codec struct {
 	maxQueryBytes int
 	maxParameters int
+	schemas       *SchemaRegistry
 }
 
 type binding struct {
@@ -70,13 +71,14 @@ func NewCodec(options Options) (*Codec, error) {
 	if options.MaxParameters == 0 {
 		options.MaxParameters = 256
 	}
-	if _, err := loadSchema(); err != nil {
+	schemas, err := schemaDefaults()
+	if err != nil {
 		return nil, err
 	}
 	if err := loadBindings(); err != nil {
 		return nil, err
 	}
-	return &Codec{maxQueryBytes: options.MaxQueryBytes, maxParameters: options.MaxParameters}, nil
+	return &Codec{maxQueryBytes: options.MaxQueryBytes, maxParameters: options.MaxParameters, schemas: schemas}, nil
 }
 
 func escapeComponent(value string) string {
@@ -91,7 +93,7 @@ func unescapeComponent(value string) (string, error) {
 	}
 	decoded, err := url.PathUnescape(value)
 	if err != nil || !utf8.ValidString(decoded) {
-		return "", failure("E_QUERY_SYNTAX", "Invalid Q2 percent encoding or UTF-8", "")
+		return "", failure("E_QUERY_SYNTAX", "Invalid Q3 percent encoding or UTF-8", "")
 	}
 	return decoded, nil
 }
@@ -192,6 +194,15 @@ func (codec *Codec) EncodeQuery(style *Style) (string, error) {
 	pairs := make([]string, 0, len(bindings))
 	for _, binding := range bindings {
 		value, present := getPath(style.document, binding.Path)
+		if binding.Path == "*" {
+			fields := make(map[string]any)
+			for key, item := range style.document {
+				if _, core := codec.schemas.coreFields[key]; !core {
+					fields[key] = item
+				}
+			}
+			value, present = fields, len(fields) > 0
+		}
 		if !present {
 			continue
 		}
@@ -249,7 +260,7 @@ func (codec *Codec) DecodeQuery(query string) (*Style, error) {
 		}
 		binding, known := bindingsByKey[key]
 		if !known {
-			return nil, failure("E_UNKNOWN_PARAMETER", "Unknown Q2 query parameter", key)
+			return nil, failure("E_UNKNOWN_PARAMETER", "Unknown Q3 query parameter", key)
 		}
 		repeated := strings.HasPrefix(binding.Codec, "repeat_")
 		if !repeated && seen[key] {
@@ -260,7 +271,18 @@ func (codec *Codec) DecodeQuery(query string) (*Style, error) {
 		if err != nil {
 			return nil, err
 		}
-		if repeated {
+		if binding.Path == "*" {
+			fields, ok := decoded.(map[string]any)
+			if !ok {
+				return nil, failure("E_QUERY_SYNTAX", "extension_fields must be a JSON object", "")
+			}
+			for field, item := range fields {
+				if _, core := codec.schemas.coreFields[field]; core {
+					return nil, failure("E_QUERY_SYNTAX", "extension_fields cannot contain core fields", field)
+				}
+				document[field] = item
+			}
+		} else if repeated {
 			old, _ := getPath(document, binding.Path)
 			array, _ := old.([]any)
 			setPath(document, binding.Path, append(array, decoded))

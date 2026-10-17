@@ -4,6 +4,7 @@ go 1.25.0
 
 require (
 	github.com/cyberphone/json-canonicalization v0.0.0-20241213102144-19d51d7fe467
+	github.com/dlclark/regexp2/v2 v2.9.0
 	github.com/gofiber/fiber/v3 v3.5.0
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
 )

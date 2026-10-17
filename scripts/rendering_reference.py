@@ -230,7 +230,7 @@ def mapped_color(renderer, x, context):
 
 
 def encoded_pixel(style, rgba):
-    image = style.get("image", {})
+    image = style.get("raster:tile", {})
     if image.get("format") == "jpeg":
         background = color(image.get("background", "#000000ff"))
         rgba[:3] = [encode_srgb(lerp(decode_srgb(b), decode_srgb(v), rgba[3])) for v, b in zip(rgba[:3], background[:3])]
@@ -276,6 +276,16 @@ def pixel(style, values, context):
 
 
 def render_case(case):
+    supported = {
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json",
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json",
+        "https://example.test/extensions/mapseek.test.square/v1.0.0/schema.json",
+    }
+    if case["style"].get("version") != "3.0":
+        raise ValueError("Reference evaluator requires Raster Style 3.0")
+    for url in case["style"].get("extensions", []):
+        if url not in supported:
+            raise ValueError("Unsupported extension version: " + url)
     kind, style, context = case["kind"], case["style"], case["input"]
     if kind == "pixel":
         return pixel(style, context["values"], context)
@@ -321,15 +331,14 @@ def render_case(case):
         sources = [s for s in context["sources"] if all(v is not None for v in s["values"]) and s.get("alpha", 1) > 0]
         if not sources:
             return {**encoded_pixel(style, [0, 0, 0, 0]), "values": None, "alpha": 0}
-        method = style["mosaic"]["pixel_selection"]
-        stage = style["mosaic"]["stage"]
-        extensions = sorted(style.get("extensions", {}).items())
+        method = style["raster:mosaic"]["pixel_selection"]
+        stage = style["raster:mosaic"]["stage"]
+        square = style.get("test:square")
         def extend(values, point):
-            for name, ext in extensions:
-                if ext["stage"] == point:
-                    if name != "mapseek.test.square":
-                        raise AssertionError("Unknown fixture extension")
-                    values = [v * v for v in values]
+            # This hook belongs only to the test square extension, not to every extension.
+            if square and square["stage"] == point:
+                assert "https://example.test/extensions/mapseek.test.square/v1.0.0/schema.json" in style.get("extensions", [])
+                values = [v * v for v in values]
             return values
         def select(values):
             bands = context["dependency_bands"]
@@ -341,7 +350,7 @@ def render_case(case):
                 values = extend(select(values), "after_channels")
             prepared.append({"values": values, "alpha": source.get("alpha", 1)})
         if method in ("first", "highest", "lowest"):
-            rank = style["mosaic"].get("rank_channel", 1) - 1
+            rank = style["raster:mosaic"].get("rank_channel", 1) - 1
             selected = prepared[0] if method == "first" else (max if method == "highest" else min)(prepared, key=lambda s: s["values"][rank])
             values, alpha = selected["values"], selected["alpha"]
         else:

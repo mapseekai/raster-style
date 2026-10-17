@@ -1,14 +1,15 @@
-# Raster Style Spec v2
+# Raster Style Spec v3
 
-协议版本：`2.0`。查询绑定：`Q2`。日期：2026-09-26。
+协议版本：`3.0`。查询绑定：`Q3`。日期：2026-10-16。
 
-Raster Style 描述栅格的输入选择、拉伸、颜色、透明度和输出方式。JSON 按功能分组，适合存储、编辑和校验；Q2 使用简短的查询参数名，适合服务请求。TypeScript、Go 和 Rust SDK 使用同一份 Schema 与绑定表。
+Raster Style 描述栅格的输入选择、拉伸、颜色、透明度和输出方式。JSON 按功能分组，适合存储、编辑和校验；Q3 使用简短的查询参数名，适合服务请求。TypeScript、Go 和 Rust SDK 使用同一份 Schema 与绑定表。
 
 ## 1. 完整示例
 
 ```json
 {
-  "version": "2.0",
+  "version": "3.0",
+  "extensions": ["https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"],
   "renderer": {"type": "rgb", "bidx": [4, 3, 2]},
   "resampling": {"read": "bilinear", "reproject": "bilinear"},
   "stretch": {"method": "linear", "rescale": [[0, 3000]]},
@@ -23,7 +24,7 @@ Raster Style 描述栅格的输入选择、拉伸、颜色、透明度和输出�
     ]
   },
   "opacity": 1,
-  "image": {"format": "png", "tilesize": 256}
+  "raster:tile": {"format": "png", "tilesize": 256}
 }
 ```
 
@@ -33,20 +34,18 @@ Raster Style 描述栅格的输入选择、拉伸、颜色、透明度和输出�
 
 | 字段 | 内容 | 默认行为 |
 |---|---|---|
-| version | 协议版本 | 必填，2.0 |
+| version | 协议版本 | 必填，3.0 |
 | renderer | 渲染类型与输入、色表、地形 | 必填 |
 | resampling | 读取和重投影重采样 | 两阶段均为 nearest |
 | stretch | 数值拉伸 | method=none |
 | nodata | 无效像元覆盖值 | 使用数据源 NoData 与有效性掩膜 |
 | effects | 映射前、渲染后的颜色操作数组 | 保持原有颜色 |
 | opacity | 全局透明度 | 1 |
-| image | 格式、尺寸、编码 | png、256 像素 |
 | calibration | 像元校准 | 原值 |
 | statistics | 统计范围、采样与快照 | 按数据上下文解析 |
-| mosaic | 多源像元选择 | 单源请求可省略 |
-| extensions | 注册的像元处理扩展 | 按需配置 |
+| extensions | 版本化扩展 Schema URL 数组 | 可省略或为空数组 |
 
-省略可选字段时采用默认行为；可选分组在配置至少一项内容时提供。JSON 数值使用有限 binary64，字段名使用 snake_case。颜色采用 `#RRGGBB` 或 `#RRGGBBAA`，SDK 统一为小写八位 RGBA。
+省略可选字段时采用默认行为；可选分组在配置至少一项内容时提供。JSON 数值使用有限 binary64，核心字段名使用 snake_case；扩展字段由各自 Schema 定义。颜色采用 `#RRGGBB` 或 `#RRGGBBAA`，SDK 对核心颜色和官方 Tile.background 统一为小写八位 RGBA；其他扩展内容不作颜色猜测。
 
 以下默认值由渲染服务解析到执行计划；Schema 的 default 是注释，SDK 保留可选字段的省略状态，仅补全颜色操作的 channels。
 
@@ -62,10 +61,8 @@ Raster Style 描述栅格的输入选择、拉伸、颜色、透明度和输出�
 | stretch.range_policy | clamp，仅显示路径使用 |
 | calibration.mode | none（省略 calibration 时） |
 | statistics | 单源 dataset、多源 mosaic；accuracy=sample、sample_size=1000000 |
-| mosaic.rank_channel | 1，仅 highest/lowest 使用 |
-| image.quality / lossless / background | 85 / false / #000000ff，仅适用的编码模式使用 |
 
-多源请求必须显式提供 mosaic。统计网格、数据源和注册资源由服务上下文绑定；无法解析必需上下文时返回错误。本文、[执行语义](Raster-Style-Execution.md)和[表达式档案](Raster-Expression-v1.md)共同构成规范性契约。
+多源执行必须声明并配置 [Mosaic 扩展](../../extensions/raster/mosaic/v1.0.0/README.md)。尺寸与图像编码由 [Tile 扩展](../../extensions/raster/tile/v1.0.0/README.md)定义。核心样式可独立使用，两项扩展均不是普通解析或完整校验的前提。统计网格、数据源和注册资源由服务上下文绑定；无法解析必需上下文时返回错误。本文、[执行语义](Raster-Style-Execution.md)和[表达式档案](Raster-Expression-v1.md)共同构成规范性契约。
 
 ## 3. renderer：输入与渲染
 
@@ -150,7 +147,7 @@ color_mapping 支持：
 - continuous：domain=data 或 normalized，stops 至少两个，value 严格递增；normalized 的值在 [0,1]。也可在 normalized 域使用注册 ramp。interpolation 为 srgb 或 linear_rgb；reverse 反转颜色序列。under/over 使用 clamp 或 RGBA 色。
 - discrete：domain=data，N+1 个严格递增 breaks 对应 N 个 colors。boundary=left_closed 对应 `[b0,b1),…,[bN-1,bN]`；right_closed 对应 `[b0,b1],…,(bN-1,bN]`。范围外使用 outside_color，默认透明。
 - exact：entries 包含唯一的 value/color，未匹配时使用 fallback_color，默认透明。
-- source：categorized 从单个 bidx 波段读取源调色板；输入必须为 bidx，calibration 省略或 mode=none，扩展仅允许 after_color。多源请求须在所有源上绑定同一份规范化调色板，否则服务拒绝。实际颜色表固定在执行计划中，重采样和源金字塔须保持类别编码。
+- source：categorized 从单个 bidx 波段读取源调色板；输入必须为 bidx，calibration 省略或 mode=none，附加扩展对类别数据的影响由各自 Schema 与执行约束定义，服务在绑定时核对实际处理后的类别与调色板契约。多源请求须在所有源上绑定同一份规范化调色板，否则服务拒绝。实际颜色表固定在执行计划中，重采样和源金字塔须保持类别编码。
 
 连续颜色插值使用预乘 Alpha，完成后还原为非预乘 RGBA。linear_rgb 在标准 sRGB 解码后的线性光域插值。categorized 使用 nearest，或经过类别与金字塔语义验证的 mode 重采样。
 
@@ -279,7 +276,7 @@ post_color_formula 在 [0,1] 编码 sRGB 上计算，每一步裁剪至 [0,1]，
 
 sigmoidal 使用 `S(x)=1/(1+exp(contrast×(midpoint-x)))`，输出 `(S(C)-S(0))/(S(1)-S(0))`，采用数值稳定算法保持端点 0、1。
 
-中间结果保持浮点；有限极值的拉伸与 sigmoidal 使用执行语义 §5 的稳定算法。最终 8 位量化只在 §8 的输出边界执行，原生命名/整数色表索引是明确的提前量化边界。
+中间结果保持浮点；有限极值的拉伸与 sigmoidal 使用执行语义 §5 的稳定算法。最终 8 位量化只在 Tile 定义的输出边界执行，原生命名/整数色表索引是明确的提前量化边界。
 
 Query 的可读写法：
 
@@ -290,119 +287,89 @@ post_color_formula=brightness rgb 0.05, grayscale luma, invert rb
 
 每个操作的参数顺序固定：gamma/brightness/contrast 使用 channels value；sigmoidal 使用 channels contrast midpoint；saturation 使用 value；grayscale 使用 method；invert 使用 channels。
 
-## 8. opacity 与 image
+## 8. opacity 与 Tile
 
 opacity 是 [0,1] 数值，默认 1。0 表示全透明，1 表示保持源和颜色映射产生的有效 Alpha。全局透明度只乘入一次：`A=source_alpha×color_alpha×opacity`。
 
-image.format 为 png/webp/jpeg，默认 png。tilesize 为 64/128/256/512/1024，默认 256。PNG/WebP 保留透明度；JPEG 将结果与 background 在线性 RGB 中合成，默认背景为不透明黑色。
+Tile 的网格规划、格式、背景合成、透明度保留、颜色空间、量化和编码约束见 [Tile 1.0.0](../../extensions/raster/tile/v1.0.0/README.md)。其 `raster:tile.tilesize` 参与前置目标网格规划，编码参数作用于最终输出；Tile 不是统一的末尾处理钩子。没有 Tile 的核心样式仍保留完整数值和颜色渲染语义。
 
-background 接受不透明 RGBA 色。quality 范围 1–100，适用于 JPEG 和有损 WebP，默认 85。WebP 的 lossless 默认为 false；无损 WebP 使用 lossless=true，编码参数由该模式确定。
+## 9. 扩展声明、Schema 与执行能力
 
-编码输入固定为 sRGB 的 8 位非预乘 RGB/RGBA，各分量按 `floor(255×clamp(C,0,1)+0.5)` 量化，并使用执行语义 §5 的半整数浮点容差；色表索引采用同一规则。最终 Alpha 量化为 0 时 RGB 统一为 0。JPEG 在线性 RGB 合成后转回 sRGB，再量化。PNG 和无损 WebP 验证解码后的 RGBA；JPEG/有损 WebP 的编解码版本、选项与误差界限由部署档案固定。
+核心字段为 version、renderer、resampling、stretch、nodata、calibration、statistics、effects、opacity；`extensions` 是扩展声明数组，每项为带明确不可变版本的 HTTP(S) JSON Schema URL。Schema 使用相同的带版本 `$id`，发布后稳定，不使用可变 latest 地址作为版本标识。数组最多 64 项，不允许重复，顺序保留但不定义执行顺序。
 
 ```json
-{"opacity":0.8,"image":{"format":"jpeg","tilesize":512,"quality":90,"background":"#ffffffff"}}
+{
+  "version": "3.0",
+  "extensions": [
+    "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json",
+    "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+  ],
+  "renderer": {"type": "rgb", "bidx": [4, 3, 2]},
+  "resampling": {"read": "bilinear", "reproject": "bilinear"},
+  "stretch": {"method": "linear", "rescale": [[0, 3000]]},
+  "opacity": 1,
+  "raster:mosaic": {"pixel_selection": "first", "stage": "before_channels"},
+  "raster:tile": {"format": "webp", "tilesize": 256, "quality": 85}
+}
 ```
 
-## 9. mosaic 与 extensions
+配置直接位于完整样式中，不使用公共 version/config 包装，也没有 extension_versions。官方字段 `raster:mosaic` 与 `raster:tile` 由对应 Schema 定义。第三方扩展可以定义一个或多个顶层字段，及字段内部的嵌套结构；名称可以与 URL、路径和前缀完全不同。核心不从 URL 推导字段，不枚举全部扩展，不按命名空间自动授权未定义字段。
 
-多源请求提供 mosaic.pixel_selection 与 mosaic.stage：
+扩展 Schema 面向完整样式对象，通过 properties、required 和 extensions.contains 等规则定义字段位置、结构及自身声明关系。可以使用 allOf、条件、引用等 JSON Schema 2020-12 能力，约束自身字段或收紧核心字段的取值。核心既有嵌套对象仍严格校验，扩展不能绕过核心规则。具体示例与注册方式见 [SDK](../../docs/SDK.md)。
 
-| pixel_selection | 行为 |
+不定义所有扩展共同的 type、stage、config、固定阶段、网格保持、通道保持或 Alpha 保持限制。Mosaic 的 stage 仅属于 Mosaic；Tile 的前置规划与输出编码由 Tile 自己定义。处理顺序、调用次数、单位和有效性影响由各扩展和执行端的组合契约确定；无法无歧义组合时拒绝执行，而非按 URL 排序猜测。
+
+### 9.1 组合校验与未知字段
+
+核心 Schema 保持可组合：无非空声明时直接封闭核心字段；存在声明时，以 allOf 组合核心与每个声明的 Schema，最后在组合层使用 `unevaluatedProperties=false`。扩展应仅评价自己定义的字段，不用根 additionalProperties=true 无条件接纳其他字段，否则会削弱拼写检查。SDK 不通过简单拼接 properties 或根据 URL 生成字段白名单替代完整 Schema 校验。
+
+| 层次 | 结果 |
 |---|---|
-| first | 按稳定源顺序选择首个有效像元元组 |
-| highest / lowest | 以 rank_channel 排序，选择完整元组；并列按源顺序 |
-| mean / median | 对有效样本按通道聚合；偶数中位数取中间两值均值 |
+| 配置保留 | 检查核心、可用扩展及 JSON 预算；未取得 Schema 的声明和配置保留其 JSON 语义，报告 complete=false |
+| 完整校验 | 所有声明及引用均可解析，组合 Schema 与静态语义通过，未被定义的字段报错；否则不能报告完整通过 |
+| 业务执行 | 完整校验后核对执行端是否支持每个精确扩展 URL，以及数据绑定与组合规则；未知扩展或版本明确拒绝 |
 
-stage=before_channels 在已校准输入波段上镶嵌后计算表达式/指数；after_channels 先逐源计算，再镶嵌。rank_channel 默认 1，仅供 highest/lowest 使用，编号从 1 开始：before_channels 对应所有输入依赖波段去重后按原始波段号升序排列的列表，after_channels 对应输出通道顺序。例：bidx=[4,3,2] 的输入依赖表为 [2,3,4]，before_channels 的 rank_channel=1 指波段 2。SDK 检查 bidx/index 的已知范围，服务在 AST 编译后检查 expression 的范围。类别输出采用 first/highest/lowest 等保留类别的策略。
+未知 Schema 尚未取得时，SDK 无法确定哪些新字段属于该扩展，保留模式不对这些字段作合法性背书。嵌套核心字段、已声明官方字段仍严格检查。完整校验接口对未解析声明或引用返回 `E_SCHEMA_UNRESOLVED`；执行能力缺失返回 `E_UNSUPPORTED_EXTENSION`。取得 Schema 只证明配置可校验，不意味着执行端实现了其业务。
 
-```json
-{"mosaic":{"pixel_selection":"first","stage":"before_channels"}}
-```
+官方资源随 SDK 内嵌，第三方通过本地 SchemaRegistry 注册，引用资源也应注册。默认解析、Query 转换和校验不联网。显式 resolve 回调由应用控制允许域名、凭证、重定向、超时、响应大小及缓存，并验证返回 `$id` 与请求一致。资源在注册表中不可覆盖；版本变化使用新 URL。
 
-extensions 使用命名空间 ID，每项提供 version、stage、config。stage 为 before_channels/after_channels/after_color，同一阶段按 ID 的 ASCII 字典序执行。服务注册扩展的参数结构、单位和有效性规则；扩展必须保持网格、通道数量与顺序。阶段内扩展先于该阶段的镶嵌，具体调用次数见执行语义 §2。地形扩展须保持高程单位，类别扩展须保持类别编码。after_color 接受和返回非预乘浮点 RGBA，并保留 Alpha。
+### 9.2 当前协议边界
+
+所有输入必须显式提供 version="3.0"。旧版 version、顶层 mosaic/image、对象形式 extensions、extension_versions 和旧版 Query 名称均被拒绝；不根据内容猜测协议，不执行兼容转换。
 
 ## 10. 执行顺序与服务集成
 
 ```text
-绑定数据源、权限与工作网格
+绑定数据源、权限与输出工作网格（Tile.tilesize 在此参与）
 → 原始 NoData / mask
-→ 读取与重投影重采样
-→ 校准
-→ 每源 before_channels 扩展
-→ before_channels 镶嵌（若选择该阶段）
+→ 读取与重投影重采样 → 校准
+→ Mosaic.before_channels（声明并选择时）
 → 波段选择 / 表达式 / 指数
-→ after_channels 扩展（输入已镶嵌则一次，否则逐源）
-→ after_channels 镶嵌（若选择该阶段）
+→ Mosaic.after_channels（声明并选择时）
 → 保存物理高程分支（地形 renderer）
 → 统计与拉伸 → effects.color_formula → renderer / 色表
-→ 地形光照与颜色合成（shaded_relief）；hillshade 直接使用高程分支
-→ after_color 扩展
-→ effects.post_color_formula
-→ opacity
-→ 背景合成与图像编码
+→ 地形光照与颜色合成；hillshade 直接使用高程分支
+→ effects.post_color_formula → opacity
+→ Tile 背景合成与图像编码（声明时）
 ```
 
-样式 SDK 实现 JSON/Q2 编解码、Schema 和静态语义校验。渲染服务实现波段绑定、表达式执行、统计、算法和像元输出。
+该图描述核心与两项官方扩展的组合。其他扩展不被放入预设公共阶段；执行端按各自规范及与已有步骤的依赖编译确定计划。Mosaic 的分源调用次数见其独立规范。
+
+样式 SDK 实现 JSON/Q3 编解码、离线 Schema 注册、完整性报告与静态语义校验；执行端支持列表另行显式核对。渲染服务实现波段绑定、表达式执行、统计、算法和像元输出。
 
 MapSeek 的数据源、授权、TMS、z/x/y、CRS、style_version 与 preview_id 由服务上下文管理。发布时固定数据修订、实际色表、统计快照与算法版本。缓存键包含已解析默认值的样式、数据与源顺序、工作/统计网格、统计快照摘要、色表内容摘要、算法/扩展版本和编码配置；颜色操作数组顺序参与 hash。依赖变化后不得命中旧像元缓存。
 
-## 11. Q2 字段绑定
+## 11. Q3 字段绑定
 
-JSON 分组路径转换为简短 Query 名称。绑定表 `query-bindings-v2.json` 与 Schema 一同生成三语言资源。
+Q3 保留核心字段的简短名称、固定键排序、重复 bidx/rescale 顺序、一次百分号编码和 JCS 规范 JSON。`extensions` 编码版本化 URL 数组；`extension_fields` 编码全部非核心顶层字段的单个 JCS 对象，解码时逐字段放回完整样式，不按点号或斜杠拆解名称。
 
-| JSON 路径 | Query 名称 | 编码 |
-|---|---|---|
-| `version` | `version` | `string` |
-| `renderer.type` | `type` | `string` |
-| `renderer.renderer_invert` | `renderer_invert` | `boolean` |
-| `renderer.color` | `color` | `color` |
-| `renderer.color_mapping` | `color_mapping` | `json` |
-| `renderer.colormap` | `colormap` | `json` |
-| `renderer.colormap_name` | `colormap_name` | `string` |
-| `renderer.terrain` | `terrain` | `json` |
-| `renderer.strength` | `strength` | `number` |
-| `renderer.bidx` | `bidx` | `repeat_integer` |
-| `renderer.expression` | `expression` | `string` |
-| `renderer.language` | `language` | `string` |
-| `renderer.index` | `index` | `json` |
-| `resampling.read` | `resampling` | `string` |
-| `resampling.reproject` | `reproject` | `string` |
-| `stretch.method` | `method` | `string` |
-| `stretch.rescale` | `rescale` | `repeat_pair` |
-| `stretch.range_policy` | `range_policy` | `string` |
-| `stretch.percentiles` | `percentiles` | `pair` |
-| `stretch.stddev` | `stddev` | `number` |
-| `stretch.curves` | `curves` | `json` |
-| `nodata` | `nodata` | `nodata` |
-| `opacity` | `opacity` | `number` |
-| `effects.color_formula` | `color_formula` | `formula` |
-| `effects.post_color_formula` | `post_color_formula` | `post_formula` |
-| `image.format` | `format` | `string` |
-| `image.tilesize` | `tilesize` | `integer` |
-| `image.quality` | `quality` | `integer` |
-| `image.lossless` | `lossless` | `boolean` |
-| `image.background` | `background` | `color` |
-| `calibration` | `calibration` | `json` |
-| `statistics` | `statistics` | `json` |
-| `extensions` | `extensions` | `json` |
-| `mosaic.pixel_selection` | `pixel_selection` | `string` |
-| `mosaic.stage` | `stage` | `string` |
-| `mosaic.rank_channel` | `rank_channel` | `integer` |
-
-bidx/rescale 使用重复参数并保留顺序。其他数组和对象按绑定类型编码为 JCS 局部 JSON，颜色操作数组编码为公式字符串。标量颜色写成小写八位 rrggbbaa。
-
-Query 使用 UTF-8，键按字典序排列，每个值进行一次百分号编码。空格为 %20，加号为 %2B，逗号为 %2C。每个单值 key 出现一次。表达式和公式在解码后按结构校验；颜色操作名称和数值使用规范形式。
-
-上述排序和大写百分号十六进制属于编码器的规范输出。解码器接受未排序键、小写百分号十六进制和可选的前导 `?`，随后按同一规则重编码；重复 bidx/rescale 保持遇到顺序。原始 `+`、未编码的空白、非法 UTF-8、未知 key 和重复单值 key 均报错。标量布尔值仅 true/false，数字词法与 JSON 数字一致；JSON 颜色接受六位或八位，Query 标量颜色必须为八位且不带 #。局部 JSON 的颜色继续带 #。
-
-默认预算为 Query 8192 字节、256 个参数，JSON 2 MiB、嵌套深度 64。长样式通过服务端样式引用传输。路径格式与 image.format 保持一致。
+新增扩展无需修改核心绑定表。完整绑定与词法规则见 [Q3 绑定说明](Raster-Style-Query.md)，唯一绑定资源为 [query-bindings-v3.json](query-bindings-v3.json)。
 
 ```text
-/tiles/{z}/{x}/{y}.png?bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.1&method=linear&opacity=1&rescale=0%2C3000&tilesize=256&type=rgb&version=2.0
+bidx=4&bidx=3&bidx=2&type=rgb&version=3.0
 ```
 
-post_color_formula 是项目的渲染后操作参数。TiTiler 适配器消费样式字段并编译为该部署支持的请求或处理步骤。适配 async-geotiff 时按其 TileStyle 和颜色表结构转换；后端能力由部署档案与像元测试确定。
+数据源、授权、TMS、坐标和样式引用属于独立请求上下文。适配器先解析完整样式，再将 Tile、Mosaic 与核心字段编译为部署支持的处理计划，不把全部 Q3 参数直接透传给 TiTiler。
 
 ## 12. 校验与验收
 
@@ -415,6 +382,9 @@ post_color_formula 是项目的渲染后操作参数。TiTiler 适配器消费�
 [渲染参考向量](../../testdata/rendering-vectors.json)给出小型输入、阶段预期值和 RGBA。`scripts/rendering_reference.py` 校验规范的参考数值，工程检查同时验证这些向量中的样式能被三个 SDK 接受。部署后端须独立运行这些输入并比较像元；参考计算通过不等于后端已验收。验收范围和比较精度见执行语义 §7。
 
 ## 13. 参考资料
+
+- [STAC 扩展设计](https://github.com/radiantearth/stac-spec/blob/master/extensions/README.md)：参考版本化 Schema 声明与独立字段定义的设计；本规范采用 JSON Schema 2020-12 的组合封闭规则。
+- [JSON Schema 对象与 unevaluatedProperties](https://json-schema.org/understanding-json-schema/reference/object#unevaluated-properties)
 
 - [SDK 使用说明](../../docs/SDK.md)
 - [执行语义](Raster-Style-Execution.md)

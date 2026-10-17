@@ -1,0 +1,14 @@
+{
+  "version": "3.0",
+  "renderer": {
+    "type": "gray",
+    "bidx": [
+      1
+    ]
+  },
+  "extensions": [
+    "https://example.test/not-a-field-name/v1.0.0/schema.json"
+  ],
+  "unrelated_gain": 2,
+  "vendor:annotation": "字段名由 Schema 定义"
+}

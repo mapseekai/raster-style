@@ -4,6 +4,8 @@ export type ErrorCode =
   | 'E_DUPLICATE_PARAMETER'
   | 'E_JSON'
   | 'E_SCHEMA'
+  | 'E_SCHEMA_UNRESOLVED'
+  | 'E_UNSUPPORTED_EXTENSION'
   | 'E_SEMANTIC'
   | 'E_LIMIT'
   | 'E_CONFIG';
@@ -14,8 +16,9 @@ export class RasterStyleError extends Error {
     public readonly code: ErrorCode,
     message: string,
     public readonly path = '',
+    options?: ErrorOptions,
   ) {
-    super(message);
+    super(message, options);
     this.name = 'RasterStyleError';
   }
 }

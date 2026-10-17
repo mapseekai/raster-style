@@ -5,12 +5,13 @@ edition.workspace = true
 license.workspace = true
 repository.workspace = true
 rust-version.workspace = true
-description = "Raster Style Spec v2 JSON and Q2 query codec"
+description = "Raster Style Spec v3 JSON and Q3 query codec"
 publish = ["crates-io"]
 readme = "README.md"
 
 [dependencies]
-jsonschema = { version = "0.37", default-features = false }
+num-bigint = "0.4.8"
+jsonschema = { version = "0.58.6", default-features = false }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["float_roundtrip"] }
 serde_json_canonicalizer = "0.3.2"

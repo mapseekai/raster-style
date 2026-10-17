@@ -24,6 +24,7 @@ def run(command: list[str], requests: list[dict]) -> list[dict]:
 
 
 def main() -> None:
+    (ROOT / ".build/conformance-report.json").unlink(missing_ok=True)
     requests: list[dict] = []
     for fixture in load("roundtrip"):
         requests.append({"op": "encode", "json": json.dumps(fixture["raster_style"]), "name": fixture["name"]})
@@ -36,13 +37,22 @@ def main() -> None:
         requests.append({"op": "encode", "json": json.dumps(fixture["style"]), "name": "rendering-" + fixture["name"]})
     for name, style in load("valid-styles").items():
         requests.append({"op": "encode", "json": json.dumps(style), "name": "valid-" + name})
+    example_schemas = [json.loads(path.read_text()) for path in sorted((ROOT / "examples/schemas").glob("*.json"))]
+    example_paths = sorted((ROOT / "examples/styles").glob("*.json"))
+    for path in example_paths:
+        text = path.read_text()
+        requests.append({"op": "encode", "json": text, "name": "example-query-" + path.stem})
+        requests.append({"op": "validate", "json": text, "schemas": example_schemas, "expected": {"complete": True, "unresolvedSchemas": []}, "name": "example-validation-" + path.stem})
+    schema_fixtures = load("schema-cases")
+    for case in schema_fixtures["cases"]:
+        requests.append({**case, "json": json.dumps(case["style"]), "schemas": [schema_fixtures["resources"][key] for key in case["schemas"]]})
     generator = random.Random(20260921)
     for index in range(200):
         channels = 3 if index % 2 else 1
         minimum = generator.uniform(-100000, 0)
         maximum = generator.uniform(1, 100000)
         style = {
-            "version": "2.0",
+            "version": "3.0",
             "renderer": {"bidx": [generator.randint(1, 65535) for _ in range(channels)], "type": "rgb" if channels == 3 else "gray"},
             "stretch": {"method": "linear", "rescale": [[minimum, maximum]]},
             "effects": {
@@ -50,7 +60,8 @@ def main() -> None:
                 "post_color_formula": [{"op": "brightness", "value": generator.uniform(-1, 1)}],
             },
             "opacity": generator.random(),
-            "image": {"format": "webp", "quality": generator.randint(1, 100), "lossless": False},
+            "extensions": ["https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"],
+            "raster:tile": {"format": "webp", "quality": generator.randint(1, 100), "lossless": False},
         }
         if index % 3 == 0:
             operations = [
@@ -63,6 +74,14 @@ def main() -> None:
             generator.shuffle(operations)
             style["effects"]["post_color_formula"] = operations
         requests.append({"op": "encode", "json": json.dumps(style), "name": f"generated-{index}"})
+    # Exercise opaque extension semantics independently of the fixed binding table.
+    for index in range(80):
+        values = [None, True, False, generator.uniform(-1e20, 1e20), "text + % / \u4e2d\u6587", [1, None, {"color": "#ABCDEF"}], {"__proto__": {"safe": True}}]
+        generator.shuffle(values)
+        style = {"version": "3.0", "renderer": {"type": "gray", "bidx": [1]}, "extensions": ["https://example.test/opaque/v9.8.7/schema.json"]}
+        for key, value in zip(["custom", "a.b/c~d", "constructor", "__proto__", "\U0001f600", "\ue000", "unrelated_field"], values):
+            style[key] = value
+        requests.append({"op": "encode", "json": json.dumps(style), "name": f"opaque-generated-{index}"})
     commands = {
         "typescript": ["node", "packages/typescript/test/runner.mjs"],
         "go": [str(ROOT / ".build/go-conformance")],
@@ -74,11 +93,13 @@ def main() -> None:
         for index, (expected, actual) in enumerate(zip(baseline, values)):
             if expected != actual:
                 raise AssertionError(f"{name} differs on {requests[index]['name']}:\n{expected}\n{actual}")
+            if "expected" in requests[index] and actual != requests[index]["expected"]:
+                raise AssertionError(f"Unexpected schema result for {requests[index]['name']}: {actual}")
             if "code" in requests[index] and actual != {"error": requests[index]["code"]}:
                 raise AssertionError(f"Unexpected rejection for {requests[index]['name']}: {actual}")
             if "code" not in requests[index] and "error" in actual:
                 raise AssertionError(f"Valid case rejected: {requests[index]['name']}: {actual}")
-    successes = [value for value in baseline if "error" not in value]
+    successes = [value for value in baseline if "query" in value]
     roundtrips = [{"op": "decode", "query": value["query"]} for value in successes]
     for name, command in commands.items():
         if run(command, roundtrips) != successes:
@@ -89,6 +110,9 @@ def main() -> None:
         "roundtrips_per_implementation": len(roundtrips),
         "total_requests": 3 * (len(requests) + len(roundtrips)),
         "generated_styles": 200,
+        "generated_extension_styles": 80,
+        "examples_validated_per_implementation": len(example_paths),
+        "schema_cases_per_implementation": len(schema_fixtures["cases"]),
         "failed": 0,
     }
     (ROOT / ".build").mkdir(exist_ok=True)

@@ -1,0 +1,280 @@
+[
+  {
+    "name": "precedence",
+    "expression": "1+2*3",
+    "bands": {},
+    "expected": [
+      7
+    ]
+  },
+  {
+    "name": "left-associative",
+    "expression": "8/2/2",
+    "bands": {},
+    "expected": [
+      2
+    ]
+  },
+  {
+    "name": "unary",
+    "expression": "-2*-3",
+    "bands": {},
+    "expected": [
+      6
+    ]
+  },
+  {
+    "name": "where-division-guard",
+    "expression": "where(b1 != 0, 1/b1, 0)",
+    "bands": {
+      "b1": 0
+    },
+    "expected": [
+      0
+    ]
+  },
+  {
+    "name": "where-unused-mask",
+    "expression": "where(b1 > 0, b2, b3)",
+    "bands": {
+      "b1": 1,
+      "b2": 5,
+      "b3": null
+    },
+    "expected": [
+      5
+    ]
+  },
+  {
+    "name": "where-invalid-condition",
+    "expression": "where(b1 > 0, 1, 0)",
+    "bands": {
+      "b1": null
+    },
+    "expected": [
+      null
+    ]
+  },
+  {
+    "name": "where-unbound-unused-band",
+    "expression": "where(1 > 0, 1, b2)",
+    "bands": {},
+    "reject": true
+  },
+  {
+    "name": "where-parenthesized",
+    "expression": "where((b1+1) > 0, 1, 0)",
+    "bands": {
+      "b1": 0
+    },
+    "expected": [
+      1
+    ]
+  },
+  {
+    "name": "condition-parentheses",
+    "expression": "where((b1 > 0), 1, 0)",
+    "bands": {
+      "b1": 1
+    },
+    "expected": [
+      1
+    ]
+  },
+  {
+    "name": "natural-log",
+    "expression": "log(exp(1))",
+    "bands": {},
+    "expected": [
+      1
+    ]
+  },
+  {
+    "name": "abs-clamp",
+    "expression": "clamp(abs(-5),0,3)",
+    "bands": {},
+    "expected": [
+      3
+    ]
+  },
+  {
+    "name": "sqrt-domain",
+    "expression": "sqrt(-1)",
+    "bands": {},
+    "expected": [
+      null
+    ]
+  },
+  {
+    "name": "log-domain",
+    "expression": "log(0)",
+    "bands": {},
+    "expected": [
+      null
+    ]
+  },
+  {
+    "name": "divide-zero",
+    "expression": "1/0",
+    "bands": {},
+    "expected": [
+      null
+    ]
+  },
+  {
+    "name": "zero-pow-zero",
+    "expression": "pow(0,0)",
+    "bands": {},
+    "expected": [
+      1
+    ]
+  },
+  {
+    "name": "negative-power",
+    "expression": "pow(-2,3)",
+    "bands": {},
+    "expected": [
+      -8
+    ]
+  },
+  {
+    "name": "fractional-negative-power",
+    "expression": "pow(-2,0.5)",
+    "bands": {},
+    "expected": [
+      null
+    ]
+  },
+  {
+    "name": "multiple-outputs",
+    "expression": "b1; b1*2; max(b1,5)",
+    "bands": {
+      "b1": 2
+    },
+    "expected": [
+      2,
+      4,
+      5
+    ]
+  },
+  {
+    "name": "overflow",
+    "expression": "1e308*10",
+    "bands": {},
+    "expected": [
+      null
+    ]
+  },
+  {
+    "name": "underflow",
+    "expression": "1e-300/1e100",
+    "bands": {},
+    "expected": [
+      0
+    ]
+  },
+  {
+    "name": "number-as-condition",
+    "expression": "where(1,2,3)",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "comparison-output",
+    "expression": "b1>0",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "comparison-chain",
+    "expression": "where(0<b1<2,1,0)",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "wrong-arity",
+    "expression": "min(1,2,3)",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "unknown-function",
+    "expression": "sin(1)",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "bad-band",
+    "expression": "b0",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "band-leading-zero",
+    "expression": "b01",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "band-too-large",
+    "expression": "b65536",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "nonfinite-literal",
+    "expression": "1e999",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "number-leading-zero",
+    "expression": "01",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "nonascii-whitespace",
+    "expression": "1 +2",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "attribute",
+    "expression": "b1.real",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  },
+  {
+    "name": "empty-output",
+    "expression": "b1;",
+    "bands": {
+      "b1": 1
+    },
+    "reject": true
+  }
+]

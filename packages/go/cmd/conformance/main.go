@@ -27,14 +27,43 @@ func main() {
 		os.Exit(1)
 	}
 }
-func run(line []byte) map[string]string {
+func run(line []byte) map[string]any {
 	var request struct {
-		Op    string `json:"op"`
-		JSON  string `json:"json"`
-		Query string `json:"query"`
+		Op        string            `json:"op"`
+		Schemas   []json.RawMessage `json:"schemas"`
+		Supported []string          `json:"supported"`
+		JSON      string            `json:"json"`
+		Query     string            `json:"query"`
 	}
 	if err := json.Unmarshal(line, &request); err != nil {
-		return map[string]string{"error": "E_JSON"}
+		return map[string]any{"error": "E_JSON"}
+	}
+	if request.Op == "inspect" || request.Op == "validate" || request.Op == "support" {
+		registry, err := rasterstyle.NewSchemaRegistry()
+		if err != nil {
+			return errorResult(err)
+		}
+		for _, schema := range request.Schemas {
+			if err := registry.Register(schema); err != nil {
+				return errorResult(err)
+			}
+		}
+		style, err := registry.ParseJSON([]byte(request.JSON))
+		if err != nil {
+			return errorResult(err)
+		}
+		if request.Op == "validate" {
+			if err := registry.ValidateJSON([]byte(request.JSON)); err != nil {
+				return errorResult(err)
+			}
+		}
+		if request.Op == "support" {
+			if err := style.RequireExtensionSupport(request.Supported); err != nil {
+				return errorResult(err)
+			}
+		}
+		report := style.Validation()
+		return map[string]any{"complete": report.Complete, "unresolvedSchemas": report.UnresolvedSchemas}
 	}
 	var style *rasterstyle.Style
 	var err error
@@ -44,7 +73,7 @@ func run(line []byte) map[string]string {
 	case "decode":
 		style, err = rasterstyle.DecodeQuery(request.Query)
 	default:
-		return map[string]string{"error": "E_CONFIG"}
+		return map[string]any{"error": "E_CONFIG"}
 	}
 	if err != nil {
 		return errorResult(err)
@@ -53,12 +82,12 @@ func run(line []byte) map[string]string {
 	if err != nil {
 		return errorResult(err)
 	}
-	return map[string]string{"query": query, "json": string(style.JSON())}
+	return map[string]any{"query": query, "json": string(style.JSON())}
 }
-func errorResult(err error) map[string]string {
+func errorResult(err error) map[string]any {
 	var failure *rasterstyle.Error
 	if errors.As(err, &failure) {
-		return map[string]string{"error": failure.Code}
+		return map[string]any{"error": failure.Code}
 	}
-	return map[string]string{"error": "E_INTERNAL"}
+	return map[string]any{"error": "E_INTERNAL"}
 }

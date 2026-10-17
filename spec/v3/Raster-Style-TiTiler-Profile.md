@@ -1,10 +1,10 @@
 # TiTiler 适配档案
 
-[Raster Style Spec v2](Raster-Style-Spec-v2.md) 定义分组 JSON、结构化颜色公式和单值透明度。JSON 用于编辑与存储，Q2 使用 TiTiler 风格名称传输。
+[Raster Style Spec v3](Raster-Style-Spec-v3.md) 定义分组 JSON、结构化颜色公式和单值透明度。JSON 用于编辑与存储，Q3 使用 TiTiler 风格名称传输。
 
 ## 1. 能力映射
 
-Q2 先由 SDK 解析为样式，再由适配器编译请求和处理步骤。下表的“直接映射”仍要求核对部署版本的参数枚举和有效性规则。
+Q3 先由 SDK 解析为样式，完成全部扩展校验并核对执行端支持的精确扩展 URL，再由适配器编译请求和处理步骤。extensions 与 extension_fields 是 Raster Style 的通用传输参数，不直接透传给 TiTiler。下表的“直接映射”仍要求核对部署版本的参数枚举和有效性规则。
 
 | 样式能力 | 适配方式 | 必须验证的行为 |
 |---|---|---|
@@ -16,9 +16,10 @@ Q2 先由 SDK 解析为样式，再由适配器编译请求和处理步骤。下
 | continuous / discrete / source | 按规范本地映射或转换成等价处理 | 插值空间、预乘 Alpha、分级边界、源色表一致性 |
 | statistics / minmax / percentile / stddev / CDF / curve | 解析固定快照并执行规范算法 | 统计网格、raster-statistics/1、空集与常量值 |
 | hillshade / shaded_relief | 独立高程分支与规范地形处理 | 实际米制网格、Horn、邻域、光向量和颜色分支隔离 |
-| mosaic / extensions | 编译确定的分阶段计划 | 元组有效性、排序通道、源顺序、扩展调用次数 |
+| raster:mosaic | 按 Mosaic 自身 stage 编译选择计划 | 元组有效性、排序通道、源顺序、Alpha、分类约束 |
+| 第三方扩展 | 取得声明的 Schema 并绑定精确版本实现 | 字段由 Schema 定义，调用顺序和组合规则按各扩展自身约束验证 |
 | post_color_formula / opacity | 适配器的渲染后步骤 | 浮点有序操作，Alpha 只乘一次 |
-| image | 映射编码器并补足规范合成步骤 | JPEG 线性背景合成、8 位量化、WebP 模式 |
+| raster:tile | 前置规划目标尺寸，最终合成并编码 | 目标网格、JPEG 线性背景合成、8 位量化、WebP 模式 |
 
 TiTiler 的默认拉伸可依赖输入数据类型；适配器必须显式落实 Raster Style 的 none=[0,255] 显示范围或直接数据路径，不能依赖该默认行为。原生颜色公式可能在管线中引入整数转换；无法保持规范浮点阶段或达到参考结果时，使用自定义步骤或明确拒绝该组合。
 

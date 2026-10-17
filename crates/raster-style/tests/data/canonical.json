@@ -1,0 +1,47 @@
+[
+  {
+    "name": "negative-zero",
+    "json": "{\"z\":-0,\"a\":0}",
+    "canonical": "{\"a\":0,\"z\":0}"
+  },
+  {
+    "name": "number-edges",
+    "json": "[1e21,1e-7,5e-324,1e20,0.000001]",
+    "canonical": "[1e+21,1e-7,5e-324,100000000000000000000,0.000001]"
+  },
+  {
+    "name": "utf16-order",
+    "json": "{\"\": 1, \"😀\": 2}",
+    "canonical": "{\"😀\":2,\"\":1}"
+  },
+  {
+    "name": "escaped-key",
+    "json": "{\"b\":true,\"a\":[null,false,\"x\\n\\\"y\"]}",
+    "canonical": "{\"a\":[null,false,\"x\\n\\\"y\"],\"b\":true}"
+  },
+  {
+    "name": "binary64",
+    "json": "[9007199254740993,1.0000000000000001]",
+    "canonical": "[9007199254740992,1]"
+  },
+  {
+    "name": "scalar-number",
+    "json": "1.1",
+    "canonical": "1.1"
+  },
+  {
+    "name": "scalar-string",
+    "json": "\"a+b\"",
+    "canonical": "\"a+b\""
+  },
+  {
+    "name": "scalar-bool",
+    "json": "true",
+    "canonical": "true"
+  },
+  {
+    "name": "scalar-null",
+    "json": "null",
+    "canonical": "null"
+  }
+]

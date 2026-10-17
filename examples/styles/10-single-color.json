@@ -1,5 +1,5 @@
 {
-  "version": "2.0",
+  "version": "3.0",
   "opacity": 0.8,
   "renderer": {
     "type": "single_color",
@@ -11,8 +11,11 @@
   "stretch": {
     "method": "none"
   },
-  "image": {
+  "raster:tile": {
     "format": "png",
     "tilesize": 256
-  }
+  },
+  "extensions": [
+    "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+  ]
 }

@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 const schema = JSON.parse(
-  await readFile(new URL('../spec/v2/raster-style-v2.schema.json', import.meta.url), 'utf8'),
+  await readFile(new URL('../spec/v3/raster-style-v3.schema.json', import.meta.url), 'utf8'),
   (_key, value) => {
     // This generator expects draft-07 tuples. Adapt only its in-memory schema.
     if (value && typeof value === 'object' && Array.isArray(value.prefixItems)) {
@@ -14,9 +14,25 @@ const schema = JSON.parse(
   },
 );
 schema.title = 'RasterStyle';
+// SDK conveniences are derived from official extension schemas, not copied into the core schema.
+for (const name of ['mosaic', 'tile']) {
+  const extension = JSON.parse(
+    await readFile(
+      new URL(`../extensions/raster/${name}/v1.0.0/schema.json`, import.meta.url),
+      'utf8',
+    ),
+  );
+  for (const [field, definition] of Object.entries(extension.properties))
+    if (!(field in schema.properties)) schema.properties[field] = definition;
+}
+// Third-party top-level fields are preserved; core/nested properties retain strict types.
+schema.additionalProperties = true;
+delete schema.if;
+delete schema.else;
+delete schema.not;
 const output = await compile(schema, 'RasterStyle', {
   bannerComment:
-    '/** Generated from the Raster Style Spec v2 JSON Schema. Run pnpm generate; do not edit. */',
+    '/** Generated from Raster Style v3 and official extension JSON Schemas. Run pnpm generate; do not edit. */',
   maxItems: -1,
   additionalProperties: false,
   style: { singleQuote: true, printWidth: 100 },

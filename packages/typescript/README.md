@@ -1,15 +1,18 @@
-# @mapseek/raster-style
+# raster-style — TypeScript
 
-TypeScript / 浏览器 / Node.js 的 Raster Style Spec v2 Q2 编解码工具。公共入口导出 `encodeQuery`、`decodeQuery`、`jsonToQuery`、`queryToJson`、`QueryCodec`、`RasterStyle` 和结构化错误类型。
+Raster Style 3.0 与 Q3 的严格 JSON / Query 编解码、离线 Schema 注册、静态语义校验和规范化。仓库 SDK 版本为 0.4.0；实际发布状态以包仓库和 Git tag 为准。
 
-使用方法见[项目说明](https://github.com/mapseekai/raster-style/blob/main/README.md)和 [SDK 接口](https://github.com/mapseekai/raster-style/blob/main/docs/SDK.md)。协议版本为 `2.0`，SDK 版本为 `0.3.0`。
-
-## 安装
-
-```sh
-npm install @mapseek/raster-style@0.3.0
+```ts
+import { parseStyle, validateStyle, encodeQuery } from '@mapseek/raster-style';
+const style = parseStyle(styleJSON);
+validateStyle(style);
+const query = encodeQuery(style);
 ```
 
-## 许可证
+核心字段保留渲染、重采样、校准、统计、拉伸、颜色效果和透明度语义。Mosaic 和 Tile 通过版本化 Schema URL 声明，配置为顶层 raster:mosaic 与 raster:tile。核心样式可独立使用。
 
-[MIT](LICENSE)。
+SchemaRegistry 内置两个官方扩展及核心 Schema，并支持注册第三方完整样式 Schema。字段位置和结构由 Schema 定义，不从 URL 推导。第三方可定义多个字段，Query 通用传输无需增加专用绑定。
+
+解析保留未取得 Schema 的扩展，完整校验接口拒绝未验证状态。执行端须另行检查精确版本支持；Schema 通过不等于已实现扩展业务。默认解析与校验离线进行，仅显式 resolve 回调会调用应用提供的解析器。
+
+接口、预算、错误码和示例见[SDK 文档](../../docs/SDK.md)、[核心规范](../../spec/v3/Raster-Style-Spec-v3.md)与[Q3 绑定](../../spec/v3/Raster-Style-Query.md)。

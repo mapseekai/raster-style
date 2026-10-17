@@ -3,7 +3,7 @@ Cargo.lock
 go.sum
 packages/go/**
 crates/**
-spec/v2/**
+spec/v3/**
 examples/styles/**
 testdata/**
 packages/typescript/src/generated/**

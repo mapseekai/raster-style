@@ -1,4 +1,4 @@
-/** Generated from the Raster Style Spec v2 JSON Schema. Run pnpm generate; do not edit. */
+/** Generated from Raster Style v3 and official extension JSON Schemas. Run pnpm generate; do not edit. */
 
 export type Continuous =
   | {
@@ -133,10 +133,10 @@ export type Statistics =
     };
 
 /**
- * Grouped raster style with structured color formulas and scalar opacity.
+ * Raster Style 3.0 composable core. Complete validation composes declared extension schemas and closes unevaluated top-level properties.
  */
 export interface RasterStyle {
-  version: '2.0';
+  version: '3.0';
   renderer: {
     [k: string]: unknown;
   } & (
@@ -289,13 +289,6 @@ export interface RasterStyle {
     post_color_formula?: [PostOperation, ...PostOperation[]];
   };
   opacity?: number;
-  image?: {
-    format?: 'png' | 'webp' | 'jpeg';
-    tilesize?: 64 | 128 | 256 | 512 | 1024;
-    quality?: number;
-    lossless?: boolean;
-    background?: string;
-  };
   calibration?:
     | {
         mode: 'none' | 'metadata';
@@ -320,15 +313,19 @@ export interface RasterStyle {
         ];
       };
   statistics?: Statistics;
-  mosaic?: {
-    pixel_selection: 'first' | 'highest' | 'lowest' | 'mean' | 'median';
-    stage: 'before_channels' | 'after_channels';
-    /**
-     * One-based position: before_channels uses distinct dependency bands sorted by source band number; after_channels uses renderer output order. Applies only to highest/lowest.
-     */
-    rank_channel?: number;
+  /**
+   * Immutable versioned schema URLs. Declaration order does not define execution order.
+   *
+   * @maxItems 64
+   */
+  extensions?: string[];
+  'raster:mosaic'?: {
+    [k: string]: unknown;
   };
-  extensions?: Extensions;
+  'raster:tile'?: {
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
 }
 export interface Ramp {
   name: string;
@@ -377,15 +374,4 @@ export interface Exact {
     }[]
   ];
   fallback_color?: string;
-}
-export interface Extensions {
-  /**
-   * This interface was referenced by `Extensions`'s JSON-Schema definition
-   * via the `patternProperty` "^[a-z][a-z0-9]*(\.[a-z][a-z0-9_-]*){2,}$".
-   */
-  [k: string]: {
-    version: string;
-    stage: 'before_channels' | 'after_channels' | 'after_color';
-    config: {};
-  };
 }

@@ -1,13 +1,13 @@
-// Generated from spec/v2/raster-style-v2.schema.json. Do not edit.
+// Generated from spec/v3/raster-style-v3.schema.json. Do not edit.
 export default {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:mapseek:raster-style:2.0",
+  "$id": "https://mapseekai.github.io/raster-style/spec/v3/raster-style-v3.schema.json",
   "title": "RasterStyle",
-  "description": "Grouped raster style with structured color formulas and scalar opacity.",
+  "description": "Raster Style 3.0 composable core. Complete validation composes declared extension schemas and closes unevaluated top-level properties.",
   "type": "object",
   "properties": {
     "version": {
-      "const": "2.0"
+      "const": "3.0"
     },
     "renderer": {
       "type": "object",
@@ -966,47 +966,6 @@ export default {
       "maximum": 1,
       "default": 1
     },
-    "image": {
-      "type": "object",
-      "properties": {
-        "format": {
-          "enum": [
-            "png",
-            "webp",
-            "jpeg"
-          ],
-          "default": "png"
-        },
-        "tilesize": {
-          "enum": [
-            64,
-            128,
-            256,
-            512,
-            1024
-          ],
-          "default": 256
-        },
-        "quality": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 100,
-          "default": 85
-        },
-        "lossless": {
-          "type": "boolean",
-          "default": false
-        },
-        "background": {
-          "type": "string",
-          "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$",
-          "default": "#000000ff"
-        }
-      },
-      "required": [],
-      "additionalProperties": false,
-      "minProperties": 1
-    },
     "calibration": {
       "oneOf": [
         {
@@ -1069,47 +1028,21 @@ export default {
     "statistics": {
       "$ref": "#/$defs/statistics"
     },
-    "mosaic": {
-      "type": "object",
-      "properties": {
-        "pixel_selection": {
-          "enum": [
-            "first",
-            "highest",
-            "lowest",
-            "mean",
-            "median"
-          ]
-        },
-        "stage": {
-          "enum": [
-            "before_channels",
-            "after_channels"
-          ]
-        },
-        "rank_channel": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 64,
-          "default": 1,
-          "description": "One-based position: before_channels uses distinct dependency bands sorted by source band number; after_channels uses renderer output order. Applies only to highest/lowest."
-        }
-      },
-      "required": [
-        "pixel_selection",
-        "stage"
-      ],
-      "additionalProperties": false
-    },
     "extensions": {
-      "$ref": "#/$defs/extensions"
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^https?://[^\\s#]+$"
+      },
+      "uniqueItems": true,
+      "maxItems": 64,
+      "description": "Immutable versioned schema URLs. Declaration order does not define execution order."
     }
   },
   "required": [
     "version",
     "renderer"
   ],
-  "additionalProperties": false,
   "$defs": {
     "statistics": {
       "oneOf": [
@@ -1497,38 +1430,6 @@ export default {
         }
       ]
     },
-    "extensions": {
-      "type": "object",
-      "patternProperties": {
-        "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9_-]*){2,}$": {
-          "type": "object",
-          "properties": {
-            "version": {
-              "type": "string",
-              "minLength": 1
-            },
-            "stage": {
-              "enum": [
-                "before_channels",
-                "after_channels",
-                "after_color"
-              ]
-            },
-            "config": {
-              "type": "object"
-            }
-          },
-          "required": [
-            "version",
-            "stage",
-            "config"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "minProperties": 1,
-      "additionalProperties": false
-    },
     "pre_operation": {
       "oneOf": [
         {
@@ -1852,6 +1753,51 @@ export default {
       "additionalProperties": false,
       "minProperties": 1,
       "maxProperties": 4096
+    }
+  },
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "mosaic"
+        ]
+      },
+      {
+        "required": [
+          "image"
+        ]
+      },
+      {
+        "required": [
+          "extension_versions"
+        ]
+      }
+    ]
+  },
+  "if": {
+    "required": [
+      "extensions"
+    ],
+    "properties": {
+      "extensions": {
+        "minItems": 1
+      }
+    }
+  },
+  "else": {
+    "propertyNames": {
+      "enum": [
+        "version",
+        "renderer",
+        "resampling",
+        "stretch",
+        "nodata",
+        "effects",
+        "opacity",
+        "calibration",
+        "statistics",
+        "extensions"
+      ]
     }
   }
 } as const;

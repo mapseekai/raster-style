@@ -1,4 +1,4 @@
-# Raster Style v2 执行语义
+# Raster Style v3 执行语义
 
 本文件与主规范共同定义像元结果。执行计划包含已解析默认值、源修订及顺序、源有效性规则、工作网格、统计网格、固定色表、扩展版本、算法档案和编码选项。服务在读取像元前完成绑定与能力校验；无法满足所请求语义时明确拒绝。
 
@@ -14,25 +14,19 @@ mode 仅使用非负贡献权重，按类别累加 `w×alpha`，最大者获胜�
 
 每个计算输出携带所消费有效输入的最小 Alpha；where 只消费条件与被选分支，常量表达式继承源覆盖 Alpha。RGB 对三个输出 valid 求交并取最小 Alpha。任一输出在 range_policy=transparent 下越界时，RGB 整像元无效。single_color 只使用 valid 和 Alpha，输入数值 0 或负值不会被当作 false。
 
-## 2. 扩展与阶段顺序
+## 2. 扩展与执行计划
 
-扩展保持网格、通道数量、通道顺序和 Alpha，可将有效像元标记为无效，但不能使无效像元重新有效。before_channels 保持输入波段号；after_channels 保持 renderer 输出的含义与单位；类别和地形路径分别保持类别编码与高程单位。after_color 处理 [0,1] 非预乘 sRGB，操作结束裁剪颜色并保留 Alpha。注册时声明这些约束并用服务测试验证；不满足者拒绝注册为该阶段扩展。
+扩展通过版本化 Schema URL 声明，字段和业务约束由各自完整样式 Schema 定义。所有声明及引用先完成校验，再检查执行端是否支持精确版本；无法取得 Schema 或不能执行的扩展不得静默忽略。Schema 注册与业务执行相互独立。
 
-同阶段扩展按 ID 的 ASCII 字典序执行。对有 S 个源的请求：
+核心不定义通用执行阶段，不对所有扩展统一要求网格、通道、Alpha 或有效性保持。执行端按各自约束编译确定的组合计划，不能按 URL、字段名前缀或声明顺序猜测执行顺序。与核心数据域、分类或地形契约冲突的组合由扩展规则或执行端能力校验拒绝。
 
-| 阶段 | before_channels 镶嵌 | after_channels 镶嵌 |
-|---|---|---|
-| 读取、校准、before_channels 扩展 | 每源执行，共 S 次 | 每源执行，共 S 次 |
-| before_channels 镶嵌 | 一次 | 跳过 |
-| 通道计算、after_channels 扩展 | 在镶嵌结果上一次 | 每源执行，共 S 次 |
-| after_channels 镶嵌 | 跳过 | 一次 |
-| 统计、渲染、after_color 扩展 | 合并结果上一次 | 合并结果上一次 |
+[Mosaic 1.0.0](../../extensions/raster/mosaic/v1.0.0/README.md)定义 before_channels / after_channels，仅用于自身像元选择。选 before_channels 时，每源读取、重投影与校准后合并一次，通道计算一次；选 after_channels 时，每源先计算通道，再合并一次。后续核心统计、拉伸与渲染在合并结果上执行。单源可省略 Mosaic，多源必须显式声明并配置。
 
-单源依同一流程执行，省略 mosaic 相当于跳过合并。多源必须显式选择 pixel_selection 和 stage。
+[Tile 1.0.0](../../extensions/raster/tile/v1.0.0/README.md)的 tilesize 参与前置输出网格规划，编码参数在最终输出边界生效。没有 Tile 的核心样式仍可解析、完整校验并产生核心渲染结果；调用上下文负责所需网格与结果消费。
 
-## 3. 镶嵌元组与 Alpha
+## 3. Mosaic 元组与 Alpha
 
-before_channels 元组由整个输入依赖表组成，after_channels 元组由所有输出通道组成。仅所有分量有效且 Alpha > 0 的元组参与；不同源的有效通道不能拼成一个元组。元组 Alpha 取分量 Alpha 的最小值。源顺序固定在执行计划中。
+本节限定于已声明的 `raster:mosaic`。before_channels 元组由整个输入依赖表组成，after_channels 元组由所有输出通道组成。仅所有分量有效且 Alpha > 0 的元组参与；不同源的有效通道不能拼成一个元组。元组 Alpha 取分量 Alpha 的最小值。源顺序固定在执行计划中。
 
 - first 取第一个有效元组，包括其 Alpha。
 - highest/lowest 按 rank_channel 的数值选择整个元组，包括其 Alpha；并列取源顺序最前者。
@@ -45,7 +39,7 @@ rank_channel 是位置，不是源波段号。before_channels 依赖表去重后
 
 统计消费通道计算、扩展和镶嵌完成后的数值，早于 stretch、color_formula 和颜色映射。RGB 统计使用三个通道共同有效的元组，分别计算每通道结果；部分透明有效样本以等权计数。统计网格与输出工作网格均在计划中固定，统计计算在其网格上重放相同上游步骤。
 
-dataset 要求一个绑定数据源，范围是该源足迹；mosaic 使用固定源集合的联合足迹；viewport 使用服务绑定的视图范围，跨瓦片共享同一快照。统计网格必须包含 CRS、变换、分辨率、宽高及范围 mask；缺失则服务报错，不能临时改成当前瓦片统计。
+dataset 要求一个绑定数据源，范围是该源足迹；mosaic 使用固定源集合的联合足迹，并引用 Mosaic 的像元选择和阶段语义；viewport 使用服务绑定的视图范围，跨瓦片共享同一快照。统计网格必须包含 CRS、变换、分辨率、宽高及范围 mask；缺失则服务报错，不能临时改成当前瓦片统计。
 
 省略 statistics 时：单源选择 dataset，多源选择 mosaic，accuracy=sample，sample_size=1000000。显式 statistics 要求 scope 和 accuracy；exact 拒绝 sample_size。sample_size 省略的 sample 仍取 1000000。
 
@@ -114,7 +108,7 @@ hillshade 输出编码 sRGB 的 `(h,h,h)`。shaded_relief 保留同一高程分�
 
 ## 7. 验收
 
-[rendering-vectors.json](../../testdata/rendering-vectors.json)包含样式、输入、阶段值与预期 RGBA；[rendering_reference.py](../../scripts/rendering_reference.py)计算这些有界案例，作为规范检查工具，不是生产栅格渲染器。输入中的 null 表示无效样本，不是合法样式数值。示例扩展 `mapseek.test.square` 的注册行为为逐值平方，保持通道、网格、Alpha 和有效性，仅用于验证阶段顺序。
+[rendering-vectors.json](../../testdata/rendering-vectors.json)包含样式、输入、阶段值与预期 RGBA；[rendering_reference.py](../../scripts/rendering_reference.py)计算这些有界案例，作为规范检查工具，不是生产栅格渲染器。输入中的 null 表示无效样本，不是合法样式数值。示例扩展的精确 URL 为 `https://example.test/extensions/mapseek.test.square/v1.0.0/schema.json`，其 Schema 定义顶层 `test:square` 和自身的 stage 参数。行为为逐值平方，保持通道、网格、Alpha 和有效性；这些是该测试扩展自己的约束，仅用于验证 Mosaic 相对调用顺序，不推广为公共扩展规则。Schema 位于共享 schema-cases 测试资源中。
 
 `kind=resample` 向量验证已给定双线性权重的数值与 Alpha 合成。input.stage 选择 read 或 reproject，省略时为 read；style.resampling 对应阶段必须显式为 bilinear。参考检查器拒绝其他方式（包括默认 nearest）；核权重生成及其他算法由实际后端独立验收。
 

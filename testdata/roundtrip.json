@@ -2,7 +2,7 @@
   {
     "name": "01-rgb-fixed",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           4,
@@ -28,10 +28,6 @@
           ]
         ]
       },
-      "image": {
-        "format": "png",
-        "tilesize": 256
-      },
       "resampling": {
         "reproject": "bilinear",
         "read": "bilinear"
@@ -54,9 +50,16 @@
             "value": 1.1
           }
         ]
-      }
+      },
+      "raster:tile": {
+        "format": "png",
+        "tilesize": 256
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+      ]
     },
-    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20r%201.1%2C%20gamma%20g%201.1%2C%20gamma%20b%201.1&format=png&method=linear&reproject=bilinear&resampling=bilinear&rescale=0%2C3000&rescale=0%2C3000&rescale=0%2C3000&tilesize=256&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20r%201.1%2C%20gamma%20g%201.1%2C%20gamma%20b%201.1&extension_fields=%7B%22raster%3Atile%22%3A%7B%22format%22%3A%22png%22%2C%22tilesize%22%3A256%7D%7D&extensions=%5B%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Ftile%2Fv1.0.0%2Fschema.json%22%5D&method=linear&reproject=bilinear&resampling=bilinear&rescale=0%2C3000&rescale=0%2C3000&rescale=0%2C3000&type=rgb&version=3.0"
   },
   {
     "name": "02-ndvi-continuous",
@@ -65,7 +68,7 @@
       "calibration": {
         "mode": "metadata"
       },
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "index": {
           "bindings": {
@@ -100,21 +103,24 @@
       "stretch": {
         "method": "none"
       },
-      "image": {
-        "format": "png",
-        "tilesize": 256
-      },
       "resampling": {
         "reproject": "bilinear",
         "read": "bilinear"
-      }
+      },
+      "raster:tile": {
+        "format": "png",
+        "tilesize": 256
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+      ]
     },
-    "query": "calibration=%7B%22mode%22%3A%22metadata%22%7D&color_mapping=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&format=png&index=%7B%22bindings%22%3A%7B%22nir%22%3A8%2C%22red%22%3A4%7D%2C%22name%22%3A%22ndvi%22%7D&method=none&opacity=1&reproject=bilinear&resampling=bilinear&tilesize=256&type=pseudocolor&version=2.0"
+    "query": "calibration=%7B%22mode%22%3A%22metadata%22%7D&color_mapping=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&extension_fields=%7B%22raster%3Atile%22%3A%7B%22format%22%3A%22png%22%2C%22tilesize%22%3A256%7D%7D&extensions=%5B%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Ftile%2Fv1.0.0%2Fschema.json%22%5D&index=%7B%22bindings%22%3A%7B%22nir%22%3A8%2C%22red%22%3A4%7D%2C%22name%22%3A%22ndvi%22%7D&method=none&opacity=1&reproject=bilinear&resampling=bilinear&type=pseudocolor&version=3.0"
   },
   {
     "name": "03-discrete-breaks",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -146,12 +152,12 @@
         "read": "nearest"
       }
     },
-    "query": "bidx=1&color_mapping=%7B%22boundary%22%3A%22left_closed%22%2C%22breaks%22%3A%5B0%2C100%2C500%2C1000%5D%2C%22colors%22%3A%5B%22%232c7bb6ff%22%2C%22%23ffffbfff%22%2C%22%23d7191cff%22%5D%2C%22domain%22%3A%22data%22%2C%22mode%22%3A%22discrete%22%2C%22outside_color%22%3A%22%2300000000%22%7D&method=none&reproject=nearest&resampling=nearest&type=pseudocolor&version=2.0"
+    "query": "bidx=1&color_mapping=%7B%22boundary%22%3A%22left_closed%22%2C%22breaks%22%3A%5B0%2C100%2C500%2C1000%5D%2C%22colors%22%3A%5B%22%232c7bb6ff%22%2C%22%23ffffbfff%22%2C%22%23d7191cff%22%5D%2C%22domain%22%3A%22data%22%2C%22mode%22%3A%22discrete%22%2C%22outside_color%22%3A%22%2300000000%22%7D&method=none&reproject=nearest&resampling=nearest&type=pseudocolor&version=3.0"
   },
   {
     "name": "04-categorized",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -184,12 +190,12 @@
         "read": "nearest"
       }
     },
-    "query": "bidx=1&color_mapping=%7B%22entries%22%3A%5B%7B%22color%22%3A%22%23228b22ff%22%2C%22value%22%3A1%7D%2C%7B%22color%22%3A%22%234169e1ff%22%2C%22value%22%3A2%7D%2C%7B%22color%22%3A%22%23d2b48cff%22%2C%22value%22%3A3%7D%5D%2C%22fallback_color%22%3A%22%2300000000%22%2C%22mode%22%3A%22exact%22%7D&method=none&reproject=nearest&resampling=nearest&type=categorized&version=2.0"
+    "query": "bidx=1&color_mapping=%7B%22entries%22%3A%5B%7B%22color%22%3A%22%23228b22ff%22%2C%22value%22%3A1%7D%2C%7B%22color%22%3A%22%234169e1ff%22%2C%22value%22%3A2%7D%2C%7B%22color%22%3A%22%23d2b48cff%22%2C%22value%22%3A3%7D%5D%2C%22fallback_color%22%3A%22%2300000000%22%2C%22mode%22%3A%22exact%22%7D&method=none&reproject=nearest&resampling=nearest&type=categorized&version=3.0"
   },
   {
     "name": "05-hillshade",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -208,16 +214,19 @@
       "stretch": {
         "method": "none"
       },
-      "image": {
-        "format": "png",
-        "tilesize": 512
-      },
       "resampling": {
         "reproject": "bilinear",
         "read": "bilinear"
-      }
+      },
+      "raster:tile": {
+        "format": "png",
+        "tilesize": 512
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+      ]
     },
-    "query": "bidx=1&format=png&method=none&reproject=bilinear&resampling=bilinear&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D&tilesize=512&type=hillshade&version=2.0"
+    "query": "bidx=1&extension_fields=%7B%22raster%3Atile%22%3A%7B%22format%22%3A%22png%22%2C%22tilesize%22%3A512%7D%7D&extensions=%5B%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Ftile%2Fv1.0.0%2Fschema.json%22%5D&method=none&reproject=bilinear&resampling=bilinear&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D&type=hillshade&version=3.0"
   },
   {
     "name": "06-percentile-stretch",
@@ -227,7 +236,7 @@
         "sample_size": 1000000,
         "scope": "dataset"
       },
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           4,
@@ -253,12 +262,12 @@
         ]
       }
     },
-    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.1&method=percentile&percentiles=2%2C98&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000000%2C%22scope%22%3A%22dataset%22%7D&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.1&method=percentile&percentiles=2%2C98&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000000%2C%22scope%22%3A%22dataset%22%7D&type=rgb&version=3.0"
   },
   {
     "name": "07-expression-mosaic",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "color_mapping": {
           "domain": "data",
@@ -288,23 +297,27 @@
       "stretch": {
         "method": "none"
       },
-      "image": {
-        "format": "webp",
-        "lossless": true,
-        "tilesize": 256
-      },
-      "mosaic": {
+      "raster:mosaic": {
         "pixel_selection": "highest",
         "rank_channel": 1,
         "stage": "after_channels"
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json",
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+      ],
+      "raster:tile": {
+        "format": "webp",
+        "lossless": true,
+        "tilesize": 256
       }
     },
-    "query": "color_mapping=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&expression=%28b8-b4%29%2F%28b8%2Bb4%29&format=webp&language=raster-expr%2F1&lossless=true&method=none&pixel_selection=highest&rank_channel=1&stage=after_channels&tilesize=256&type=pseudocolor&version=2.0"
+    "query": "color_mapping=%7B%22domain%22%3A%22data%22%2C%22interpolation%22%3A%22srgb%22%2C%22mode%22%3A%22continuous%22%2C%22over%22%3A%22clamp%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%23313695ff%22%2C%22value%22%3A-1%7D%2C%7B%22color%22%3A%22%23ffffbfff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23006837ff%22%2C%22value%22%3A1%7D%5D%2C%22under%22%3A%22clamp%22%7D&expression=%28b8-b4%29%2F%28b8%2Bb4%29&extension_fields=%7B%22raster%3Amosaic%22%3A%7B%22pixel_selection%22%3A%22highest%22%2C%22rank_channel%22%3A1%2C%22stage%22%3A%22after_channels%22%7D%2C%22raster%3Atile%22%3A%7B%22format%22%3A%22webp%22%2C%22lossless%22%3Atrue%2C%22tilesize%22%3A256%7D%7D&extensions=%5B%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Fmosaic%2Fv1.0.0%2Fschema.json%22%2C%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Ftile%2Fv1.0.0%2Fschema.json%22%5D&language=raster-expr%2F1&method=none&type=pseudocolor&version=3.0"
   },
   {
     "name": "08-shaded-relief",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -343,12 +356,12 @@
         "method": "none"
       }
     },
-    "query": "bidx=1&color_mapping=%7B%22domain%22%3A%22data%22%2C%22mode%22%3A%22continuous%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%2378a86bff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23c9b18cff%22%2C%22value%22%3A1000%7D%2C%7B%22color%22%3A%22%23ffffffff%22%2C%22value%22%3A3000%7D%5D%7D&method=none&strength=0.65&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D&type=shaded_relief&version=2.0"
+    "query": "bidx=1&color_mapping=%7B%22domain%22%3A%22data%22%2C%22mode%22%3A%22continuous%22%2C%22stops%22%3A%5B%7B%22color%22%3A%22%2378a86bff%22%2C%22value%22%3A0%7D%2C%7B%22color%22%3A%22%23c9b18cff%22%2C%22value%22%3A1000%7D%2C%7B%22color%22%3A%22%23ffffffff%22%2C%22value%22%3A3000%7D%5D%7D&method=none&strength=0.65&terrain=%7B%22altitude%22%3A45%2C%22azimuth%22%3A315%2C%22edge%22%3A%22nodata%22%2C%22gradient%22%3A%22horn%22%2C%22method%22%3A%22single%22%2C%22vertical_unit%22%3A%22metre%22%2C%22z_factor%22%3A1%7D&type=shaded_relief&version=3.0"
   },
   {
     "name": "09-explicit-intervals",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -380,13 +393,13 @@
         "method": "none"
       }
     },
-    "query": "bidx=1&color_mapping=%7B%22boundary%22%3A%22left_closed%22%2C%22breaks%22%3A%5B0%2C5%2C15%2C30%2C60%2C100%5D%2C%22colors%22%3A%5B%22%23440154ff%22%2C%22%233b528bff%22%2C%22%2321918cff%22%2C%22%235ec962ff%22%2C%22%23fde725ff%22%5D%2C%22domain%22%3A%22data%22%2C%22mode%22%3A%22discrete%22%2C%22outside_color%22%3A%22%2300000000%22%7D&method=none&type=pseudocolor&version=2.0"
+    "query": "bidx=1&color_mapping=%7B%22boundary%22%3A%22left_closed%22%2C%22breaks%22%3A%5B0%2C5%2C15%2C30%2C60%2C100%5D%2C%22colors%22%3A%5B%22%23440154ff%22%2C%22%233b528bff%22%2C%22%2321918cff%22%2C%22%235ec962ff%22%2C%22%23fde725ff%22%5D%2C%22domain%22%3A%22data%22%2C%22mode%22%3A%22discrete%22%2C%22outside_color%22%3A%22%2300000000%22%7D&method=none&type=pseudocolor&version=3.0"
   },
   {
     "name": "10-single-color",
     "raster_style": {
       "opacity": 0.8,
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -397,17 +410,20 @@
       "stretch": {
         "method": "none"
       },
-      "image": {
+      "raster:tile": {
         "format": "png",
         "tilesize": 256
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+      ]
     },
-    "query": "bidx=1&color=ff880080&format=png&method=none&opacity=0.8&tilesize=256&type=single_color&version=2.0"
+    "query": "bidx=1&color=ff880080&extension_fields=%7B%22raster%3Atile%22%3A%7B%22format%22%3A%22png%22%2C%22tilesize%22%3A256%7D%7D&extensions=%5B%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Ftile%2Fv1.0.0%2Fschema.json%22%5D&method=none&opacity=0.8&type=single_color&version=3.0"
   },
   {
     "name": "11-gray-jpeg",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -424,14 +440,17 @@
           ]
         ]
       },
-      "image": {
+      "raster:tile": {
         "background": "#ffffffff",
         "format": "jpeg",
         "quality": 85,
         "tilesize": 256
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+      ]
     },
-    "query": "background=ffffffff&bidx=1&format=jpeg&method=linear&quality=85&renderer_invert=false&rescale=0%2C255&tilesize=256&type=gray&version=2.0"
+    "query": "bidx=1&extension_fields=%7B%22raster%3Atile%22%3A%7B%22background%22%3A%22%23ffffffff%22%2C%22format%22%3A%22jpeg%22%2C%22quality%22%3A85%2C%22tilesize%22%3A256%7D%7D&extensions=%5B%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Ftile%2Fv1.0.0%2Fschema.json%22%5D&method=linear&renderer_invert=false&rescale=0%2C255&type=gray&version=3.0"
   },
   {
     "name": "12-all-gray-fields",
@@ -452,7 +471,7 @@
         "sample_size": 1000,
         "scope": "dataset"
       },
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -464,10 +483,6 @@
         "method": "stddev",
         "range_policy": "transparent",
         "stddev": 2.5
-      },
-      "image": {
-        "format": "png",
-        "tilesize": 64
       },
       "resampling": {
         "reproject": "average",
@@ -505,14 +520,21 @@
             "op": "grayscale"
           }
         ]
-      }
+      },
+      "raster:tile": {
+        "format": "png",
+        "tilesize": 64
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+      ]
     },
-    "query": "bidx=1&calibration=%7B%22coefficients%22%3A%5B%7B%22band%22%3A1%2C%22offset%22%3A-1%2C%22scale%22%3A0.2%7D%5D%2C%22mode%22%3A%22linear%22%7D&color_formula=gamma%20r%201.2%2C%20sigmoidal%20r%205%200.4&format=png&method=stddev&opacity=0.8&post_color_formula=brightness%20rgb%200.1%2C%20contrast%20rgb%201.5%2C%20saturation%200.8%2C%20grayscale%20luma&range_policy=transparent&renderer_invert=true&reproject=average&resampling=cubic_spline&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000%2C%22scope%22%3A%22dataset%22%7D&stddev=2.5&tilesize=64&type=gray&version=2.0"
+    "query": "bidx=1&calibration=%7B%22coefficients%22%3A%5B%7B%22band%22%3A1%2C%22offset%22%3A-1%2C%22scale%22%3A0.2%7D%5D%2C%22mode%22%3A%22linear%22%7D&color_formula=gamma%20r%201.2%2C%20sigmoidal%20r%205%200.4&extension_fields=%7B%22raster%3Atile%22%3A%7B%22format%22%3A%22png%22%2C%22tilesize%22%3A64%7D%7D&extensions=%5B%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Ftile%2Fv1.0.0%2Fschema.json%22%5D&method=stddev&opacity=0.8&post_color_formula=brightness%20rgb%200.1%2C%20contrast%20rgb%201.5%2C%20saturation%200.8%2C%20grayscale%20luma&range_policy=transparent&renderer_invert=true&reproject=average&resampling=cubic_spline&statistics=%7B%22accuracy%22%3A%22sample%22%2C%22sample_size%22%3A1000%2C%22scope%22%3A%22dataset%22%7D&stddev=2.5&type=gray&version=3.0"
   },
   {
     "name": "13-curve",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -539,7 +561,7 @@
         "method": "curve"
       }
     },
-    "query": "bidx=1&curves=%5B%5B%5B0%2C0%5D%2C%5B50%2C0.2%5D%2C%5B100%2C1%5D%5D%5D&method=curve&type=gray&version=2.0"
+    "query": "bidx=1&curves=%5B%5B%5B0%2C0%5D%2C%5B50%2C0.2%5D%2C%5B100%2C1%5D%5D%5D&method=curve&type=gray&version=3.0"
   },
   {
     "name": "14-histogram",
@@ -548,7 +570,7 @@
         "accuracy": "exact",
         "scope": "dataset"
       },
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -559,12 +581,12 @@
         "method": "histogram_equalization"
       }
     },
-    "query": "bidx=1&method=histogram_equalization&statistics=%7B%22accuracy%22%3A%22exact%22%2C%22scope%22%3A%22dataset%22%7D&type=gray&version=2.0"
+    "query": "bidx=1&method=histogram_equalization&statistics=%7B%22accuracy%22%3A%22exact%22%2C%22scope%22%3A%22dataset%22%7D&type=gray&version=3.0"
   },
   {
     "name": "15-evi",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "index": {
           "bindings": {
@@ -592,46 +614,43 @@
         ]
       }
     },
-    "query": "index=%7B%22bindings%22%3A%7B%22blue%22%3A1%2C%22nir%22%3A4%2C%22red%22%3A3%7D%2C%22name%22%3A%22evi%22%2C%22parameters%22%3A%7B%22c1%22%3A6%2C%22c2%22%3A7.5%2C%22g%22%3A2.5%2C%22l%22%3A1%7D%7D&method=linear&rescale=-1%2C1&type=gray&version=2.0"
+    "query": "index=%7B%22bindings%22%3A%7B%22blue%22%3A1%2C%22nir%22%3A4%2C%22red%22%3A3%7D%2C%22name%22%3A%22evi%22%2C%22parameters%22%3A%7B%22c1%22%3A6%2C%22c2%22%3A7.5%2C%22g%22%3A2.5%2C%22l%22%3A1%7D%7D&method=linear&rescale=-1%2C1&type=gray&version=3.0"
   },
   {
     "name": "16-unicode-extension",
     "raster_style": {
-      "extensions": {
-        "mapseek.test.config": {
-          "config": {
-            "__proto__": {
-              "safe": true
-            },
-            "color": "#ABCDEF",
-            "numbers": [
-              0,
-              1e+21,
-              1e-07,
-              5e-324
-            ],
-            "text": "a+b & #50% 中文 / ? =",
-            "😀": 2,
-            "": 1
-          },
-          "stage": "after_color",
-          "version": "1"
-        }
-      },
-      "version": "2.0",
+      "extensions": [
+        "https://example.test/extensions/mapseek.test.config/v1.0.0/schema.json"
+      ],
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
         ],
         "type": "gray"
+      },
+      "test:config": {
+        "__proto__": {
+          "safe": true
+        },
+        "color": "#ABCDEF",
+        "numbers": [
+          0,
+          1e+21,
+          1e-7,
+          5e-324
+        ],
+        "text": "a+b & #50% 中文 / ? =",
+        "😀": 2,
+        "": 1
       }
     },
-    "query": "bidx=1&extensions=%7B%22mapseek.test.config%22%3A%7B%22config%22%3A%7B%22__proto__%22%3A%7B%22safe%22%3Atrue%7D%2C%22color%22%3A%22%23ABCDEF%22%2C%22numbers%22%3A%5B0%2C1e%2B21%2C1e-7%2C5e-324%5D%2C%22text%22%3A%22a%2Bb%20%26%20%2350%25%20%E4%B8%AD%E6%96%87%20%2F%20%3F%20%3D%22%2C%22%F0%9F%98%80%22%3A2%2C%22%EE%80%80%22%3A1%7D%2C%22stage%22%3A%22after_color%22%2C%22version%22%3A%221%22%7D%7D&type=gray&version=2.0"
+    "query": "bidx=1&extension_fields=%7B%22test%3Aconfig%22%3A%7B%22__proto__%22%3A%7B%22safe%22%3Atrue%7D%2C%22color%22%3A%22%23ABCDEF%22%2C%22numbers%22%3A%5B0%2C1e%2B21%2C1e-7%2C5e-324%5D%2C%22text%22%3A%22a%2Bb%20%26%20%2350%25%20%E4%B8%AD%E6%96%87%20%2F%20%3F%20%3D%22%2C%22%F0%9F%98%80%22%3A2%2C%22%EE%80%80%22%3A1%7D%7D&extensions=%5B%22https%3A%2F%2Fexample.test%2Fextensions%2Fmapseek.test.config%2Fv1.0.0%2Fschema.json%22%5D&type=gray&version=3.0"
   },
   {
     "name": "17-repeated-bands",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1,
@@ -641,12 +660,12 @@
         "type": "rgb"
       }
     },
-    "query": "bidx=1&bidx=1&bidx=1&type=rgb&version=2.0"
+    "query": "bidx=1&bidx=1&bidx=1&type=rgb&version=3.0"
   },
   {
     "name": "18-minimal",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -654,12 +673,12 @@
         "type": "gray"
       }
     },
-    "query": "bidx=1&type=gray&version=2.0"
+    "query": "bidx=1&type=gray&version=3.0"
   },
   {
     "name": "19-ordered-color-operations",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           4,
@@ -702,12 +721,12 @@
         ]
       }
     },
-    "query": "bidx=4&bidx=3&bidx=2&method=linear&post_color_formula=saturation%201.2%2C%20gamma%20rb%201.1%2C%20sigmoidal%20rgb%206%200.5%2C%20gamma%20b%200.9&rescale=0%2C3000&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&method=linear&post_color_formula=saturation%201.2%2C%20gamma%20rb%201.1%2C%20sigmoidal%20rgb%206%200.5%2C%20gamma%20b%200.9&rescale=0%2C3000&type=rgb&version=3.0"
   },
   {
     "name": "ordered-color-all-operations",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           4,
@@ -773,12 +792,12 @@
         ]
       }
     },
-    "query": "bidx=4&bidx=3&bidx=2&method=linear&post_color_formula=gamma%20rgb%201.1%2C%20sigmoidal%20rgb%202%200.4%2C%20brightness%20r%200.1%2C%20contrast%20g%201.2%2C%20saturation%200%2C%20grayscale%20luma%2C%20grayscale%20average%2C%20invert%20gb%2C%20invert%20rgb%2C%20brightness%20rg%20-0.2&rescale=0%2C3000&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&method=linear&post_color_formula=gamma%20rgb%201.1%2C%20sigmoidal%20rgb%202%200.4%2C%20brightness%20r%200.1%2C%20contrast%20g%201.2%2C%20saturation%200%2C%20grayscale%20luma%2C%20grayscale%20average%2C%20invert%20gb%2C%20invert%20rgb%2C%20brightness%20rg%20-0.2&rescale=0%2C3000&type=rgb&version=3.0"
   },
   {
     "name": "ordered-color-reversed",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           4,
@@ -821,12 +840,12 @@
         ]
       }
     },
-    "query": "bidx=4&bidx=3&bidx=2&method=linear&post_color_formula=gamma%20b%200.9%2C%20sigmoidal%20rgb%206%200.5%2C%20gamma%20rb%201.1%2C%20saturation%201.2&rescale=0%2C3000&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&method=linear&post_color_formula=gamma%20b%200.9%2C%20sigmoidal%20rgb%206%200.5%2C%20gamma%20rb%201.1%2C%20saturation%201.2&rescale=0%2C3000&type=rgb&version=3.0"
   },
   {
     "name": "operations-max-length-gray",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -1030,12 +1049,12 @@
         ]
       }
     },
-    "query": "bidx=1&post_color_formula=invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb&type=gray&version=2.0"
+    "query": "bidx=1&post_color_formula=invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb%2C%20invert%20rgb&type=gray&version=3.0"
   },
   {
     "name": "formula-rb",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           4,
@@ -1054,12 +1073,12 @@
         ]
       }
     },
-    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rb%201.1&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rb%201.1&type=rgb&version=3.0"
   },
   {
     "name": "formula-normalization",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           4,
@@ -1088,12 +1107,12 @@
         ]
       }
     },
-    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20r%201.1%2C%20sigmoidal%20rgb%206%200.5%2C%20saturation%200&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20r%201.1%2C%20sigmoidal%20rgb%206%200.5%2C%20saturation%200&type=rgb&version=3.0"
   },
   {
     "name": "formula-repeated",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           4,
@@ -1122,12 +1141,12 @@
         ]
       }
     },
-    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20r%201.1%2C%20gamma%20b%200.9%2C%20gamma%20r%202&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20r%201.1%2C%20gamma%20b%200.9%2C%20gamma%20r%202&type=rgb&version=3.0"
   },
   {
     "name": "formula-gray",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -1144,12 +1163,12 @@
         ]
       }
     },
-    "query": "bidx=1&color_formula=gamma%20r%201.1&type=gray&version=2.0"
+    "query": "bidx=1&color_formula=gamma%20r%201.1&type=gray&version=3.0"
   },
   {
     "name": "formula-max-operations",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           4,
@@ -1483,12 +1502,12 @@
         ]
       }
     },
-    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201%2C%20gamma%20rb%201&type=rgb&version=3.0"
   },
   {
     "name": "formula-post-operations",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           4,
@@ -1514,24 +1533,24 @@
         ]
       }
     },
-    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.2&post_color_formula=sigmoidal%20rgb%206%200.5&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.2&post_color_formula=sigmoidal%20rgb%206%200.5&type=rgb&version=3.0"
   },
   {
     "name": "expression-three",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "language": "raster-expr/1",
         "expression": " b4 ; b3; b2 ",
         "type": "rgb"
       }
     },
-    "query": "expression=b4%3Bb3%3Bb2&language=raster-expr%2F1&type=rgb&version=2.0"
+    "query": "expression=b4%3Bb3%3Bb2&language=raster-expr%2F1&type=rgb&version=3.0"
   },
   {
     "name": "native-colormap",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -1562,12 +1581,12 @@
         ]
       }
     },
-    "query": "bidx=1&colormap=%7B%220%22%3A%5B0%2C0%2C0%2C0%5D%2C%22255%22%3A%5B255%2C255%2C255%2C255%5D%7D&method=linear&rescale=0%2C3000&type=pseudocolor&version=2.0"
+    "query": "bidx=1&colormap=%7B%220%22%3A%5B0%2C0%2C0%2C0%5D%2C%22255%22%3A%5B255%2C255%2C255%2C255%5D%7D&method=linear&rescale=0%2C3000&type=pseudocolor&version=3.0"
   },
   {
     "name": "native-intervals",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -1601,12 +1620,12 @@
         ]
       }
     },
-    "query": "bidx=1&colormap=%5B%5B%5B0%2C100%5D%2C%5B255%2C0%2C0%2C255%5D%5D%2C%5B%5B100%2C200%5D%2C%5B0%2C0%2C255%2C128%5D%5D%5D&type=pseudocolor&version=2.0"
+    "query": "bidx=1&colormap=%5B%5B%5B0%2C100%5D%2C%5B255%2C0%2C0%2C255%5D%5D%2C%5B%5B100%2C200%5D%2C%5B0%2C0%2C255%2C128%5D%5D%5D&type=pseudocolor&version=3.0"
   },
   {
     "name": "native-categorized",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -1628,12 +1647,12 @@
         }
       }
     },
-    "query": "bidx=1&colormap=%7B%22-1%22%3A%5B0%2C0%2C0%2C0%5D%2C%222%22%3A%5B255%2C255%2C255%2C255%5D%7D&type=categorized&version=2.0"
+    "query": "bidx=1&colormap=%7B%22-1%22%3A%5B0%2C0%2C0%2C0%5D%2C%222%22%3A%5B255%2C255%2C255%2C255%5D%7D&type=categorized&version=3.0"
   },
   {
     "name": "named-colormap",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "bidx": [
           1
@@ -1642,12 +1661,12 @@
         "colormap_name": "viridis"
       }
     },
-    "query": "bidx=1&colormap_name=viridis&type=pseudocolor&version=2.0"
+    "query": "bidx=1&colormap_name=viridis&type=pseudocolor&version=3.0"
   },
   {
     "name": "native-nodata-number",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "nodata": -9999,
       "calibration": {
         "mode": "metadata"
@@ -1659,12 +1678,12 @@
         "type": "gray"
       }
     },
-    "query": "bidx=1&calibration=%7B%22mode%22%3A%22metadata%22%7D&nodata=-9999&type=gray&version=2.0"
+    "query": "bidx=1&calibration=%7B%22mode%22%3A%22metadata%22%7D&nodata=-9999&type=gray&version=3.0"
   },
   {
     "name": "native-nodata-nan",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "nodata": "nan",
       "calibration": {
         "mode": "none"
@@ -1676,12 +1695,12 @@
         "type": "gray"
       }
     },
-    "query": "bidx=1&calibration=%7B%22mode%22%3A%22none%22%7D&nodata=nan&type=gray&version=2.0"
+    "query": "bidx=1&calibration=%7B%22mode%22%3A%22none%22%7D&nodata=nan&type=gray&version=3.0"
   },
   {
     "name": "23-simple-rgb",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "rgb",
         "bidx": [
@@ -1725,17 +1744,20 @@
         ]
       },
       "opacity": 1,
-      "image": {
+      "raster:tile": {
         "format": "png",
         "tilesize": 256
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+      ]
     },
-    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.1%2C%20saturation%201.2&format=png&method=linear&nodata=-9999&opacity=1&post_color_formula=brightness%20rgb%200.05&reproject=bilinear&resampling=bilinear&rescale=0%2C3000&tilesize=256&type=rgb&version=2.0"
+    "query": "bidx=4&bidx=3&bidx=2&color_formula=gamma%20rgb%201.1%2C%20saturation%201.2&extension_fields=%7B%22raster%3Atile%22%3A%7B%22format%22%3A%22png%22%2C%22tilesize%22%3A256%7D%7D&extensions=%5B%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Ftile%2Fv1.0.0%2Fschema.json%22%5D&method=linear&nodata=-9999&opacity=1&post_color_formula=brightness%20rgb%200.05&reproject=bilinear&resampling=bilinear&rescale=0%2C3000&type=rgb&version=3.0"
   },
   {
     "name": "snapshot-with-assertions",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "bidx": [
@@ -1751,12 +1773,12 @@
         "ref": "stats-1"
       }
     },
-    "query": "bidx=1&method=minmax&statistics=%7B%22accuracy%22%3A%22exact%22%2C%22ref%22%3A%22stats-1%22%2C%22scope%22%3A%22dataset%22%7D&type=gray&version=2.0"
+    "query": "bidx=1&method=minmax&statistics=%7B%22accuracy%22%3A%22exact%22%2C%22ref%22%3A%22stats-1%22%2C%22scope%22%3A%22dataset%22%7D&type=gray&version=3.0"
   },
   {
     "name": "source-palette-unmodified",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "categorized",
         "bidx": [
@@ -1770,12 +1792,12 @@
         "mode": "none"
       }
     },
-    "query": "bidx=1&calibration=%7B%22mode%22%3A%22none%22%7D&color_mapping=%7B%22mode%22%3A%22source%22%7D&type=categorized&version=2.0"
+    "query": "bidx=1&calibration=%7B%22mode%22%3A%22none%22%7D&color_mapping=%7B%22mode%22%3A%22source%22%7D&type=categorized&version=3.0"
   },
   {
     "name": "rank-before-deduplicated-valid",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "rgb",
         "bidx": [
@@ -1784,18 +1806,21 @@
           1
         ]
       },
-      "mosaic": {
+      "raster:mosaic": {
         "pixel_selection": "highest",
         "stage": "before_channels",
         "rank_channel": 2
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
-    "query": "bidx=3&bidx=3&bidx=1&pixel_selection=highest&rank_channel=2&stage=before_channels&type=rgb&version=2.0"
+    "query": "bidx=3&bidx=3&bidx=1&extension_fields=%7B%22raster%3Amosaic%22%3A%7B%22pixel_selection%22%3A%22highest%22%2C%22rank_channel%22%3A2%2C%22stage%22%3A%22before_channels%22%7D%7D&extensions=%5B%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Fmosaic%2Fv1.0.0%2Fschema.json%22%5D&type=rgb&version=3.0"
   },
   {
     "name": "rank-before-index-valid",
     "raster_style": {
-      "version": "2.0",
+      "version": "3.0",
       "renderer": {
         "type": "gray",
         "index": {
@@ -1806,12 +1831,15 @@
           }
         }
       },
-      "mosaic": {
+      "raster:mosaic": {
         "pixel_selection": "highest",
         "stage": "before_channels",
         "rank_channel": 2
-      }
+      },
+      "extensions": [
+        "https://mapseekai.github.io/raster-style/extensions/raster/mosaic/v1.0.0/schema.json"
+      ]
     },
-    "query": "index=%7B%22bindings%22%3A%7B%22nir%22%3A8%2C%22red%22%3A4%7D%2C%22name%22%3A%22ndvi%22%7D&pixel_selection=highest&rank_channel=2&stage=before_channels&type=gray&version=2.0"
+    "query": "extension_fields=%7B%22raster%3Amosaic%22%3A%7B%22pixel_selection%22%3A%22highest%22%2C%22rank_channel%22%3A2%2C%22stage%22%3A%22before_channels%22%7D%7D&extensions=%5B%22https%3A%2F%2Fmapseekai.github.io%2Fraster-style%2Fextensions%2Fraster%2Fmosaic%2Fv1.0.0%2Fschema.json%22%5D&index=%7B%22bindings%22%3A%7B%22nir%22%3A8%2C%22red%22%3A4%7D%2C%22name%22%3A%22ndvi%22%7D&type=gray&version=3.0"
   }
 ]

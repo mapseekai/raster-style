@@ -6,7 +6,8 @@ use serde_json::{Map, Number, Value};
 
 use crate::error::{Error, Result};
 use crate::json::{canonical_value, parse_strict};
-use crate::style::{validator, Style};
+use crate::schema::default_schemas;
+use crate::style::Style;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Options {
@@ -43,7 +44,7 @@ fn bindings() -> Result<&'static [Binding]> {
     BINDINGS
         .get_or_init(|| {
             let mut registry: Registry =
-                serde_json::from_str(include_str!("../assets/query-bindings-v2.json"))
+                serde_json::from_str(include_str!("../assets/query-bindings-v3.json"))
                     .map_err(|error| error.to_string())?;
             registry
                 .bindings
@@ -209,15 +210,33 @@ impl Codec {
         if options.max_query_bytes == 0 || options.max_parameters == 0 {
             return Err(Error::new("E_CONFIG", "Budgets must be positive"));
         }
-        validator()?;
+        default_schemas()?;
         bindings()?;
         Ok(Self { options })
     }
 
     pub fn encode_query(&self, style: &Style) -> Result<String> {
         let mut pairs = Vec::new();
+        let core = default_schemas()?;
+        let fields: Map<String, Value> = style
+            .as_value()
+            .as_object()
+            .expect("validated style")
+            .iter()
+            .filter(|(key, _)| !core.is_core_field(key))
+            .map(|(key, value)| (key.clone(), value.clone()))
+            .collect();
+        let fields = if fields.is_empty() {
+            None
+        } else {
+            Some(Value::Object(fields))
+        };
         for binding in bindings()? {
-            let Some(value) = get_path(style.as_value(), &binding.path) else {
+            let Some(value) = (if binding.path == "*" {
+                fields.as_ref()
+            } else {
+                get_path(style.as_value(), &binding.path)
+            }) else {
                 continue;
             };
             let repeated = binding.codec.starts_with("repeat_");
@@ -275,7 +294,7 @@ impl Codec {
                 .iter()
                 .find(|binding| binding.key == key)
                 .ok_or_else(|| {
-                    Error::new("E_UNKNOWN_PARAMETER", "Unknown Q2 query parameter").at(&key)
+                    Error::new("E_UNKNOWN_PARAMETER", "Unknown Q3 query parameter").at(&key)
                 })?;
             let repeated = binding.codec.starts_with("repeat_");
             if !seen.insert(key.clone()) && !repeated {
@@ -284,7 +303,27 @@ impl Codec {
                 );
             }
             let decoded = decode_value(&value, binding.codec.trim_start_matches("repeat_"))?;
-            if repeated {
+            if binding.path == "*" {
+                let Value::Object(fields) = decoded else {
+                    return Err(Error::new(
+                        "E_QUERY_SYNTAX",
+                        "extension_fields must be a JSON object",
+                    ));
+                };
+                for (field, item) in fields {
+                    if default_schemas()?.is_core_field(&field) {
+                        return Err(Error::new(
+                            "E_QUERY_SYNTAX",
+                            "extension_fields cannot contain core fields",
+                        )
+                        .at(field));
+                    }
+                    document
+                        .as_object_mut()
+                        .expect("query object")
+                        .insert(field, item);
+                }
+            } else if repeated {
                 if get_path(&document, &binding.path).is_none() {
                     set_path(&mut document, &binding.path, Value::Array(Vec::new()));
                 }

@@ -1,5 +1,5 @@
 {
-  "version": "2.0",
+  "version": "3.0",
   "opacity": 0.8,
   "statistics": {
     "scope": "dataset",
@@ -27,10 +27,6 @@
     "method": "stddev",
     "stddev": 2.5,
     "range_policy": "transparent"
-  },
-  "image": {
-    "format": "png",
-    "tilesize": 64
   },
   "resampling": {
     "read": "cubic_spline",
@@ -68,5 +64,12 @@
         "midpoint": 0.4
       }
     ]
-  }
+  },
+  "raster:tile": {
+    "format": "png",
+    "tilesize": 64
+  },
+  "extensions": [
+    "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+  ]
 }

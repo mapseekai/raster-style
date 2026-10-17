@@ -1,30 +1,18 @@
-# raster-style
+# raster-style — Rust
 
-Raster Style Spec v2 的 Rust JSON ↔ Q2 查询参数编解码工具，支持结构与静态语义校验、颜色规范化和 RFC 8785 JSON 输出。
-
-## 安装
-
-```toml
-[dependencies]
-raster-style = "0.3.0"
-```
-
-## 使用
+Raster Style 3.0 与 Q3 的严格 JSON / Query 编解码、离线 Schema 注册、静态语义校验和规范化。仓库 SDK 版本为 0.4.0；实际发布状态以包仓库和 Git tag 为准。
 
 ```rust
-use raster_style::{json_to_query, query_to_json};
-
-fn main() -> Result<(), raster_style::Error> {
-    let style = r#"{"version":"2.0","renderer":{"type":"rgb","bidx":[4,3,2]}}"#;
-    let query = json_to_query(style)?;
-    let json = query_to_json(&query)?;
-    println!("{json}");
-    Ok(())
-}
+use raster_style::{Style, validate_json, encode_query};
+validate_json(style_json)?;
+let style = Style::from_json(style_json)?;
+let query = encode_query(&style)?;
 ```
 
-完整接口见 [SDK 使用说明](https://github.com/mapseekai/raster-style/blob/v0.3.0/docs/SDK.md)。
+核心字段保留渲染、重采样、校准、统计、拉伸、颜色效果和透明度语义。Mosaic 和 Tile 通过版本化 Schema URL 声明，配置为顶层 raster:mosaic 与 raster:tile。核心样式可独立使用。
 
-## 许可证
+SchemaRegistry 内置两个官方扩展及核心 Schema，并支持注册第三方完整样式 Schema。字段位置和结构由 Schema 定义，不从 URL 推导。第三方可定义多个字段，Query 通用传输无需增加专用绑定。
 
-[MIT](LICENSE)。
+解析保留未取得 Schema 的扩展，完整校验接口拒绝未验证状态。执行端须另行检查精确版本支持；Schema 通过不等于已实现扩展业务。默认解析与校验离线进行，仅显式 resolve 回调会调用应用提供的解析器。
+
+接口、预算、错误码和示例见[SDK 文档](../../docs/SDK.md)、[核心规范](../../spec/v3/Raster-Style-Spec-v3.md)与[Q3 绑定](../../spec/v3/Raster-Style-Query.md)。

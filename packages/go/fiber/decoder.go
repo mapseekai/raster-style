@@ -1,4 +1,4 @@
-// Package stylefiber adapts Raster Style Spec v2 to Fiber v3 without changing Q2.
+// Package stylefiber adapts Raster Style Spec v3 to Fiber v3 without changing Q3.
 package stylefiber
 
 import (

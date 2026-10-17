@@ -1,8 +1,8 @@
-// Generated from spec/v2/query-bindings-v2.json. Do not edit.
+// Generated from spec/v3/query-bindings-v3.json. Do not edit.
 export default {
-  "binding_version": "Q2",
-  "spec_version": "2.0",
-  "description": "Grouped JSON maps to short query names. Color operation arrays use formula strings; repeated bidx/rescale retain order.",
+  "binding_version": "Q3",
+  "spec_version": "3.0",
+  "description": "Core fields retain ordered short bindings. extensions is the URL array; extension_fields is a canonical JSON object of all non-core top-level fields, merged without path inference.",
   "bindings": [
     {
       "key": "version",
@@ -130,31 +130,6 @@ export default {
       "codec": "post_formula"
     },
     {
-      "key": "format",
-      "path": "image.format",
-      "codec": "string"
-    },
-    {
-      "key": "tilesize",
-      "path": "image.tilesize",
-      "codec": "integer"
-    },
-    {
-      "key": "quality",
-      "path": "image.quality",
-      "codec": "integer"
-    },
-    {
-      "key": "lossless",
-      "path": "image.lossless",
-      "codec": "boolean"
-    },
-    {
-      "key": "background",
-      "path": "image.background",
-      "codec": "color"
-    },
-    {
       "key": "calibration",
       "path": "calibration",
       "codec": "json"
@@ -170,19 +145,9 @@ export default {
       "codec": "json"
     },
     {
-      "key": "pixel_selection",
-      "path": "mosaic.pixel_selection",
-      "codec": "string"
-    },
-    {
-      "key": "stage",
-      "path": "mosaic.stage",
-      "codec": "string"
-    },
-    {
-      "key": "rank_channel",
-      "path": "mosaic.rank_channel",
-      "codec": "integer"
+      "key": "extension_fields",
+      "path": "*",
+      "codec": "json"
     }
   ]
 } as const;

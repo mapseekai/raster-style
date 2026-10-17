@@ -11,7 +11,7 @@ import (
 	rasterstyle "github.com/mapseekai/raster-style/packages/go"
 )
 
-const rgbQuery = "version=2.0&bidx=4&bidx=3&bidx=2&type=rgb"
+const rgbQuery = "version=3.0&bidx=4&bidx=3&bidx=2&type=rgb"
 
 func TestParseAndMiddleware(t *testing.T) {
 	decoder, err := NewDecoder(rasterstyle.Options{})
@@ -73,7 +73,7 @@ func TestParseAndMiddleware(t *testing.T) {
 	if retained == nil || !strings.Contains(string(retained.JSON()), "[4,3,2]") {
 		t.Fatal("request memory retained unsafely")
 	}
-	for _, query := range []string{rgbQuery + "&type=rgb", rgbQuery + "&url=x", rgbQuery + "&expression=b1+b2", rgbQuery + "&expression=%FF", "version=2.0"} {
+	for _, query := range []string{rgbQuery + "&type=rgb", rgbQuery + "&url=x", rgbQuery + "&expression=b1+b2", rgbQuery + "&expression=%FF", "version=3.0"} {
 		response, err := app.Test(httptest.NewRequest("GET", "/direct?"+query, nil))
 		if err != nil {
 			t.Fatal(err)

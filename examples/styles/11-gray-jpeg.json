@@ -1,5 +1,5 @@
 {
-  "version": "2.0",
+  "version": "3.0",
   "renderer": {
     "type": "gray",
     "renderer_invert": false,
@@ -16,10 +16,13 @@
       ]
     ]
   },
-  "image": {
+  "raster:tile": {
     "format": "jpeg",
     "background": "#ffffffff",
     "quality": 85,
     "tilesize": 256
-  }
+  },
+  "extensions": [
+    "https://mapseekai.github.io/raster-style/extensions/raster/tile/v1.0.0/schema.json"
+  ]
 }

@@ -1,3 +1,4 @@
+import { MOSAIC_SCHEMA_URL } from './schema.js';
 import { fail } from './errors.js';
 import type { JsonObject } from './json.js';
 import { arrayAt, objectAt } from './paths.js';
@@ -109,7 +110,9 @@ export function validateSemantics(style: JsonObject): void {
       'Exact keys must be unique',
     );
   }
-  const mosaic = objectAt(style, 'mosaic');
+  const mosaic = (style.extensions as string[] | undefined)?.includes(MOSAIC_SCHEMA_URL)
+    ? objectAt(style, 'raster:mosaic')
+    : {};
   if (type === 'categorized') {
     requireCondition(
       [
@@ -131,13 +134,6 @@ export function validateSemantics(style: JsonObject): void {
       (calibration.mode ?? 'none') === 'none',
       'calibration.mode',
       'Source palettes require unmodified category values',
-    );
-    requireCondition(
-      Object.values(objectAt(style, 'extensions')).every(
-        (extension) => (extension as JsonObject).stage === 'after_color',
-      ),
-      'extensions',
-      'Source palettes allow only after_color extensions',
     );
   }
   if (calibration.mode === 'linear') {
@@ -172,24 +168,4 @@ export function validateSemantics(style: JsonObject): void {
       );
     }
   }
-  const image = objectAt(style, 'image');
-  const format = image.format ?? 'png';
-  if ('background' in image) {
-    const color = image.background as string;
-    requireCondition(
-      color.length === 7 || color.slice(-2).toLowerCase() === 'ff',
-      'background',
-      'Background must be opaque',
-    );
-  }
-  if (format === 'png')
-    requireCondition(!('quality' in image), 'quality', 'PNG does not accept lossy quality');
-  if ('lossless' in image)
-    requireCondition(format === 'webp', 'lossless', 'Lossless is a WebP option');
-  if (image.lossless === true)
-    requireCondition(
-      !('quality' in image),
-      'quality',
-      'Lossless output does not accept lossy quality',
-    );
 }

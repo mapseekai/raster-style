@@ -13,11 +13,14 @@ GO = ROOT / "packages/go"
 
 
 def main() -> None:
+    (ROOT / ".build/validation-report.json").unlink(missing_ok=True)
     (ROOT / ".build").mkdir(exist_ok=True)
     commands = [
         (["pnpm", "check:generated"], ROOT),
         (["pnpm", "format:check"], ROOT),
         (["pnpm", "test"], ROOT),
+        (["pnpm", "build:site"], ROOT),
+        (["node", "--test", "scripts/schema-download.test.mjs"], ROOT),
         ([sys.executable, "scripts/rendering_reference.py"], ROOT),
         ([sys.executable, "scripts/rendering_reference_test.py"], ROOT),
         (["go", "mod", "verify"], GO),
@@ -26,9 +29,11 @@ def main() -> None:
         (["cargo", "fmt", "--all", "--", "--check"], ROOT),
         (["cargo", "clippy", "--all-targets", "--locked", "--", "-D", "warnings"], ROOT),
         (["cargo", "test", "--all-targets", "--locked"], ROOT),
+        (["cargo", "test", "--doc", "--locked"], ROOT),
         (["go", "build", "-o", str(ROOT / ".build/go-conformance"), "./cmd/conformance"], GO),
         (["cargo", "build", "--locked", "--bin", "conformance"], ROOT),
         ([sys.executable, "scripts/conformance.py"], ROOT),
+        ([sys.executable, "scripts/check_package.py"], ROOT),
     ]
     unformatted = subprocess.check_output(["gofmt", "-l", "."], cwd=GO, text=True).strip()
     if unformatted:
