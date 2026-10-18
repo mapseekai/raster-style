@@ -7,21 +7,39 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-24.04
+    env:
+      GOTOOLCHAIN: local
     steps:
-      - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-node@v7.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 22
-      - uses: pnpm/action-setup@v6.1.0
-        with:
-          version: 11.15.1
-      - uses: actions/setup-go@v7.0.0
+          node-version-file: .node-version
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: packages/go/go.mod
           cache-dependency-path: packages/go/go.sum
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version-file: .python-version
       - name: Rust toolchain
+        run: rustup show active-toolchain
+      - name: Verify toolchain versions
         run: |
-          rustup toolchain install 1.92.0 --profile minimal --component rustfmt --component clippy
-          rustup override set 1.92.0
+          node --version
+          npm --version
+          pnpm --version
+          go version
+          rustc --version
+          cargo --version
+          python3 --version
+          test "$(node --version)" = "v$(cat .node-version)"
+          test "$(npm --version)" = "10.9.9"
+          test "$(pnpm --version)" = "$(node -p 'require("./package.json").packageManager.split("@")[1]')"
+          test "$(go env GOVERSION)" = "go$(sed -n 's/^go //p' packages/go/go.mod)"
+          test "$(python3 --version)" = "Python $(cat .python-version)"
+          rust_version="$(python3 -c 'import tomllib; print(tomllib.load(open("rust-toolchain.toml", "rb"))["toolchain"]["channel"])')"
+          test "$(rustc --version | cut -d ' ' -f 2)" = "$rust_version"
+          test "$(cargo --version | cut -d ' ' -f 2)" = "$rust_version"
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:all

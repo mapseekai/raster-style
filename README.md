@@ -22,15 +22,17 @@ Raster Style 用结构化 JSON 描述栅格样式，并通过 Q3 查询参数传
 
 TypeScript 快速开始使用 Node.js 和 pnpm；工作区全量验证同时使用 Go、Rust 和 Python。
 
-| 工具                               | 版本    | 用途                                     |
-| ---------------------------------- | ------- | ---------------------------------------- |
-| [Node.js](https://nodejs.org/)     | 22+     | TypeScript SDK、资源生成与站点构建       |
-| [pnpm](https://pnpm.io/)           | 11.15.1 | 工作区依赖安装、构建与验证命令           |
-| [Go](https://go.dev/)              | 1.25+   | Go SDK、Fiber 集成与并发测试             |
-| [Rust](https://www.rust-lang.org/) | 1.92.0  | Rust SDK、Clippy 与发布包验证            |
-| [Python](https://www.python.org/)  | 3.10+   | 全量检查、数值参考计算与跨语言一致性验证 |
+| 工具                               | 开发要求 | CI 固定版本 | 用途                                     |
+| ---------------------------------- | -------- | ----------- | ---------------------------------------- |
+| [Node.js](https://nodejs.org/)     | 22+      | 22.23.3     | TypeScript SDK、资源生成与站点构建       |
+| [pnpm](https://pnpm.io/)           | 11.15.1  | 11.15.1     | 工作区依赖安装、构建与验证命令           |
+| [Go](https://go.dev/)              | 1.25+    | 1.25.0      | Go SDK、Fiber 集成与并发测试             |
+| [Rust](https://www.rust-lang.org/) | 1.92.0   | 1.92.0      | Rust SDK、Clippy 与发布包验证            |
+| [Python](https://www.python.org/)  | 3.10+    | 3.12.3      | 全量检查、数值参考计算与跨语言一致性验证 |
 
-工具版本由 `package.json`、`packages/go/go.mod` 和 `rust-toolchain.toml` 等工作区配置约定。pnpm 使用锁文件安装依赖，Rust 工具链包含 `rustfmt` 和 `clippy`。
+CI 与 Pages 共用 `.node-version`；CI 的 Python 版本来自 `.python-version`，pnpm、Go 和 Rust 分别读取 `package.json`、`packages/go/go.mod` 和 `rust-toolchain.toml`。Node.js 随附 npm 10.9.9，Rust 工具链包含 `rustfmt` 和 `clippy`。
+
+工作流记录并核对实际工具链版本，Go 使用 `GOTOOLCHAIN=local`。Actions 使用完整提交 SHA，依赖安装使用锁文件，版本升级通过仓库变更显式管理。
 
 ## 快速开始
 
