@@ -7,10 +7,17 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/devcontainers/base:ubuntu-24.04@sha256:3612b800eaae8513e7dca54f21d2e4eda48eda57426f3746a78677f342ac7ee9
+    defaults:
+      run:
+        shell: bash
     env:
       GOTOOLCHAIN: local
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install and verify locked system packages
+        run: bash scripts/setup-ci-system.sh
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .node-version
@@ -18,12 +25,11 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: packages/go/go.mod
-          cache-dependency-path: packages/go/go.sum
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version-file: .python-version
+          cache: false
       - name: Rust toolchain
-        run: rustup show active-toolchain
+        run: |
+          rustup show active-toolchain
+          rustup default "$(rustup show active-toolchain | cut -d ' ' -f 1)"
       - name: Verify toolchain versions
         run: |
           node --version

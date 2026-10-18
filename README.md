@@ -30,9 +30,11 @@ TypeScript 快速开始使用 Node.js 和 pnpm；工作区全量验证同时使�
 | [Rust](https://www.rust-lang.org/) | 1.92.0   | 1.92.0      | Rust SDK、Clippy 与发布包验证            |
 | [Python](https://www.python.org/)  | 3.10+    | 3.12.3      | 全量检查、数值参考计算与跨语言一致性验证 |
 
-CI 与 Pages 共用 `.node-version`；CI 的 Python 版本来自 `.python-version`，pnpm、Go 和 Rust 分别读取 `package.json`、`packages/go/go.mod` 和 `rust-toolchain.toml`。Node.js 随附 npm 10.9.9，Rust 工具链包含 `rustfmt` 和 `clippy`。
+CI 与 Pages 共用 `.node-version`；CI 核对 `.python-version` 中的 Python 版本，pnpm、Go 和 Rust 分别读取 `package.json`、`packages/go/go.mod` 和 `rust-toolchain.toml`。Node.js 随附 npm 10.9.9，Rust 工具链包含 `rustfmt` 和 `clippy`。
 
 工作流记录并核对实际工具链版本，Go 使用 `GOTOOLCHAIN=local`。Actions 使用完整提交 SHA，依赖安装使用锁文件，版本升级通过仓库变更显式管理。
+
+CI 检查、Pages 构建和部署均运行于 Microsoft Dev Containers 的 Ubuntu 24.04 `linux/amd64` 镜像，镜像以完整 SHA-256 digest 固定。系统依赖由 [Ubuntu 日期快照](https://snapshot.ubuntu.com/) `20261017T000000Z` 提供，[初始化脚本](scripts/setup-ci-system.sh)逐项核对[完整系统包版本清单](.github/system-packages.lock)，覆盖 GCC、glibc、Python、Git、CA 证书及其依赖。更新构建环境时，同步修改镜像 digest、快照日期和系统包清单，并执行全量验证。
 
 ## 快速开始
 
