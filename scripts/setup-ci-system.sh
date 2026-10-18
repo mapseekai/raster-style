@@ -22,3 +22,7 @@ trap 'rm -f "$packages"' EXIT
 dpkg-query -W -f='${binary:Package}=${Version}\n' | LC_ALL=C sort > "$packages"
 diff -u "$root/.github/system-packages.lock" "$packages"
 cat "$packages"
+
+# checkout uses a temporary HOME; build tools use this job's HOME.
+git config --global --add safe.directory "$root"
+git -C "$root" status --porcelain
