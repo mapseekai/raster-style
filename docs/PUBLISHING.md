@@ -42,9 +42,19 @@ pnpm check:published
 
 核心协议、Q3 绑定、SDK 包与每个扩展的版本分别管理。SDK 包发布与 Pages 发布是独立动作；修改 package.json 或 Cargo.toml 的版本号不会自动发布到 npm、crates.io 或创建 Go tag。
 
-## 本次实施的发布状态
+## SDK 发布渠道
 
-2026-10-16 初始核查时，GitHub Pages API 返回 404，核心 v3 和两个目标扩展 URL 均返回 HTTP 404。本次提供发布源文件、构建脚本和工作流；实际启用 Pages、远程推送及生产部署须以真实执行记录为准。本地验证不能证明这些 URL 已上线。
+SDK 0.4.0 对应核心协议 3.0 与 Q3 绑定，三个语言包使用一致的 SDK 版本：
+
+| SDK        | 发布渠道    | 版本标识                                               |
+| ---------- | ----------- | ------------------------------------------------------ |
+| TypeScript | npm         | `@mapseek/raster-style@0.4.0`                          |
+| Go         | Go 模块代理 | `github.com/mapseekai/raster-style/packages/go@v0.4.0` |
+| Rust       | crates.io   | `raster-style@0.4.0`                                   |
+
+先运行 `pnpm test:all` 并在工作区之外验收安装包，提交并推送发布源码，等待 CI 成功。项目标签 `v0.4.0` 与 Go 子模块标签 `packages/go/v0.4.0` 指向同一提交。随后发布 npm 和 crates.io 包，通过各渠道下载精确版本，核对完整性并运行独立消费者，再创建 GitHub Release。
+
+Schema 站点随 `main` 的 CI 成功结果构建和部署。发布验收同时记录 CI、Pages、部署提交 SHA，以及首页、索引和各 Schema 与本地产物一致的内容哈希。
 
 参考：[GitHub Pages 自定义工作流](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
 
